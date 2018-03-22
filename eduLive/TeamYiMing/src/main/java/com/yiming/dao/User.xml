@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.yiming.dao.UserDao">
+      <insert id = "register">
+          insert into user(phoneNum,password,name,nickname,registerTime,isStudent)
+          values(#{phoneNum},#{password},#{name},#{nickname},#{registerTime},#{isStudent})
+      </insert>
+  </mapper>	
+  
+  
