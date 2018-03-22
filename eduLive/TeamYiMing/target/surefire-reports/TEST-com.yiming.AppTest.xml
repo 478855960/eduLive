@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="com.yiming.AppTest" time="0.002" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="com.yiming.AppTest" time="0.003" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jre1.8.0_144\bin"/>
-    <property name="java.vm.version" value="25.144-b01"/>
+    <property name="sun.boot.library.path" value="F:\JDK1.8\bin"/>
+    <property name="java.vm.version" value="25.73-b02"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\DELL\workspace\TeamYiMing"/>
+    <property name="maven.multiModuleProjectDirectory" value="D:\GroupYiMing\HFUT_Group1\eduLive\TeamYiMing"/>
     <property name="java.vendor.url" value="http://java.oracle.com/"/>
     <property name="path.separator" value=";"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -16,44 +16,44 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\DELL\workspace\TeamYiMing"/>
-    <property name="java.runtime.version" value="1.8.0_144-b01"/>
+    <property name="user.dir" value="D:\GroupYiMing\HFUT_Group1\eduLive\TeamYiMing"/>
+    <property name="java.runtime.version" value="1.8.0_73-b02"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jre1.8.0_144\lib\endorsed"/>
+    <property name="java.endorsed.dirs" value="F:\JDK1.8\lib\endorsed"/>
     <property name="os.arch" value="amd64"/>
-    <property name="java.io.tmpdir" value="C:\Users\DELL\AppData\Local\Temp\"/>
+    <property name="java.io.tmpdir" value="C:\Users\57656\AppData\Local\Temp\"/>
     <property name="line.separator" value="
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 10"/>
-    <property name="classworlds.conf" value="C:\Users\DELL\workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf3291941410095160541.tmp"/>
+    <property name="classworlds.conf" value="D:\JavaProject\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf3806401168391040780.tmp"/>
     <property name="sun.jnu.encoding" value="GBK"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jre1.8.0_144\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre1.8.0_144/bin/server;C:/Program Files/Java/jre1.8.0_144/bin;C:/Program Files/Java/jre1.8.0_144/lib/amd64;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\MySQL\MySQL Server 5.0\bin;C:\Program Files\nodejs\;C:\Users\DELL\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Java\jdk1.8.0_144\bin;C:\Users\DELL\AppData\Roaming\npm;C:\Users\DELL\Desktop;;."/>
+    <property name="java.library.path" value="F:\JDK1.8\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;F:/JDK1.8/bin/server;F:/JDK1.8/bin;F:/JDK1.8/lib/amd64;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;F:\JDK1.8\bin;F:\JDK1.8\Java\jdk1.8.0_73\jre\bin;D:\opencv248\build\x64\vc10\bin;D:\opencv248\build\x86\vc10\bin;C:\Program Files (x86)\MySQL\MySQL Server 5.0\bin;F:\ITK3.20_source\bin;D:\apache-tomcat-8.5.20-windows-x64\apache-tomcat-8.5.20\bin;D:\apache-tomcat-8.5.20-windows-x64\apache-tomcat-8.5.20\lib;F:\ITK3.20_source\InsightToolkit-3.20.1_bin\bin;D:\MATLAB_SetupLocate\runtime\win64;D:\MATLAB_SetupLocate\bin;D:\MATLAB_SetupLocate\polyspace\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;D:\Vagrant\bin;C:\Python27;C:\Program Files\nodejs\;C:\Users\57656\AppData\Local\Microsoft\WindowsApps;;C:\Users\57656\.babun;C:\Users\57656\AppData\Roaming\npm;C:\Program Files (x86)\EclipseEE\eclipse;;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="52.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="os.version" value="10.0"/>
-    <property name="user.home" value="C:\Users\DELL"/>
+    <property name="user.home" value="C:\Users\57656"/>
     <property name="user.timezone" value="Asia/Shanghai"/>
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
     <property name="java.specification.version" value="1.8"/>
-    <property name="file.encoding" value="GBK"/>
-    <property name="user.name" value="DELL"/>
-    <property name="java.class.path" value="/C:/Users/DELL/eclipse/jee-neon/eclipse/../../../.p2/pool/plugins/org.eclipse.m2e.maven.runtime_1.7.0.20160603-1931/jars/plexus-classworlds-2.5.2.jar"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="user.name" value="57656"/>
+    <property name="java.class.path" value="/C:/Program Files (x86)/EclipseEE/eclipse/plugins/org.eclipse.m2e.maven.runtime_1.8.0.20170516-2042/jars/plexus-classworlds-2.5.2.jar"/>
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="java.home" value="C:\Program Files\Java\jre1.8.0_144"/>
+    <property name="java.home" value="F:\JDK1.8"/>
     <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="zh"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
     <property name="java.vm.info" value="mixed mode"/>
-    <property name="java.version" value="1.8.0_144"/>
-    <property name="java.ext.dirs" value="C:\Program Files\Java\jre1.8.0_144\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
-    <property name="sun.boot.class.path" value="C:\Program Files\Java\jre1.8.0_144\lib\resources.jar;C:\Program Files\Java\jre1.8.0_144\lib\rt.jar;C:\Program Files\Java\jre1.8.0_144\lib\sunrsasign.jar;C:\Program Files\Java\jre1.8.0_144\lib\jsse.jar;C:\Program Files\Java\jre1.8.0_144\lib\jce.jar;C:\Program Files\Java\jre1.8.0_144\lib\charsets.jar;C:\Program Files\Java\jre1.8.0_144\lib\jfr.jar;C:\Program Files\Java\jre1.8.0_144\classes"/>
+    <property name="java.version" value="1.8.0_73"/>
+    <property name="java.ext.dirs" value="F:\JDK1.8\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="F:\JDK1.8\lib\resources.jar;F:\JDK1.8\lib\rt.jar;F:\JDK1.8\lib\sunrsasign.jar;F:\JDK1.8\lib\jsse.jar;F:\JDK1.8\lib\jce.jar;F:\JDK1.8\lib\charsets.jar;F:\JDK1.8\lib\jfr.jar;F:\JDK1.8\classes"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="maven.home" value="C:\Users\DELL\workspace\TeamYiMing\EMBEDDED"/>
+    <property name="maven.home" value="D:\GroupYiMing\HFUT_Group1\eduLive\TeamYiMing\EMBEDDED"/>
     <property name="file.separator" value="\"/>
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -61,5 +61,5 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.yiming.AppTest" name="testApp" time="0.002"/>
+  <testcase classname="com.yiming.AppTest" name="testApp" time="0.003"/>
 </testsuite>
