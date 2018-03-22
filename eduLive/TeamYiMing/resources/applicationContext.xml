@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+    <!-- 1.加载properties文件 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!--2.引用数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+       <property name="user" value="${uname}"></property>
+        <property name="password" value="${upass}"></property>
+        <property name="jdbcUrl" value="${url}"></property>
+        <property name="driverClass" value="${driver_class}"></property>
+
+        <property name="initialPoolSize" value="${initPoolSize}"></property>
+        <property name="maxPoolSize" value="${maxPoolSize}"></property>
+    </bean>
+
+    <!-- 03.配置SQLSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 3.1引用数据源 -->
+        <property name="dataSource" ref="dataSource" ></property>
+        <!-- 3.2加载MyBatis配置文件 -->
+        <property name="configLocation" value="classpath:MyBatisConfig.xml"></property>
+        <!-- 3.3关联Mybatis映射文件 -->
+        <property name="mapperLocations" value="classpath:com/yiming/dao/*.xml"></property>
+    </bean>
+
+    <!-- 配置所有的Dao所在的包 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.yiming.dao"></property>
+    </bean>
+</beans>
