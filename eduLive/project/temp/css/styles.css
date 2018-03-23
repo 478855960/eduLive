@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+body{
+	padding-bottom: 20px;
+	background-color:#D0E9FF;
+}
+
+.container-narrow {
+	margin:0 auto;
+	max-width: 1100px;
+	background-color:white;
+}
+
+.container-narrow > hr {
+	margin:60px 0;
+	text-align:center;
+}
+
+.jumbotron h1 {
+	font-size: 72px;
+	line-height:1;
+}
+
+.jumbotron .btn {
+	font-size:21px;
+	padding:14px 24px;
+}
+
+.video-img {
+	width:300px;	
+	height:200px;
+}
+
+li > a {
+	color: #37C6C0;
+}
+
+#logo {
+	weight:150px;
+	height:100px;
+}
+
+#header {
+	font-size:24px;
+}
+#active {
+	background-color: #37C6C0;
+}
+
+#name {
+	color:#2AB352;
+}
