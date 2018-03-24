@@ -1,0 +1,30 @@
+#loginBody {
+    background-image: url(../img/login3.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%, 100%;
+}
+
+#loginDiv {
+    color: #FFFFFF;
+    background-color:  #000000;
+    background-color: rgba(0,0,0,0.3);
+    position: absolute;
+    top: 25%;
+    left: 65%;
+    width: 30%;
+    padding-top: 20px; 
+    text-align: center;
+}
+
+#loginBtn {
+    color: #FFFFFF;
+    background-color:  #0000FF;
+    background-color: rgba(0,0,0,0.4);
+    border: none;
+    width: 20%;
+}
+
+#title {
+    font-family: inherit;
+    font-weight: inherit;
+}
