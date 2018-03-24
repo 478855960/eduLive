@@ -1,0 +1,53 @@
+#infoDiv {
+    margin: 0 auto;
+    max-width: 1100px;
+    color: #000000;
+    background-color: #FFFFFF;
+    padding-top: 20px; 
+    text-align: center;
+}
+
+#title {
+    font-family: inherit;
+    font-weight: inherit;
+}
+
+#nameForm {
+    width: 60%;
+    margin: 0 auto;
+}
+
+#pswForm {
+    width: 60%;
+    margin: 0 auto;
+}
+
+#nameBtn {
+    color: #FFFFFF;
+    background-color: #37C6C0;
+    border: none;
+    width: 16%;
+}
+
+#nameTxt {
+    width: 66.5%;
+}
+
+#modifyBtn {
+    color: #FFFFFF;
+    background-color: #37C6C0;
+    border: none;
+    width: 25%;
+}
+
+#verifyBtn {
+    color: #FFFFFF;
+    background-color: #37C6C0;
+    border: none;
+    width: 20%;
+}
+
+.masthead > hr {
+    margin:0 0;
+    text-align:center;
+}
