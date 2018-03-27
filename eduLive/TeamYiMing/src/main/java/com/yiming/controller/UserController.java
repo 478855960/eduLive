@@ -27,9 +27,9 @@ public class UserController {
 	private UserService userService;
 	
 	/**
-     * 鐢ㄦ埛鐨勭櫥褰曞嚱鏁�
-     * 鍒ゆ柇鐢佃瘽瀵嗙爜鏄惁姝ｇ‘
-     * 濡傛灉姝ｇ‘锛岃繑鍥炩�渟uccess鈥濓紝涓嶆纭繑鍥炩�渇ailure鈥濓紙瀛楃涓诧級
+     * 用户的登录函数
+     * 判断电话密码是否正确
+     * 如果正确，返回“success”，不正确返回“failure”（字符串）
      */
 	@RequestMapping(value = "/userLogin.action", method = RequestMethod.POST)
     @ResponseBody
@@ -51,7 +51,7 @@ public class UserController {
 	}
 	/**
 	 *
-	 * @param nickname 鐢ㄦ埛鎯宠淇敼鐨勬樀绉�
+	 * @param nickname 用户想要修改的昵称
 	 * @return
 	 */
 	@RequestMapping(value="/userModifyNickname.action",method = RequestMethod.POST)
@@ -72,8 +72,8 @@ public class UserController {
 	}
 	/**
 	 *
-	 * @param oldPassword 鐢ㄦ潵楠岃瘉鐨勬棫瀵嗙爜
-	 * @param newPassword 闇�瑕佷慨鏀圭殑鏂板瘑鐮�
+	 * @param oldPassword 用来验证的旧密码
+	 * @param newPassword 需要修改的新密码
 	 * @return
 	 */
 	@RequestMapping(value="/userModifyPassword.action",method = RequestMethod.POST)
