@@ -1,6 +1,18 @@
-eduLive/TeamYiMing/target
-eduLive/TeamYiMing/.idea
-eduLive/TeamYiMing/.settings
-eduLive/TeamYiMing/.classpath
-eduLive/TeamYiMing/.project
-eduLive/TeamYiMing/TeamYiMing.iml
+#generated files
+target/
+node_modules/
+npm-debug.log*
+/eduLive/project/test/unit/coverage/
+/eduLive/project/test/e2e/reports/
+/eduLive/project/dist/
+
+#Interlij
+*.iml
+*/*.iml
+.idea/
+
+
+#eclipse
+.classpath
+.project
+.settings/
