@@ -8,17 +8,17 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
     <!-- 1.加载properties文件 -->
-    <context:property-placeholder location="classpath:db.properties"/>
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:db.properties" />
+    </bean>
 
     <!--2.引用数据源 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-       <property name="user" value="${uname}"></property>
-        <property name="password" value="${upass}"></property>
-        <property name="jdbcUrl" value="${url}"></property>
-        <property name="driverClass" value="${driver_class}"></property>
-
-        <property name="initialPoolSize" value="${initPoolSize}"></property>
-        <property name="maxPoolSize" value="${maxPoolSize}"></property>
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+     	<property name="driverClassName" value="${db.driver}" />
+        <property name="url" value="${db.url}" />
+        <property name="username" value="${db.username}" />
+        <property name="password" value="${db.password}" />
     </bean>
 
     <!-- 03.配置SQLSessionFactory -->
