@@ -6,7 +6,6 @@ import Axios from 'axios'
 import HelloWorld from '@/components/HelloWorld'
 import LiveTeacher from '@/components/Live_Teacher'
 import Login from '@/components/Login'
-
 import Register from '@/components/Register'
 Vue.use(Router)
 Vue.use(ElementUI)
