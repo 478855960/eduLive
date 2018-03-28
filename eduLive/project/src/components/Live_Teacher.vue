@@ -20,7 +20,10 @@
         </el-footer>
       </el-container>
       <el-container direction="vertical" class="ec_right">
-        <el-main></el-main>
+        <el-main>
+          <video id="video" controls>
+          </video>
+        </el-main>
         <el-container style="height:200px;border-top: #1b6d85 2px solid;">
           <el-main></el-main>
           <el-footer>
@@ -44,7 +47,26 @@ export default {
     return {
       input: ''
     }
-  }
+  },
+  method: {}
+}
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
+
+if (navigator.getUserMedia) {
+  navigator.getUserMedia({ audio: true, video: { width: 400, height: 350 } },
+    function (stream) {
+      var video = document.querySelector('video')
+      video.src = window.URL.createObjectURL(stream)
+      video.onloadedmetadata = function (e) {
+        video.play()
+      }
+    },
+    function (err) {
+      console.log('发生错误: ' + err.name)
+    }
+  )
+} else {
+  console.log('警告：该浏览器不支持！')
 }
 </script>
 
