@@ -5,6 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 import HelloWorld from '@/components/HelloWorld'
 import LiveTeacher from '@/components/Live_Teacher'
+import Register from '@/components/Register'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -21,6 +22,11 @@ export default new Router({
       path: '/live_teacher',
       name: 'Live_Teacher',
       component: LiveTeacher
+    },
+    {
+      path: '/Register',
+      name: 'Register',
+      component: Register
     }
   ]
 })
