@@ -22,9 +22,11 @@ export default new Router({
       path: '/live_teacher',
       name: 'Live_Teacher',
       component: LiveTeacher
+   },
+   {
       path: '/Login',
       name: 'Login',
       component: Login
-    }
+   }
   ]
 })
