@@ -4,15 +4,28 @@
     <el-main>
       <h1>欢迎使用硕学教育平台</h1>
       <hr>
-      <el-form ref="form" label-width="80px">
-        <el-form-item label="手机号">
-          <el-input v-model="tel" placeholder="请输入手机号" type="tel"></el-input>
+      <el-form ref="loginForm" label-width="80px" :rules="loginRules" :model="loginForm">
+        <el-form-item label="手机号" prop="tel">
+          <el-input v-model="loginForm.tel" placeholder="请输入手机号" type="tel"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="psw" placeholder="请输入密码" type="password"></el-input>
+        <el-form-item label="密码" prop="psw">
+          <el-input v-model="loginForm.psw" placeholder="请输入密码" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="验证码" required>
+          <el-col :span="14">
+            <el-form-item prop="code" id="codeItem">
+              <el-input v-model="loginForm.code" placeholder="请输入验证码" type="text" id="code"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" @click="refreshCode">
+            <s-identify :identify-code="identifyCode"></s-identify>
+          </el-col>
+          <el-col :span="4">
+            <el-button id="codeBtn" @click="refreshCode">换一张</el-button>
+          </el-col>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">登录</el-button>
+          <el-button type="primary" @click="doLogin('loginForm')">登录</el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -20,8 +33,73 @@
 </template>
 
 <script>
+import SIdentify from '../plugin/identify'
 export default {
-  name: 'Login'
+  components: {SIdentify},
+  name: 'Login',
+  data () {
+    var validateCode = (rule, value, callback) => {
+      if (value !== this.identifyCode) {
+        callback(new Error('验证码错误'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      identifyCodes: '1234567890',
+      identifyCode: '',
+      loginForm: {
+        tel: '',
+        psw: '',
+        code: ''
+      },
+      loginRules: {
+        tel: [
+          { required: true, message: '请输入手机号', trigger: 'blur' }
+        ],
+        psw: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { validator: validateCode, trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  mounted () {
+    this.identifyCode = ''
+    this.makeCode(this.identifyCodes, 4)
+  },
+  methods: {
+    doLogin (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('login!!')
+          // $.ajax({
+          //   type: "POST",
+          //
+          //   data
+          // })
+        } else {
+          console.log('form not valid!!')
+          return false
+        }
+      })
+    },
+    randomNum (min, max) {
+      return Math.floor(Math.random() * (max - min) + min)
+    },
+    refreshCode () {
+      this.identifyCode = ''
+      this.makeCode(this.identifyCodes, 4)
+    },
+    makeCode (o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
+      }
+    }
+  }
 }
 </script>
 
@@ -29,11 +107,12 @@ export default {
 <style scoped>
   .el-form-item {
     width: 40%;
-    margin: 10px auto;
+    margin: 30px auto;
   }
 
   .el-button {
     background-color: #37C6C0;
+    color: #ffffff;
     margin: 0 auto;
   }
 
@@ -44,5 +123,14 @@ export default {
   .el-button {
     margin-right: 80px;
     width: 30%;
+  }
+
+  #codeBtn {
+    width: 100%;
+  }
+
+  #codeItem {
+    margin: 0;
+    width: 100%;;
   }
 </style>

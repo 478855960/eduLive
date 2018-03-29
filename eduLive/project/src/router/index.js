@@ -7,6 +7,8 @@ import HelloWorld from '@/components/HelloWorld'
 import LiveTeacher from '@/components/Live_Teacher'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import UserCenter from '@/components/UserCenter'
+
 Vue.use(Router)
 Vue.use(ElementUI)
 Vue.prototype.$ajax = Axios
@@ -32,6 +34,10 @@ export default new Router({
       path: '/Register',
       name: 'Register',
       component: Register
+    }，
+      path: '/UserCenter',
+      name: 'UserCenter',
+      component: UserCenter
     }
   ]
 })
