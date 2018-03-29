@@ -61,11 +61,9 @@ export default {
     }
   },
   methods: {
-    // ����һ�������
     randomNum (min, max) {
       return Math.floor(Math.random() * (max - min) + min)
     },
-    // ����һ���������ɫ
     randomColor (min, max) {
       let r = this.randomNum(min, max)
       let g = this.randomNum(min, max)
@@ -76,10 +74,8 @@ export default {
       let canvas = document.getElementById('s-canvas')
       let ctx = canvas.getContext('2d')
       ctx.textBaseline = 'bottom'
-      // ���Ʊ���
       ctx.fillStyle = this.randomColor(this.backgroundColorMin, this.backgroundColorMax)
       ctx.fillRect(0, 0, this.contentWidth, this.contentHeight)
-      // ��������
       for (let i = 0; i < this.identifyCode.length; i++) {
         this.drawText(ctx, this.identifyCode[i], i)
       }
@@ -92,16 +88,13 @@ export default {
       let x = (i + 1) * (this.contentWidth / (this.identifyCode.length + 1))
       let y = this.randomNum(this.fontSizeMax, this.contentHeight - 5)
       var deg = this.randomNum(-45, 45)
-      // �޸�����ԭ�����ת�Ƕ�
       ctx.translate(x, y)
       ctx.rotate(deg * Math.PI / 180)
       ctx.fillText(txt, 0, 0)
-      // �ָ�����ԭ�����ת�Ƕ�
       ctx.rotate(-deg * Math.PI / 180)
       ctx.translate(-x, -y)
     },
     drawLine (ctx) {
-      // ���Ƹ�����
       for (let i = 0; i < 8; i++) {
         ctx.strokeStyle = this.randomColor(this.lineColorMin, this.lineColorMax)
         ctx.beginPath()
@@ -111,7 +104,6 @@ export default {
       }
     },
     drawDot (ctx) {
-      // ���Ƹ��ŵ�
       for (let i = 0; i < 100; i++) {
         ctx.fillStyle = this.randomColor(0, 255)
         ctx.beginPath()
