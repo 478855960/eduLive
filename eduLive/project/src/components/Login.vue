@@ -76,6 +76,11 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('login!!')
+          // $.ajax({
+          //   type: "POST",
+          //
+          //   data
+          // })
         } else {
           console.log('form not valid!!')
           return false
