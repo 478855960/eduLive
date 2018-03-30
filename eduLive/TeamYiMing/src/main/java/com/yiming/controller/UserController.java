@@ -49,9 +49,9 @@ public class UserController {
      */
 	@RequestMapping(value = "/userLogin.action", method = RequestMethod.POST)
     @ResponseBody
-    public String login(String phoneNum,String password){
-		User user = new User();
-		user = userDao.login(phoneNum, password);
+    public String login(@RequestBody User reqUser){
+		User user = null;
+		user = userDao.login(reqUser.getPhoneNum(), reqUser.getPassword());
 		if(user != null){
 			session.setAttribute(Constant.USER, user);
 			return "success";

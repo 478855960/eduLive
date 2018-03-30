@@ -5,16 +5,16 @@
       <h1>欢迎使用硕学教育平台</h1>
       <hr>
       <el-form ref="loginForm" label-width="80px" :rules="loginRules" :model="loginForm">
-        <el-form-item label="手机号" prop="tel">
-          <el-input v-model="loginForm.tel" placeholder="请输入手机号" type="tel"></el-input>
+        <el-form-item label="手机号" prop="phoneNum">
+          <el-input v-model="loginForm.phoneNum" placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="psw">
-          <el-input v-model="loginForm.psw" placeholder="请输入密码" type="password"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="loginForm.password" placeholder="请输入密码" type="password"></el-input>
         </el-form-item>
         <el-form-item label="验证码" required>
           <el-col :span="14">
             <el-form-item prop="code" id="codeItem">
-              <el-input v-model="loginForm.code" placeholder="请输入验证码" type="text" id="code"></el-input>
+              <el-input v-model="loginForm.code" placeholder="请输入验证码" id="code"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6" @click="refreshCode">
@@ -25,7 +25,7 @@
           </el-col>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="doLogin('loginForm')">登录</el-button>
+          <el-button type="primary" v-on:click="submitForm('loginForm')">登录</el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -38,7 +38,7 @@ export default {
   components: {SIdentify},
   name: 'Login',
   data () {
-    var validateCode = (rule, value, callback) => {
+    let validateCode = (rule, value, callback) => {
       if (value !== this.identifyCode) {
         callback(new Error('验证码错误'))
       } else {
@@ -46,18 +46,19 @@ export default {
       }
     }
     return {
+      url: '/user/userLogin.action',
       identifyCodes: '1234567890',
       identifyCode: '',
       loginForm: {
-        tel: '',
-        psw: '',
+        phoneNum: '',
+        password: '',
         code: ''
       },
       loginRules: {
-        tel: [
+        phoneNum: [
           { required: true, message: '请输入手机号', trigger: 'blur' }
         ],
-        psw: [
+        password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
         ],
         code: [
@@ -72,17 +73,25 @@ export default {
     this.makeCode(this.identifyCodes, 4)
   },
   methods: {
-    doLogin (formName) {
+    submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('login!!')
-          // $.ajax({
-          //   type: "POST",
-          //
-          //   data
-          // })
+          let _this = this
+          this.$ajax.post(this.rootUrl + _this.url, _this.loginForm)
+            .then((response) => {
+              if (response.data === 'success') {
+                this.$message.success('登录成功')
+                this.$router.push({path: '/'})
+              } else if (response.data === 'failure') {
+                this.$message.error('用户名或密码错误')
+              } else {
+                this.$message.error('系统错误')
+              }
+
+
+            })
         } else {
-          console.log('form not valid!!')
+          console.log('form not valid')
           return false
         }
       })
@@ -105,6 +114,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .el-container {
+    text-align: center;
+  }
+
   .el-form-item {
     width: 40%;
     margin: 30px auto;
