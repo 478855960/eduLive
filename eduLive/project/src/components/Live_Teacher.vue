@@ -6,7 +6,10 @@
         <el-main>
           <el-tabs type="border-card">
             <el-tab-pane label="PPT">PPT</el-tab-pane>
-            <el-tab-pane label="代码">代码</el-tab-pane>
+            <el-tab-pane label="代码">
+              <CodeEditor>
+              </CodeEditor>
+            </el-tab-pane>
             <el-tab-pane label="白板">白板</el-tab-pane>
           </el-tabs>
         </el-main>
@@ -41,8 +44,13 @@
 </template>
 
 <script>
+import CodeEditor from '@/components/CodeEditor'
+
 export default {
   name: 'Live_Teacher',
+  components: {
+    CodeEditor
+  },
   data () {
     return {
       input: ''
