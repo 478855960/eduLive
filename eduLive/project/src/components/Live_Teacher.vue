@@ -58,11 +58,7 @@ export default {
   },
   method: {}
 }
-startVideo : function () {
-  let video = document.querySelector('video')
-  video.src = window.URL.createObjectURL(stream)
-  video.play()
-}
+
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
 if (navigator.getUserMedia) {
