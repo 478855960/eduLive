@@ -45,8 +45,6 @@ export default {
       }
     }
     return {
-      identifyCodes: '1234567890',
-      identifyCode: '',
       usernameForm: {
         username: ''
       },
@@ -66,7 +64,8 @@ export default {
           { required: true, message: '请输入现有密码', trigger: 'blur' }
         ],
         new: [
-          { required: true, message: '请输入新密码', trigger: 'blur' }
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { min: 6, max: 16, message: '密码长度限制为6-16位', trigger: 'blur' }
         ],
         confirm: [
           { required: true, message: '请确认新密码', trigger: 'blur' },
@@ -74,10 +73,6 @@ export default {
         ]
       }
     }
-  },
-  mounted () {
-    this.identifyCode = ''
-    this.makeCode(this.identifyCodes, 4)
   },
   methods: {
     modifyPassword (formName) {
@@ -109,18 +104,6 @@ export default {
           return false
         }
       })
-    },
-    randomNum (min, max) {
-      return Math.floor(Math.random() * (max - min) + min)
-    },
-    refreshCode () {
-      this.identifyCode = ''
-      this.makeCode(this.identifyCodes, 4)
-    },
-    makeCode (o, l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
-      }
     }
   }
 }
@@ -156,18 +139,9 @@ export default {
     width: 30%;
   }
 
-  #codeBtn {
-    width: 100%;
-  }
-
   #usernameBtn {
     width: 100%;
     margin-left: 19%;
-  }
-
-  #codeItem {
-    margin: 0;
-    width: 100%;;
   }
 
   #usernameItem {
