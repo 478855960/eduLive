@@ -87,8 +87,6 @@ export default {
               } else {
                 this.$message.error('系统错误')
               }
-
-
             })
         } else {
           console.log('form not valid')
@@ -144,6 +142,6 @@ export default {
 
   #codeItem {
     margin: 0;
-    width: 100%;;
+    width: 100%;
   }
 </style>
