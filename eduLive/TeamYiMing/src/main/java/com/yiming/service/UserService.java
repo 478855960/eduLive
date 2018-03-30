@@ -22,7 +22,7 @@ public class UserService {
         try {
             User user = null;
             user = userDao.getUserByNickname(newNickname);
-            if(null == user) {
+            if(null != user) {
                 return -1;
             }
             userDao.updateNicknameByPhoneNum(phoneNum, newNickname);

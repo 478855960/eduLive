@@ -81,7 +81,7 @@ export default {
             .then((response) => {
               if (response.data === 'success') {
                 this.$message.success('登录成功')
-                this.$router.push({path: '/'})
+                this.$router.push({path: '/UserCenter'})
               } else if (response.data === 'failure') {
                 this.$message.error('用户名或密码错误')
               } else {
@@ -89,7 +89,6 @@ export default {
               }
             })
         } else {
-          console.log('form not valid')
           return false
         }
       })
