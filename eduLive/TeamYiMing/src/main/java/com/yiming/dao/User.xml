@@ -6,9 +6,9 @@
 	  <select id="login" resultType="com.yiming.entity.User">
           select * from user where phoneNum=#{0} and password=#{1}
       </select>
-      <insert id = "register">
-          insert into user(phoneNum,password,name,nickname,registerTime,isStudent)
-          values(#{phoneNum},#{password},#{name},#{nickname},#{registerTime},#{isStudent})
+      <insert id="register" parameterType="com.yiming.entity.User">
+          insert into user(phoneNum,password,name,nickname) 
+          values(#{0},#{1},#{2},#{3})
       </insert>
       <update id="updateNicknameByPhoneNum">
         update user set nickname = #{1}

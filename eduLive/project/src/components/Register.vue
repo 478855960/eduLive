@@ -140,7 +140,7 @@ export default {
       this.$refs[value].validate((valid) => {
         if (valid) {
           let _this = this
-          this.$ajax.post(this.rootUrl + '/user//sendMessage.action', _this.form)
+          this.$ajax.post(this.rootUrl + '/user/sendMessage.action', _this.form)
             .then((response) => {
               this.$message.success('短信发送成功！')
             })
