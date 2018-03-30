@@ -49,14 +49,28 @@ public class UserController {
      */
 	@RequestMapping(value = "/userLogin.action", method = RequestMethod.POST)
     @ResponseBody
-    public String login(String phoneNum,String password){
-		User user = new User();
-		user = userDao.login(phoneNum, password);
+    public String login(@RequestBody User reqUser){
+		User user = null;
+		user = userDao.login(reqUser.getPhoneNum(), reqUser.getPassword());
 		if(user != null){
 			session.setAttribute(Constant.USER, user);
 			return "success";
 		}else{
 			return "failure";
+		}
+		
+	}
+	/**
+	 * 检查输入的旧密码是否正确
+	 */
+	@RequestMapping(value = "/checkPassword.action", method = RequestMethod.POST)
+    @ResponseBody
+    public int checkPassword(@RequestBody User reqUser){
+		User sessionUser = (User) session.getAttribute(Constant.USER);
+		if(sessionUser.getPassword().equals(reqUser.getPassword())) {
+			return 1;
+		}else{
+			return 0;
 		}
 		
 	}
@@ -136,6 +150,57 @@ public class UserController {
 		return 0;
 	}
 	/**
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 * 
+	 */
+	@RequestMapping(value = "/modifySendMessage.action", method = RequestMethod.POST)
+    @ResponseBody
+    public int modifySendMessage(@RequestBody User user) throws ClientProtocolException, IOException {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		
+        HttpPost httpPost = new HttpPost(Constant.SERVER_URL);
+        String curTime = String.valueOf((new Date()).getTime() / 1000L);
+        /*
+         * 参考计算CheckSum的java代码，在上述文档的参数列表中，有CheckSum的计算文档示例
+         */
+        String checkSum = CheckSumBuilder.getCheckSum(Constant.APP_SECRET, Constant.NONCE, curTime);
+
+        // 设置请求的header
+        httpPost.addHeader("AppKey", Constant.APP_KEY);
+        httpPost.addHeader("Nonce", Constant.NONCE);
+        httpPost.addHeader("CurTime", curTime);
+        httpPost.addHeader("CheckSum", checkSum);
+        httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // 设置请求的的参数，requestBody参数
+        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        /*
+         * 1.如果是模板短信，请注意参数mobile是有s的，详细参数配置请参考“发送模板短信文档”
+         * 2.参数格式是jsonArray的格式，例如 "['13888888888','13666666666']"
+         * 3.params是根据你模板里面有几个参数，那里面的参数也是jsonArray格式
+         */
+        User sessionUser = (User) session.getAttribute(Constant.USER);
+        if(null == sessionUser) {
+	        return 1;
+	    }
+        nvps.add(new BasicNameValuePair("templateid", Constant.TEMPLATEID));
+        nvps.add(new BasicNameValuePair("mobile", sessionUser.getPhoneNum()));
+        nvps.add(new BasicNameValuePair("codeLen", Constant.CODELEN));
+
+        httpPost.setEntity(new UrlEncodedFormEntity(nvps, "utf-8"));
+
+        // 执行请求
+        HttpResponse response = httpclient.execute(httpPost);
+        /*
+         * 1.打印执行结果，打印结果一般会200、315、403、404、413、414、500
+         * 2.具体的code有问题的可以参考官网的Code状态表
+         */
+        System.out.println(EntityUtils.toString(response.getEntity(), "utf-8"));
+
+		return 0;
+	}
+	/**
 	 * 
 	 * @param user
 	 * @return 0注册失败 1注册成功
@@ -156,12 +221,12 @@ public class UserController {
 	 */
 	@RequestMapping(value="/userModifyNickname.action",method = RequestMethod.POST)
 	@ResponseBody
-	public String userModifyNickName(String nickname) {
+	public String userModifyNickName(@RequestBody User user) {
 	    User sessionUser = (User) session.getAttribute(Constant.USER);
 	    if(null == sessionUser) {
 	        return "relogin";
 	    }
-	    int returnStatus = userService.setUserNickname(sessionUser.getPhoneNum(), nickname);
+	    int returnStatus = userService.setUserNickname(sessionUser.getPhoneNum(), user.getNickname());
 	    if(-1 == returnStatus) {
 	        return "nicknameExist";
 	    }else if(0 == returnStatus) {
@@ -172,22 +237,16 @@ public class UserController {
 	}
 	/**
 	 *
-	 * @param oldPassword 用来验证的旧密码
-	 * @param newPassword 需要修改的新密码
 	 * @return
 	 */
 	@RequestMapping(value="/userModifyPassword.action",method = RequestMethod.POST)
 	@ResponseBody
-	public String userModifyPassword(String oldPassword, String newPassword) {
+	public String userModifyPassword(@RequestBody User user) {
 	    User sessionUser = (User) session.getAttribute(Constant.USER);
 	    if(null == sessionUser) {
 	        return "relogin";
 	    }
-	    if(oldPassword == null || !oldPassword.equals("root")) {
-	        System.out.println("wrongpass");
-	        return "wrongOldPassword";
-	    }
-	    int returnStatus = userService.setUserPassword(sessionUser.getPhoneNum(), newPassword);
+	    int returnStatus = userService.setUserPassword(sessionUser.getPhoneNum(), user.getPassword());
 	    if(1 == returnStatus) {
 	        sessionUser = userDao.getUserByPhoneNum(sessionUser.getPhoneNum());
 	        session.setAttribute(Constant.USER, sessionUser);
