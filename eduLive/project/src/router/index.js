@@ -8,6 +8,7 @@ import LiveTeacher from '@/components/Live_Teacher'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import UserCenter from '@/components/UserCenter'
+import Whiteboard from '@/components/whiteboard'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -35,10 +36,15 @@ export default new Router({
       name: 'Register',
       component: Register
     },
-	  {
+    {
       path: '/UserCenter',
       name: 'UserCenter',
       component: UserCenter
+    },
+    {
+      path: '/whiteboard',
+      name: 'Whiteboard',
+      component: Whiteboard
     }
   ]
 })
