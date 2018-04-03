@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header></el-header>
+    <el-header>header</el-header>
     <el-container>
       <el-container class="ec_left">
         <el-main>
