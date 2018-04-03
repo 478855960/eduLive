@@ -78,7 +78,7 @@ if (navigator.getUserMedia) {
     }
   )
 } else {
-    this.$message('警告！该浏览器不支持')
+  this.$message('警告！该浏览器不支持')
 }
 </script>
 
