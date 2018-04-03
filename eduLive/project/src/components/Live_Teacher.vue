@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header></el-header>
+    <el-header>header</el-header>
     <el-container>
       <el-container class="ec_left">
         <el-main>
@@ -10,7 +10,10 @@
               <CodeEditor>
               </CodeEditor>
             </el-tab-pane>
-            <el-tab-pane label="白板">白板</el-tab-pane>
+            <el-tab-pane label="白板">
+              <whiteboard>
+              </whiteboard>
+            </el-tab-pane>
           </el-tabs>
         </el-main>
         <el-footer height="150px">
@@ -23,7 +26,6 @@
         </el-footer>
       </el-container>
       <el-container direction="vertical" class="ec_right">
-        <el-button type="info" plain v-on="startVideo()">开启摄像头</el-button>
         <el-main>
           <video id="video" controls></video>
         </el-main>
@@ -45,11 +47,12 @@
 
 <script>
 import CodeEditor from '@/components/CodeEditor'
-
+import Whiteboard from '@/components/whiteboard'
 export default {
   name: 'Live_Teacher',
   components: {
-    CodeEditor
+    CodeEditor,
+    Whiteboard
   },
   data () {
     return {
@@ -75,7 +78,7 @@ if (navigator.getUserMedia) {
     }
   )
 } else {
-    this.$message('警告！该浏览器不支持')
+  this.$message('警告！该浏览器不支持')
 }
 </script>
 
