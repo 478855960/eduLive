@@ -23,7 +23,6 @@
         </el-footer>
       </el-container>
       <el-container direction="vertical" class="ec_right">
-        <el-button type="info" plain v-on="startVideo()">开启摄像头</el-button>
         <el-main>
           <video id="video" controls></video>
         </el-main>
@@ -57,25 +56,6 @@ export default {
     }
   },
   method: {}
-}
-
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
-
-if (navigator.getUserMedia) {
-  navigator.getUserMedia({ audio: true, video: { width: 400, height: 350 } },
-    function (stream) {
-      let video = document.querySelector('video')
-      video.src = window.URL.createObjectURL(stream)
-      video.onloadedmetadata = function (e) {
-        video.play()
-      }
-    },
-    function (err) {
-      this.$message('发生错误: ' + err.name)
-    }
-  )
-} else {
-    this.$message('警告！该浏览器不支持')
 }
 </script>
 

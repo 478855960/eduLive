@@ -9,8 +9,9 @@ public class User {
 	private String nickname;
 	private Date registerTime;
 	private String isStudent;
+	private String verificationCode;
 
-	public User(String phoneNum, String password, String name, String nickname, Date registerTime, String isStudent) {
+	public User(String phoneNum, String password, String name, String nickname, Date registerTime, String isStudent,String verificationCode) {
 		super();
 		this.phoneNum = phoneNum;
 		this.password = password;
@@ -18,6 +19,7 @@ public class User {
 		this.nickname = nickname;
 		this.registerTime = registerTime;
 		this.isStudent = isStudent;
+		this.verificationCode = verificationCode;
 	}
 
 	public User() {
@@ -72,10 +74,21 @@ public class User {
 		this.isStudent = isStudent;
 	}
 
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
+
 	@Override
 	public String toString() {
 		return "User [phoneNum=" + phoneNum + ", password=" + password + ", name=" + name + ", nickname=" + nickname
-				+ ", registerTime=" + registerTime + ", isStudent=" + isStudent + "]";
+				+ ", registerTime=" + registerTime + ", isStudent=" + isStudent + ", verificationCode="
+				+ verificationCode + "]";
 	}
+
+	
 
 }

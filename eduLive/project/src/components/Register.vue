@@ -22,7 +22,7 @@
         </el-form-item>
         <el-row :gutter="10">
           <el-col :span = "180">
-            <el-form-item label="验证码">
+            <el-form-item label="验证码" prop="verificationCode">
               <el-input placeholder="输入短信验证码" v-model="form.verificationCode" style="width: 310px"></el-input>
             </el-form-item>
           </el-col>
@@ -57,6 +57,16 @@ export default {
         .then((response) => {
           if (response.data === 1) {
             callback(new Error('该电话号码已被注册'))
+          } else {
+            callback()
+          }
+        })
+    }
+    let validateCode = (rule, value, callback) => {
+      this.$ajax.post(this.rootUrl + '/user/isVerificationCodeTrue.action', this.form)
+        .then((response) => {
+          if (response.data !== 1) {
+            callback(new Error('验证码错误'))
           } else {
             callback()
           }
@@ -113,7 +123,7 @@ export default {
           { validator: validatePhoneNum, trigger: 'blur' }
         ],
         verificationCode: [
-
+          { validator: validateCode, trigger: 'blur' }
         ]
       }
     }
@@ -126,7 +136,6 @@ export default {
           this.$ajax.post(this.rootUrl + _this.url, _this.form)
             .then((response) => {
               this.$message.success('注册成功！')
-              // this.$refs[formName].resetFields()
               //  跳转到登录页
               this.$router.push({path: '/Login'})
             })
@@ -138,13 +147,11 @@ export default {
     },
     sendMessage: function (value, event) {
       this.$refs[value].validate((valid) => {
-        if (valid) {
-          let _this = this
-          this.$ajax.post(this.rootUrl + '/user/sendMessage.action', _this.form)
-            .then((response) => {
-              this.$message.success('短信发送成功！')
-            })
-        }
+        let _this = this
+        this.$ajax.post(this.rootUrl + '/user/sendMessage.action', _this.form)
+          .then((response) => {
+            this.$message.success('短信发送成功！')
+          })
       })
     }
   }

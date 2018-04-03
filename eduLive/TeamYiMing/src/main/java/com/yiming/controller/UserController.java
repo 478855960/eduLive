@@ -31,6 +31,7 @@ import com.yiming.entity.User;
 import com.yiming.service.UserService;
 import com.yiming.util.CheckSumBuilder;
 import com.yiming.util.Constant;
+import com.yiming.util.SendVerificationCode;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -102,52 +103,40 @@ public class UserController {
 			return 1;
 		}
 	}
+	
 	/**
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
-	 * 
+	 * @description 用户注册发送验证码
 	 */
 	@RequestMapping(value = "/sendMessage.action", method = RequestMethod.POST)
     @ResponseBody
     public int sendMessage(@RequestBody User user) throws ClientProtocolException, IOException {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		
-        HttpPost httpPost = new HttpPost(Constant.SERVER_URL);
-        String curTime = String.valueOf((new Date()).getTime() / 1000L);
-        /*
-         * 参考计算CheckSum的java代码，在上述文档的参数列表中，有CheckSum的计算文档示例
-         */
-        String checkSum = CheckSumBuilder.getCheckSum(Constant.APP_SECRET, Constant.NONCE, curTime);
-
-        // 设置请求的header
-        httpPost.addHeader("AppKey", Constant.APP_KEY);
-        httpPost.addHeader("Nonce", Constant.NONCE);
-        httpPost.addHeader("CurTime", curTime);
-        httpPost.addHeader("CheckSum", checkSum);
-        httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        // 设置请求的的参数，requestBody参数
-        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        /*
-         * 1.如果是模板短信，请注意参数mobile是有s的，详细参数配置请参考“发送模板短信文档”
-         * 2.参数格式是jsonArray的格式，例如 "['13888888888','13666666666']"
-         * 3.params是根据你模板里面有几个参数，那里面的参数也是jsonArray格式
-         */
-        nvps.add(new BasicNameValuePair("templateid", Constant.TEMPLATEID));
-        nvps.add(new BasicNameValuePair("mobile", user.getPhoneNum()));
-        nvps.add(new BasicNameValuePair("codeLen", Constant.CODELEN));
-
-        httpPost.setEntity(new UrlEncodedFormEntity(nvps, "utf-8"));
-
-        // 执行请求
-        HttpResponse response = httpclient.execute(httpPost);
-        /*
-         * 1.打印执行结果，打印结果一般会200、315、403、404、413、414、500
-         * 2.具体的code有问题的可以参考官网的Code状态表
-         */
-        System.out.println(EntityUtils.toString(response.getEntity(), "utf-8"));
-
-		return 0;
+		SendVerificationCode sendCode = new SendVerificationCode(user.getPhoneNum());
+		String code = sendCode.sendVerificationCode();
+		System.out.println("code is: " + code);
+		if(code.length() != 6) {
+			return 0;
+		}else {
+			session.setAttribute("VerificationCode", code);
+			return 1;
+		}
+	}
+	
+	/**
+	 * @description 验证用户输入的验证码的正确性
+	 */
+	@RequestMapping(value = "/isVerificationCodeTrue.action", method = RequestMethod.POST)
+    @ResponseBody
+	public int isVerificationCodeTrue(@RequestBody User user) {
+		System.out.println("sdadadadadadada");
+		System.out.println("code si: " + user.getVerificationCode());
+		String verificationCode = (String)session.getAttribute("VerificationCode");
+		if(user.getVerificationCode().equals(verificationCode)) {
+			return 1;
+		}else {
+			return 0;
+		}
 	}
 	/**
 	 * @throws IOException 
@@ -157,47 +146,9 @@ public class UserController {
 	@RequestMapping(value = "/modifySendMessage.action", method = RequestMethod.POST)
     @ResponseBody
     public int modifySendMessage(@RequestBody User user) throws ClientProtocolException, IOException {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		
-        HttpPost httpPost = new HttpPost(Constant.SERVER_URL);
-        String curTime = String.valueOf((new Date()).getTime() / 1000L);
-        /*
-         * 参考计算CheckSum的java代码，在上述文档的参数列表中，有CheckSum的计算文档示例
-         */
-        String checkSum = CheckSumBuilder.getCheckSum(Constant.APP_SECRET, Constant.NONCE, curTime);
-
-        // 设置请求的header
-        httpPost.addHeader("AppKey", Constant.APP_KEY);
-        httpPost.addHeader("Nonce", Constant.NONCE);
-        httpPost.addHeader("CurTime", curTime);
-        httpPost.addHeader("CheckSum", checkSum);
-        httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        // 设置请求的的参数，requestBody参数
-        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        /*
-         * 1.如果是模板短信，请注意参数mobile是有s的，详细参数配置请参考“发送模板短信文档”
-         * 2.参数格式是jsonArray的格式，例如 "['13888888888','13666666666']"
-         * 3.params是根据你模板里面有几个参数，那里面的参数也是jsonArray格式
-         */
-        User sessionUser = (User) session.getAttribute(Constant.USER);
-        if(null == sessionUser) {
-	        return 1;
-	    }
-        nvps.add(new BasicNameValuePair("templateid", Constant.TEMPLATEID));
-        nvps.add(new BasicNameValuePair("mobile", sessionUser.getPhoneNum()));
-        nvps.add(new BasicNameValuePair("codeLen", Constant.CODELEN));
-
-        httpPost.setEntity(new UrlEncodedFormEntity(nvps, "utf-8"));
-
-        // 执行请求
-        HttpResponse response = httpclient.execute(httpPost);
-        /*
-         * 1.打印执行结果，打印结果一般会200、315、403、404、413、414、500
-         * 2.具体的code有问题的可以参考官网的Code状态表
-         */
-        System.out.println(EntityUtils.toString(response.getEntity(), "utf-8"));
-
+		SendVerificationCode sendCode = new SendVerificationCode(user.getPhoneNum());
+		String code = sendCode.sendVerificationCode();
+		System.out.println("code is: " + code);
 		return 0;
 	}
 	/**
