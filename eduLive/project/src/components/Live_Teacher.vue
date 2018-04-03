@@ -63,7 +63,6 @@ export default {
 }
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
-
 if (navigator.getUserMedia) {
   navigator.getUserMedia({ audio: true, video: { width: 400, height: 350 } },
     function (stream) {

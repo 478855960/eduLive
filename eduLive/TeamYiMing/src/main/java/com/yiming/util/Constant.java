@@ -15,7 +15,7 @@ public class Constant {
     public static final String NONCE="123456";
     
     //短信模板ID
-    public static final String TEMPLATEID="3982594";
+    public static final String TEMPLATEID="3952580";
     
     //验证码长度，范围4～10，默认为4
     public static final String CODELEN="6";
