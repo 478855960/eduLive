@@ -5,6 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 import HelloWorld from '@/components/HelloWorld'
 import LiveTeacher from '@/components/Live_Teacher'
+import LiveStudent from '@/components/Live_Student'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import UserCenter from '@/components/UserCenter'
@@ -14,6 +15,7 @@ Vue.use(ElementUI)
 Vue.prototype.$ajax = Axios
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -24,6 +26,11 @@ export default new Router({
       path: '/live_teacher',
       name: 'Live_Teacher',
       component: LiveTeacher
+    },
+    {
+      path: '/live_student',
+      name: 'Live_Student',
+      component: LiveStudent
     },
     {
       path: '/Login',
