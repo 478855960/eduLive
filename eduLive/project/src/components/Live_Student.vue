@@ -41,23 +41,17 @@ export default {
   },
   method: {
     join: function () {
-      alert('coming!!!!!!!!!')
       let client = AgoraRTC.createClient({mode: 'interop'})
       let appId = 'a86334acf5c04a6aa7a85b66d0767612'
       client.init(appId, function () {
-        console.log('client initialized')
       })
       client.on('stream-added', function (evt) {
         let stream = evt.stream
-        console.log('New stream added: ' + stream.getId())
-        console.log('Subscribe ', stream)
         client.subscribe(stream, function (err) {
-          console.log('Subscribe stream failed', err)
         })
       })
       client.on('stream-subscribed', function (evt) {
         let stream = evt.stream
-        console.log('Subscribe remote stream successfully: ' + stream.getId())
         stream.play('video')
       })
     }
