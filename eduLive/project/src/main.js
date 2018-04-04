@@ -5,8 +5,10 @@ import App from './App'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import router from './router'
+import $ from 'jquery'
 
 Vue.use(ElementUI)
+
 Vue.config.productionTip = false
 Vue.prototype.rootUrl = '/TeamYiMing'
 /* eslint-disable no-new */

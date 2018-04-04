@@ -30,14 +30,18 @@
           <video id="video" controls></video>
         </el-main>
         <el-container style="height:200px;border-top: #1b6d85 2px solid;">
-          <el-main></el-main>
+          <el-main>
+            <el-card class="box-card" id="content">
+            </el-card>
+          </el-main>
           <el-footer>
             <el-input
               placeholder="请输入内容"
               v-model="input"
-              clearable>
+              clearable
+              id="msg">
             </el-input>
-            <el-button type="primary" icon="el-icon-d-arrow-right"></el-button>
+            <el-button type="primary" icon="el-icon-d-arrow-right" id="btn1"></el-button>
           </el-footer>
         </el-container>
       </el-container>
@@ -46,6 +50,8 @@
 </template>
 
 <script>
+/* eslint-disable no-caller */
+
 import CodeEditor from '@/components/CodeEditor'
 import Whiteboard from '@/components/whiteboard'
 export default {
@@ -59,7 +65,8 @@ export default {
       input: ''
     }
   },
-  method: {}
+  method: {
+  }
 }
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
@@ -79,6 +86,59 @@ if (navigator.getUserMedia) {
 } else {
   this.$message('警告！该浏览器不支持')
 }
+
+var socket = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/server')
+
+$(function () {
+  listen()
+})
+
+function encodeScript (data) {
+  if (data == null || data === '') {
+    return ''
+  }
+  return data.replace('<', '&lt;').replace('>', '&gt;')
+}
+
+function emit () {
+  var text = encodeScript($('#msg').val())
+  var msg = {
+    'message': text,
+    'color': '#15b8ce',
+    'bubbleColor': '#2E2E2E',
+    'fontSize': '12',
+    'fontType': '黑体'
+  }
+  msg = JSON.stringify(msg)
+
+  socket.send(msg)
+  $('#content').append("<kbd style='color: #" + 'ce181c' + ';float: right; font-size: ' + 12 + ";'>" + text + '</kbd><br/>')
+  $('#msg').val('')
+}
+
+function listen () {
+  socket.onopen = function () {
+    $('#content').append('<kbd>Welcome!</kbd></br>')
+  }
+  socket.onmessage = function (evt) {
+    var data = JSON.parse(evt.data)
+    $('#content').append("<kbd style='color: " + data.color + ';font-size: ' + data.fontSize + ";margin-top: 10px;'>" + data.message + '</kbd></br>')
+  }
+  socket.onclose = function (evt) {
+    $('#content').append('<kbd>' + 'Close!' + '</kbd></br>')
+  }
+  socket.onerror = function (evt) {
+    $('#content').append('<kbd>' + 'ERROR!' + '</kbd></br>')
+  }
+}
+
+document.onkeydown = function (event) {
+  var e = event || window.event || arguments.callee.caller.arguments[0]
+  if (e && e.keyCode === 13) { // enter 键
+    emit()
+  }
+}
+
 </script>
 
 <style scoped>
@@ -125,5 +185,8 @@ if (navigator.getUserMedia) {
   .el-input{
     margin: 10px auto;
     width: 350px;
+  }
+  .box-card {
+    width: 400px;
   }
 </style>

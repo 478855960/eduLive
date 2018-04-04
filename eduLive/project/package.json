@@ -18,8 +18,9 @@
     "element-ui": "^2.2.2",
     "lodash.debounce": "^4.0.8",
     "vue": "^2.5.2",
-    "vue-monaco-editor": "^0.0.19",
-    "vue-router": "^3.0.1"
+    "vue-monaco-editor": "0.0.19",
+    "vue-router": "^3.0.1",
+    "jquery":"^2.2.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
