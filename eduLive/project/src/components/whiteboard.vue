@@ -42,8 +42,7 @@
 <el-container>
     <div>
       <canvas id='contextBack' ref='ctxback'/>
-      <canvas @mousedown="dealMouseDown" @mouseup="dealMouseUp" @mousemove="dealMouseMove" id='context' ref='ctx' />
-      <div id='eraser' ref='eraser'></div>
+      <canvas @click="initTextPre"  @mousedown="dealMouseDown" @mouseup="dealMouseUp" @mousemove="dealMouseMove" id='context' ref='ctx' />
     </div>
 </el-container>
 </el-container>
@@ -62,11 +61,14 @@ export default {
       oldPosY: 0,
       basePosX: 0,
       basePosY: 0,
+      textPosX: 0,
+      textPosY: 0,
+      savedText: '',
       context: null,
       contextBack: null,
-      eraser: null,
       isMouseDown: false,
       hasSavedStatus: false,
+      setTexted: false,
       pathColor: 'black'
     }
   },
@@ -78,17 +80,21 @@ export default {
     canvasBack.width = 900
     canvasBack.height = 350
 
+    document.onkeydown = this.textDraw
     this.context = this.$refs.ctx.getContext('2d')
     this.contextBack = this.$refs.ctxback.getContext('2d')
     this.basePosX = this.$refs.ctx.offsetLeft
     this.basePosY = this.$refs.ctx.offsetTop
-    this.eraser = this.$refs.eraser
-    this.eraser.style.display = 'none'
   },
   methods: {
     dispatcher (value) {
       let part = value.split('-')
+      this.saveLastText(this.contextBack, this.savedText, this.textPosX, this.textPosY)
       this.clear(this.context)
+      this.context.fillStyle = 'black'
+      this.textPosX = 0
+      this.textPosY = 0
+      this.setTexted = false
       if (part[0] === 'pen') {
         this.pathColor = part[1]
         this.functionPointer = 'pen'
@@ -102,7 +108,11 @@ export default {
       }
       if (part[0] === 'eraser') {
         this.functionPointer = 'eraser'
-        // this.eraser.style.display = 'inline'
+      }
+      if (part[0] === 'text') {
+        this.functionPointer = 'text'
+        this.textPosX = 0
+        this.textPosY = 0
       }
     },
     dealMouseMove (event) {
@@ -112,11 +122,14 @@ export default {
         if (this.functionPointer === 'pen') {
           this.handDraw(this.curPosX, this.curPosY, this.oldPosX, this.oldPosY)
         } else if (this.functionPointer === 'clear') {
+
         } else if (this.functionPointer === 'eraser') {
           this.clear(this.context)
           this.context.fillStyle = 'aquamarine'
           this.context.fillRect(this.curPosX, this.curPosY, 50, 50)
           this.contextBack.clearRect(this.curPosX, this.curPosY, 50, 50)
+        } else if (this.functionPointer === 'text') {
+
         } else {
           if (this.functionPointer === 'rectangle') {
             this.clear(this.context)
@@ -194,11 +207,29 @@ export default {
       context.rect(downX, downY, width, height)
       context.stroke()
     },
+    textDraw (event) {
+      if (this.functionPointer === 'text' && this.setTexted) {
+        this.clear(this.context)
+        this.savedText = this.savedText + String.fromCharCode(event.keyCode)
+        this.context.font = '20px Georgia'
+        this.context.fillText(this.savedText, this.textPosX, this.textPosY)
+      }
+    },
+    initTextPre (event) {
+      this.setTexted = true
+      this.contextBack.font = '20px Georgia'
+      this.saveLastText(this.contextBack, this.savedText, this.textPosX, this.textPosY)
+      this.textPosX = event.offsetX
+      this.textPosY = event.offsetY
+      this.savedText = ''
+    },
+    saveLastText (context, value, x, y) {
+      context.fillText(value, x, y)
+    },
     clear (contex) {
       contex.clearRect(0, 0, this.$refs.ctx.width, this.$refs.ctx.height)
     }
   }
-
 }
 </script>
 
@@ -211,12 +242,6 @@ export default {
     height: 100%;
   }
   canvas{
-    position: absolute;
-  }
-  #eraser{
-    width: 50px;
-    height: 50px;
-    background-color: aquamarine;
     position: absolute;
   }
 </style>
