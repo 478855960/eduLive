@@ -4,13 +4,17 @@
     <el-container>
       <el-container class="ec_left">
         <el-main>
+          <el-button type="primary" @click="join()">加入</el-button>
+          <el-button type="primary">离开</el-button>
         </el-main>
       </el-container>
       <el-container direction="vertical" class="ec_right">
         <el-main>
         </el-main>
         <el-container style="height:200px;border-top: #1b6d85 2px solid;">
-          <el-main></el-main>
+          <el-main>
+            <div id="video"></div>
+          </el-main>
           <el-footer>
             <el-input
               placeholder="请输入内容"
@@ -26,6 +30,8 @@
 </template>
 
 <script>
+import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
+import {jquery} from '../assets/js/jquery.js'
 export default {
   name: 'Live_Student',
   data () {
@@ -33,7 +39,29 @@ export default {
       input: ''
     }
   },
-  method: {}
+  method: {
+    join: function () {
+      alert('coming!!!!!!!!!')
+      let client = AgoraRTC.createClient({mode: 'interop'})
+      let appId = 'a86334acf5c04a6aa7a85b66d0767612'
+      client.init(appId, function () {
+        console.log('client initialized')
+      })
+      client.on('stream-added', function (evt) {
+        let stream = evt.stream
+        console.log('New stream added: ' + stream.getId())
+        console.log('Subscribe ', stream)
+        client.subscribe(stream, function (err) {
+          console.log('Subscribe stream failed', err)
+        })
+      })
+      client.on('stream-subscribed', function (evt) {
+        let stream = evt.stream
+        console.log('Subscribe remote stream successfully: ' + stream.getId())
+        stream.play('video')
+      })
+    }
+  }
 }
 </script>
 

@@ -5,11 +5,13 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 import HelloWorld from '@/components/HelloWorld'
 import LiveTeacher from '@/components/Live_Teacher'
+import LiveStudent from '@/components/Live_Student'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import UserCenter from '@/components/UserCenter'
 import Whiteboard from '@/components/whiteboard'
 import CodeEditor from '@/components/CodeEditor'
+import Video from '@/components/video'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -51,6 +53,16 @@ export default new Router({
 	    path: '/CodeEditor',
 	    name: 'CodeEditor',
 	    component: CodeEditor
-	 }
+	 },
+	 {
+	    path: '/Live_Student',
+		  name: 'Live_Student',
+		  component: LiveStudent
+	 },
+    {
+      path: '/video',
+      name: 'Video',
+      component: Video
+    }
   ]
 })
