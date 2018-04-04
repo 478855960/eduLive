@@ -39,10 +39,13 @@
     <span slot="title">清空</span>
   </el-menu-item>
 </el-menu>
+<el-container>
     <div>
       <canvas id='contextBack' ref='ctxback'/>
       <canvas @mousedown="dealMouseDown" @mouseup="dealMouseUp" @mousemove="dealMouseMove" id='context' ref='ctx' />
+      <div id='eraser' ref='eraser'></div>
     </div>
+</el-container>
 </el-container>
 </template>
 
@@ -61,20 +64,31 @@ export default {
       basePosY: 0,
       context: null,
       contextBack: null,
+      eraser: null,
       isMouseDown: false,
       hasSavedStatus: false,
       pathColor: 'black'
     }
   },
   mounted () {
+    let canvasFront = this.$refs.ctx
+    let canvasBack = this.$refs.ctxback
+    canvasFront.width = 900
+    canvasFront.height = 350
+    canvasBack.width = 900
+    canvasBack.height = 350
+
     this.context = this.$refs.ctx.getContext('2d')
     this.contextBack = this.$refs.ctxback.getContext('2d')
     this.basePosX = this.$refs.ctx.offsetLeft
     this.basePosY = this.$refs.ctx.offsetTop
+    this.eraser = this.$refs.eraser
+    this.eraser.style.display = 'none'
   },
   methods: {
     dispatcher (value) {
       let part = value.split('-')
+      this.clear(this.context)
       if (part[0] === 'pen') {
         this.pathColor = part[1]
         this.functionPointer = 'pen'
@@ -88,20 +102,21 @@ export default {
       }
       if (part[0] === 'eraser') {
         this.functionPointer = 'eraser'
+        // this.eraser.style.display = 'inline'
       }
     },
     dealMouseMove (event) {
+      this.curPosX = event.offsetX
+      this.curPosY = event.offsetY
       if (this.isMouseDown) {
-        this.curPosX = event.offsetX * 0.32
-        this.curPosY = event.offsetY * 0.5
-        console.log(this.functionPointer)
-        // console.log('cur ' + this.curPosX + ' '+ this.curPosY)
-        // console.log('old ' + this.oldPosX + ' '+ this.oldPosY)
         if (this.functionPointer === 'pen') {
           this.handDraw(this.curPosX, this.curPosY, this.oldPosX, this.oldPosY)
         } else if (this.functionPointer === 'clear') {
         } else if (this.functionPointer === 'eraser') {
-
+          this.clear(this.context)
+          this.context.fillStyle = 'aquamarine'
+          this.context.fillRect(this.curPosX, this.curPosY, 50, 50)
+          this.contextBack.clearRect(this.curPosX, this.curPosY, 50, 50)
         } else {
           if (this.functionPointer === 'rectangle') {
             this.clear(this.context)
@@ -110,7 +125,6 @@ export default {
             this.rectangleDraw(this.context, this.oldPosX, this.oldPosY, width, height)
             return
           } else if (this.functionPointer === 'circle') {
-            console.log('draw circle')
             let r = Math.sqrt(Math.pow(this.curPosX - this.oldPosX, 2) + Math.pow(this.curPosY - this.oldPosY, 2))
             this.clear(this.context)
             this.circleDraw(this.context, this.oldPosX, this.oldPosY, r)
@@ -123,6 +137,12 @@ export default {
         }
         this.oldPosX = this.curPosX
         this.oldPosY = this.curPosY
+      } else {
+        if (this.functionPointer === 'eraser') {
+          this.clear(this.context)
+          this.context.fillStyle = 'aquamarine'
+          this.context.fillRect(this.curPosX, this.curPosY, 50, 50)
+        }
       }
     },
     dealMouseUp (event) {
@@ -144,8 +164,8 @@ export default {
       this.oldPosY = this.curPosY
     },
     dealMouseDown (event) {
-      this.oldPosX = event.offsetX * 0.32
-      this.oldPosY = event.offsetY * 0.5
+      this.oldPosX = event.offsetX
+      this.oldPosY = event.offsetY
       this.isMouseDown = true
     },
     handDraw (curx, cury, oldx, oldy) {
@@ -191,8 +211,12 @@ export default {
     height: 100%;
   }
   canvas{
-    width: 92%;
-    height: 100%;
+    position: absolute;
+  }
+  #eraser{
+    width: 50px;
+    height: 50px;
+    background-color: aquamarine;
     position: absolute;
   }
 </style>
