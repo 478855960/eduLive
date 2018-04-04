@@ -76,85 +76,61 @@ export default {
               screen: false
             })
             if (hostCheckBox) {
-              alert('hhhhhhhhhhhhhhhhh')
               localStream.setVideoProfile('720p_3')
             }
 
             // The user has granted access to the camera and mic.
             localStream.on('accessAllowed', function () {
-              alert('accessAllowed')
-              console.log('accessAllowed')
             })
 
             // The user has denied access to the camera and mic.
             localStream.on('accessDenied', function () {
-              alert('accessDenied')
-              console.log('accessDenied')
             })
 
             localStream.init(function () {
               alert('bo fang!!!!!!!!!!!!!')
-              console.log('getUserMedia successfully')
               localStream.play('teacherVideo')
 
               client.publish(localStream, function (err) {
-                console.log('Publish local stream error: ' + err)
               })
 
               client.on('stream-published', function (evt) {
-                console.log('Publish local stream successfully')
               })
             }, function (err) {
-              console.log('getUserMedia failed', err)
             })
           }
         }, function (err) {
-          console.log('Join channel failed', err)
         })
       }, function (err) {
-        console.log('AgoraRTC client init failed', err)
       })
       let channelKey = ''
       client.on('error', function (err) {
-        console.log('Got error msg:', err.reason)
         if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
           client.renewChannelKey(channelKey, function () {
-            console.log('Renew channel key successfully')
           }, function (err) {
-            console.log('Renew channel key failed: ', err)
           })
         }
       })
 
       client.on('stream-added', function (evt) {
         let stream = evt.stream
-        console.log('New stream added: ' + stream.getId())
-        console.log('Subscribe ', stream)
         client.subscribe(stream, function (err) {
-          console.log('Subscribe stream failed', err)
         })
       })
 
-      client.on('stream-subscribed', function (evt) {
         let stream = evt.stream
-        console.log('Subscribe remote stream successfully: ' + stream.getId())
         stream.play('studentVideo')
       })
     },
     getDevices: function getDevices () {
-      alert('ggggggggggggggggggggggggg')
       AgoraRTC.getDevices(function (devices) {
-        alert('kkkkkkkkkkkkkkkkkkk')
         for (var i = 0; i !== devices.length; ++i) {
           var device = devices[i]
           var option = document.createElement('option')
           option.value = device.deviceId
           if (device.kind === 'audioinput') {
-            alert('audioinput' + option.value)
           } else if (device.kind === 'videoinput') {
-            alert('videoinput' + option.value)
           } else {
-            console.log('Some other kind of source/device: ', device)
           }
         }
       })
