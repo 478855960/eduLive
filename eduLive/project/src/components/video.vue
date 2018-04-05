@@ -43,7 +43,6 @@ AgoraRTC.Logger.debug('this is debug')
 let client, localStream, camera, microphone
 var audioSelect = document.getElementById('audioSource')
 var videoSelect = document.getElementById('videoSource')
-alert(videoSelect)
 export default {
   data () {
     return {
@@ -88,7 +87,6 @@ export default {
             })
 
             localStream.init(function () {
-              alert('bo fang!!!!!!!!!!!!!')
               localStream.play('teacherVideo')
 
               client.publish(localStream, function (err) {
@@ -96,18 +94,14 @@ export default {
 
               client.on('stream-published', function (evt) {
               })
-            }, function (err) {
             })
           }
-        }, function (err) {
         })
-      }, function (err) {
       })
       let channelKey = ''
       client.on('error', function (err) {
         if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
           client.renewChannelKey(channelKey, function () {
-          }, function (err) {
           })
         }
       })
@@ -115,9 +109,10 @@ export default {
       client.on('stream-added', function (evt) {
         let stream = evt.stream
         client.subscribe(stream, function (err) {
+          console.log('Subscribe stream failed', err)
         })
       })
-
+      client.on('stream-subscribed', function (evt) {
         let stream = evt.stream
         stream.play('studentVideo')
       })

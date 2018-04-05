@@ -16,3 +16,6 @@ npm-debug.log*
 .classpath
 .project
 .settings/
+
+#vscode
+.vscode/
