@@ -12,6 +12,7 @@ import UserCenter from '@/components/UserCenter'
 import Whiteboard from '@/components/whiteboard'
 import CodeEditor from '@/components/CodeEditor'
 import Video from '@/components/video'
+import Upload from '@/components/Upload'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -50,25 +51,30 @@ export default new Router({
       name: 'Whiteboard',
       component: Whiteboard
     },
-	 {
+	{
       path: '/UserCenter',
       name: 'UserCenter',
       component: UserCenter
-   },
-	 {
+    },
+	{
 	    path: '/CodeEditor',
 	    name: 'CodeEditor',
 	    component: CodeEditor
-	 },
-	 {
+	},
+	{
 	    path: '/Live_Student',
 		  name: 'Live_Student',
 		  component: LiveStudent
-	 },
+	},
     {
       path: '/video',
       name: 'Video',
       component: Video
+    },
+    {
+      path: '/Upload',
+      name: 'Upload',
+      component: Upload
     }
   ]
 })
