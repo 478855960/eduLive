@@ -4,13 +4,13 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.yiming.dao.UserDao;
+import com.yiming.dao.UserMapper;
 import com.yiming.entity.User;
 
 @Service
 public class UserService {
     @Resource
-    UserDao userDao;
+    UserMapper userDao;
 
     /**
      *
