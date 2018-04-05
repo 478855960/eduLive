@@ -1,14 +1,21 @@
 package com.yiming.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -21,10 +28,15 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.yiming.dao.UserDao;
 import com.yiming.entity.User;
@@ -256,4 +268,36 @@ public class UserController {
 	        return "modifyFail";
 	    }
 	}
+	
+	/**
+	 * 
+	 * @param file 前台传来的文件
+	 * @return
+	 */
+	@RequestMapping(value="/upload.action",method = RequestMethod.POST)
+	@ResponseBody
+	public String upload(@RequestParam("file") MultipartFile file) {
+		System.out.println("Conroller in!!");
+		System.out.println(file.getOriginalFilename());
+		try {
+			//获取文件名
+			String realFileName = file.getOriginalFilename();
+			// 获取当前web服务器项目路径
+			String ctxPath = session.getServletContext().getRealPath("/")+ "fileupload/";
+			System.out.println(ctxPath);
+			// 创建文件夹
+			File dirPath = new File(ctxPath);
+			if (!dirPath.exists()) {
+				dirPath.mkdir();
+			}
+			// 创建文件
+			File uploadFile = new File(ctxPath + realFileName);
+			// Copy文件
+			FileCopyUtils.copy(file.getBytes(), uploadFile);
+		} catch (Exception ex) {
+			return "failure";
+		}
+		return "success";
+	}
 }
+

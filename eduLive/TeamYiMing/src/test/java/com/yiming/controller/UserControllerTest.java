@@ -20,20 +20,20 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml","classpath:springMVC.xml"})
 public class UserControllerTest {
-    private MockMvc mockMvc;
-    @Autowired
-    private UserController userController;
-    @Autowired
-    protected WebApplicationContext wac;
-    @Before
-    public void setUp() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();  //初始化MockMvc对象
-    }
-    @Test
-    public void userModifyPasswordtest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/user/userModifyNickname.action").param("jack"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("relogin"));
-    }
+//    private MockMvc mockMvc;
+//    @Autowired
+//    private UserController userController;
+//    @Autowired
+//    protected WebApplicationContext wac;
+//    @Before
+//    public void setUp() throws Exception {
+//        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();  //初始化MockMvc对象
+//    }
+//    @Test
+//    public void userModifyPasswordtest() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.post("/user/userModifyNickname.action").param("jack"))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.view().name("relogin"));
+//    }
 
 }
