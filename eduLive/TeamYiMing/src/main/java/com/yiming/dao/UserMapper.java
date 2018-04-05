@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.yiming.entity.User;
 
-public interface UserDao {
+public interface UserMapper {
 	public User login(String phoneNum,String password);
 	public void register(String phoneNum,String password,String name,String nickname);
 	public void updateNicknameByPhoneNum(String phoneNum, String newNickname);

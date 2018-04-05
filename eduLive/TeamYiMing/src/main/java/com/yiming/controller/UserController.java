@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yiming.dao.UserDao;
+import com.yiming.dao.UserMapper;
 import com.yiming.entity.User;
 import com.yiming.service.UserService;
 import com.yiming.util.CheckSumBuilder;
@@ -37,7 +37,7 @@ import com.yiming.util.SendVerificationCode;
 @RequestMapping(value = "/user")
 public class UserController {
 	@Autowired
-	UserDao userDao;
+	UserMapper userDao;
 	@Autowired
 	private  HttpSession session;
 	@Resource
