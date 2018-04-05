@@ -5,7 +5,10 @@
       <el-container class="ec_left">
         <el-main>
           <el-tabs type="border-card">
-            <el-tab-pane label="PPT">PPT</el-tab-pane>
+            <el-tab-pane label="PPT">
+              <SlideDisplay>
+              </SlideDisplay>
+            </el-tab-pane>
             <el-tab-pane label="代码">
               <CodeEditor>
               </CodeEditor>
@@ -23,7 +26,6 @@
         </el-footer>
       </el-container>
       <el-container direction="vertical" class="ec_right">
-        <el-button type="info" plain v-on="startVideo()">开启摄像头</el-button>
         <el-main>
           <video id="video" controls></video>
         </el-main>
@@ -45,11 +47,13 @@
 
 <script>
 import CodeEditor from '@/components/CodeEditor'
+import SlideDisplay from '@/components/SlideDisplay'
 
 export default {
   name: 'Live_Teacher',
   components: {
-    CodeEditor
+    CodeEditor,
+    SlideDisplay
   },
   data () {
     return {
@@ -75,7 +79,7 @@ if (navigator.getUserMedia) {
     }
   )
 } else {
-    this.$message('警告！该浏览器不支持')
+  this.$message('警告！该浏览器不支持')
 }
 </script>
 

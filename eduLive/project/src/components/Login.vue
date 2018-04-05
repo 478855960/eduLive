@@ -4,7 +4,7 @@
     <el-main>
       <h1>欢迎使用硕学教育平台</h1>
       <hr>
-      <el-form ref="loginForm" label-width="80px" :rules="loginRules" :model="loginForm">
+      <el-form ref="loginForm" :rules="loginRules" :model="loginForm">
         <el-form-item label="手机号" prop="phoneNum">
           <el-input v-model="loginForm.phoneNum" placeholder="请输入手机号"></el-input>
         </el-form-item>

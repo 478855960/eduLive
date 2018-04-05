@@ -3,7 +3,7 @@
     <el-main>
       <h1>个人中心</h1>
       <hr/>
-      <el-form ref="usernameForm" label-width="95px" :model="usernameForm" :rules="usernameRules" id="usernameForm">
+      <el-form ref="usernameForm" :model="usernameForm" :rules="usernameRules" id="usernameForm">
         <el-form-item label="修改昵称" required>
           <el-col :span="18">
             <el-form-item id="usernameItem" prop="nickname">
@@ -15,12 +15,12 @@
           </el-col>
         </el-form-item>
       </el-form>
-      <el-form ref="passwordForm" label-width="95px" :model="passwordForm" :rules="passwordRules">
+      <el-form ref="passwordForm" :model="passwordForm" :rules="passwordRules">
         <el-form-item label="旧密码" prop="password">
           <el-input v-model="passwordForm.password" placeholder="请输入旧密码" type="password"></el-input>
         </el-form-item>
       </el-form>
-      <el-form ref="newPasswordForm" label-width="95px" :model="newPasswordForm" :rules="newPasswordRules">
+      <el-form ref="newPasswordForm" :model="newPasswordForm" :rules="newPasswordRules">
         <el-form-item label="新密码" prop="password">
           <el-input v-model="newPasswordForm.password" placeholder="请输入新密码" type="password"></el-input>
         </el-form-item>

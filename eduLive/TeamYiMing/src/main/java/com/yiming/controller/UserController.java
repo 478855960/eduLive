@@ -277,8 +277,6 @@ public class UserController {
 	@RequestMapping(value="/upload.action",method = RequestMethod.POST)
 	@ResponseBody
 	public String upload(@RequestParam("file") MultipartFile file) {
-		System.out.println("Conroller in!!");
-		System.out.println(file.getOriginalFilename());
 		try {
 			//获取文件名
 			String realFileName = file.getOriginalFilename();
