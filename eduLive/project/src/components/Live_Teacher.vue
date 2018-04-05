@@ -5,7 +5,10 @@
       <el-container class="ec_left">
         <el-main>
           <el-tabs type="border-card">
-            <el-tab-pane label="PPT">PPT</el-tab-pane>
+            <el-tab-pane label="PPT">
+              <SlideDisplay>
+              </SlideDisplay>
+            </el-tab-pane>
             <el-tab-pane label="代码">
               <CodeEditor>
               </CodeEditor>
@@ -51,14 +54,15 @@
 
 <script>
 /* eslint-disable no-caller */
-
 import CodeEditor from '@/components/CodeEditor'
+import SlideDisplay from '@/components/SlideDisplay'
 import Whiteboard from '@/components/whiteboard'
 export default {
   name: 'Live_Teacher',
   components: {
     CodeEditor,
-    Whiteboard
+    Whiteboard,
+    SlideDisplay
   },
   data () {
     return {
