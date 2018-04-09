@@ -61,11 +61,6 @@ export default new Router({
 	    name: 'CodeEditor',
 	    component: CodeEditor
 	},
-	{
-	    path: '/Live_Student',
-		  name: 'Live_Student',
-		  component: LiveStudent
-	},
     {
       path: '/video',
       name: 'Video',

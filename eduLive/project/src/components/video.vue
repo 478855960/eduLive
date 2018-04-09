@@ -90,9 +90,11 @@ export default {
               localStream.play('teacherVideo')
 
               client.publish(localStream, function (err) {
+                console(err.toString())
               })
 
               client.on('stream-published', function (evt) {
+                alert('发布成功')
               })
             })
           }

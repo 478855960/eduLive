@@ -4,8 +4,8 @@
     <el-container>
       <el-container class="ec_left">
         <el-main>
-          <el-button type="primary" @click="join()">加入</el-button>
-          <el-button type="primary">离开</el-button>
+            <el-button type="primary" @click="joinLive()">加入</el-button>
+            <el-button type="primary">离开</el-button>
         </el-main>
       </el-container>
       <el-container direction="vertical" class="ec_right">
@@ -13,7 +13,7 @@
         </el-main>
         <el-container style="height:200px;border-top: #1b6d85 2px solid;">
           <el-main>
-            <div id="video"></div>
+            <div id="video" style="width: 500px;height: 300px;"></div>
           </el-main>
           <el-footer>
             <el-input
@@ -32,6 +32,10 @@
 <script>
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
 import {jquery} from '../assets/js/jquery.js'
+AgoraRTC.Logger.error('this is error')
+AgoraRTC.Logger.warning('this is warning')
+AgoraRTC.Logger.info('this is info')
+AgoraRTC.Logger.debug('this is debug')
 export default {
   name: 'Live_Student',
   data () {
@@ -39,19 +43,24 @@ export default {
       input: ''
     }
   },
-  method: {
-    join: function () {
+  methods: {
+    joinLive () {
+      let appID = 'a86334acf5c04a6aa7a85b66d0767612'
+      let channel = '1000'
       let client = AgoraRTC.createClient({mode: 'interop'})
-      let appId = 'a86334acf5c04a6aa7a85b66d0767612'
-      client.init(appId, function () {
+      client.init(appID, function () {
+        client.join(null, channel, null, function (uid) {
+        })
       })
       client.on('stream-added', function (evt) {
         let stream = evt.stream
         client.subscribe(stream, function (err) {
+          console.log('Subscribe stream failed', err)
         })
       })
       client.on('stream-subscribed', function (evt) {
         let stream = evt.stream
+        alert('coming!!!!!!!!!!!!!!!')
         stream.play('video')
       })
     }
