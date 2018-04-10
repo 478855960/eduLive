@@ -11,7 +11,7 @@
       <el-container direction="vertical" class="ec_right">
         <el-main>
         </el-main>
-        <el-container style="height:200px;border-top: #1b6d85 2px solid;">
+        <el-container id="video-area">
           <el-main>
             <div id="video"></div>
           </el-main>
@@ -48,6 +48,7 @@ export default {
       client.on('stream-added', function (evt) {
         let stream = evt.stream
         client.subscribe(stream, function (err) {
+          alert('Subscribe stream failed' + err)
         })
       })
       client.on('stream-subscribed', function (evt) {
@@ -103,5 +104,9 @@ export default {
   .el-input{
     margin: 10px auto;
     width: 350px;
+  }
+  #video-area{
+    height:200px;
+    border-top: #1b6d85 2px solid;
   }
 </style>

@@ -1,14 +1,14 @@
 package com.yiming.util;
 
 public class Constant {
-	public static final String USER = "USER_IN_SESSION";
-	public static final String SERVER_URL="https://api.netease.im/sms/sendcode.action";
+    public static final String USER = "USER_IN_SESSION";
+    public static final String SERVER_URL="https://api.netease.im/sms/sendcode.action";
     
-	//网易云信分配的账号，请替换你在管理后台应用下申请的Appkey
-	public static final String 
+    //网易云信分配的账号，请替换你在管理后台应用下申请的Appkey
+    public static final String
     APP_KEY="a47ab9d20db8571215e78e6ae313c494";
     
-	//网易云信分配的密钥，请替换你在管理后台应用下申请的appSecret
+    //网易云信分配的密钥，请替换你在管理后台应用下申请的appSecret
     public static final String APP_SECRET="fea5bc38245a";
     
     //随机数

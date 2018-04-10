@@ -21,15 +21,15 @@ import org.apache.http.util.EntityUtils;
 import com.yiming.entity.User;
 
 public class SendVerificationCode {
-	private String phoneNum;
+    private String phoneNum;
 
-	public SendVerificationCode(String phoneNum) {
-		super();
-		this.phoneNum = phoneNum;
-	}
-	
-	public String sendVerificationCode() throws ClientProtocolException, IOException {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+    public SendVerificationCode(String phoneNum) {
+        super();
+        this.phoneNum = phoneNum;
+    }
+
+    public String sendVerificationCode() throws ClientProtocolException, IOException {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(Constant.SERVER_URL);
         String curTime = String.valueOf((new Date()).getTime() / 1000L);
         
@@ -72,10 +72,10 @@ public class SendVerificationCode {
         String[] object = result.split(",");
         System.out.println("object[2] is:"+object[2].split(":")[1]);
         if(!object[0].split(":")[1].equals("200")){
-        	return object[0].split(":")[1];
+            return object[0].split(":")[1];
         }else {
-        	String pattern = "\\d+"; 	
-        	return object[2].split(":")[1].split("\"")[1];
+            String pattern = "\\d+";
+            return object[2].split(":")[1].split("\"")[1];
         }
-	}
+    }
 }
