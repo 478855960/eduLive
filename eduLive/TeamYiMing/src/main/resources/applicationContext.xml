@@ -15,7 +15,7 @@
 
     <!--2.引用数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-     	<property name="driverClassName" value="${db.driver}" />
+        <property name="driverClassName" value="${db.driver}" />
         <property name="url" value="${db.url}" />
         <property name="username" value="${db.username}" />
         <property name="password" value="${db.password}" />
@@ -38,6 +38,6 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
         <property name="basePackage" value="com.yiming.dao"></property>
     </bean>
-	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" /> 
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 </beans>

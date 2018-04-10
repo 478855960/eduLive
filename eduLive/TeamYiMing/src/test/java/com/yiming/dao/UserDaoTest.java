@@ -28,49 +28,51 @@ public class UserDaoTest extends BaseTest{
     public void loginTest() {
         User user = null;
         user = userDao.login("121112345678", "admin");
-        Assert.assertEquals(null, user);
+        assertEquals(null, user);
         user = userDao.login("12112345678", "adm");
-        Assert.assertEquals(null, user);
+        assertEquals(null, user);
         user = userDao.login("12112345678", "admin");
-        Assert.assertEquals("teacherLee", user.getNickname());
+        assertEquals("teacherLee", user.getNickname());
     }
     
     @Test
+    @Transactional
+    @Rollback(true)
     public void registerTest() {
         userDao.register("123", "admin", "lee", "leeS");
         User user = userDao.login("123", "admin");
-        Assert.assertEquals("123", user.getPhoneNum());
-        Assert.assertEquals("admin", user.getPassword());
-        Assert.assertEquals("leeS", user.getName());
-        Assert.assertEquals("leeS", user.getNickname());
+        assertEquals("123", user.getPhoneNum());
+        assertEquals("admin", user.getPassword());
+        assertEquals("lee", user.getName());
+        assertEquals("leeS", user.getNickname());
     }
     @Test
+    @Transactional
+    @Rollback(true)
     public void updateNicknameByPhoneNumTest() {
-        userDao.updateNicknameByPhoneNum("121112345678", "hel");
-        User user = userDao.login("121112345678", "admin");
-        Assert.assertEquals("hel", user.getNickname());
-        userDao.updateNicknameByPhoneNum("121112345678", "teacherLee");
-        Assert.assertEquals("teacherLee", user.getNickname());
+        userDao.updateNicknameByPhoneNum("12112345678", "hel");
+        User user = userDao.login("12112345678", "admin");
+        assertEquals("hel", user.getNickname());
     }
     @Test
+    @Transactional
+    @Rollback(true)
     public void updatePasswordByPhoneNumTest() {
-        userDao.updatePasswordByPhoneNum("121112345678", "hel");
-        User user = userDao.login("121112345678", "admin");
-        Assert.assertEquals("hel", user.getPassword());
-        userDao.updatePasswordByPhoneNum("121112345678", "admin");
-        Assert.assertEquals("hel", user.getPassword());
-        
+        userDao.updatePasswordByPhoneNum("12112345678", "hel");
+        User user = userDao.login("12112345678", "admin");
+        assertEquals(null, user);
+        user = userDao.login("12112345678", "hel");
+        assertEquals("hel", user.getPassword());
     }
     @Test
     public void getUserByNicknameTest() {
         User user = userDao.getUserByNickname("teacherLee");
-        Assert.assertEquals("teacherLee", user.getNickname());
+        assertEquals("teacherLee", user.getNickname());
     }
     @Test
     public void getUserByPhoneNumTest() {
-        User user = userDao.getUserByPhoneNum("121112345678");
-        Assert.assertEquals("teacherLee", user.getNickname());
-        
+        User user = userDao.getUserByPhoneNum("12112345678");
+        assertEquals("teacherLee", user.getNickname());
     }
 
 }
