@@ -1,8 +1,7 @@
 <template>
   <el-container>
     <el-aside>
-      <div id='teacherVideo' style="width: 300px;height: 300px;"></div>
-      <div id="studentVideo" style="width: 300px;height: 300px"></div>
+      <div id='teacher-Video'></div>
       <div class="select">
         <label for="audioSource">Audio source: </label><select id="audioSource"></select>
       </div>
@@ -41,8 +40,6 @@ AgoraRTC.Logger.warning('this is warning')
 AgoraRTC.Logger.info('this is info')
 AgoraRTC.Logger.debug('this is debug')
 let client, localStream, camera, microphone
-var audioSelect = document.getElementById('audioSource')
-var videoSelect = document.getElementById('videoSource')
 export default {
   data () {
     return {
@@ -90,7 +87,7 @@ export default {
               localStream.play('teacherVideo')
 
               client.publish(localStream, function (err) {
-                console(err.toString())
+                alert('Publish stream failed' + err)
               })
 
               client.on('stream-published', function (evt) {
@@ -111,7 +108,7 @@ export default {
       client.on('stream-added', function (evt) {
         let stream = evt.stream
         client.subscribe(stream, function (err) {
-          console.log('Subscribe stream failed', err)
+          alert('Subscribe stream failed' + err)
         })
       })
       client.on('stream-subscribed', function (evt) {
@@ -121,9 +118,9 @@ export default {
     },
     getDevices: function getDevices () {
       AgoraRTC.getDevices(function (devices) {
-        for (var i = 0; i !== devices.length; ++i) {
-          var device = devices[i]
-          var option = document.createElement('option')
+        for (let i = 0; i !== devices.length; ++i) {
+          let device = devices[i]
+          let option = document.createElement('option')
           option.value = device.deviceId
           if (device.kind === 'audioinput') {
           } else if (device.kind === 'videoinput') {
@@ -148,5 +145,9 @@ export default {
   }
   .el-main{
     margin-top: 50px
+  }
+  #teacher-Video{
+    width: 300px;
+    height: 300px;
   }
 </style>

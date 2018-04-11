@@ -2,7 +2,7 @@
   <el-container>
     <el-header></el-header>
     <el-main>
-      <h1 style="text-align:center">欢 迎 使 用 硕 学 教 育 平 台</h1>
+      <h1>欢 迎 使 用 硕 学 教 育 平 台</h1>
       <hr>
       <el-form status-icon :rules="rules" :model="form" ref="form" size="small">
         <el-form-item label="昵称" prop="nickname">
@@ -21,13 +21,13 @@
           <el-input type="password" placeholder="再次输入密码" v-model="form.checkPassword"></el-input>
         </el-form-item>
         <el-row :gutter="10">
-          <el-col :span = "180">
+          <el-col :span="180">
             <el-form-item label="验证码" prop="verificationCode">
               <el-input placeholder="输入短信验证码" v-model="form.verificationCode" style="width: 310px"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span = "80">
-            <el-button type="primary" style="width: 130px;margin-top: 32px" size="small" v-on:click="sendMessage('form',$event)">获取验证码</el-button>
+          <el-col :span="80">
+            <el-button type="primary" id="sendCode-button" size="small" v-on:click="sendMessage('form',$event)">获取验证码</el-button>
           </el-col>
         </el-row>
         <el-form-item>
@@ -188,5 +188,10 @@ export default {
   }
   h1 {
     margin: 0 auto;
+    text-align: center
+  }
+  #sendCode-button {
+    width: 130px;
+    margin-top: 32px;
   }
 </style>
