@@ -13,7 +13,7 @@
         </el-form-item>
         <el-form-item label="验证码" required>
           <el-col :span="14">
-            <el-form-item prop="code" id="codeItem">
+            <el-form-item prop="code" id="code-item">
               <el-input v-model="loginForm.code" placeholder="请输入验证码" id="code"></el-input>
             </el-form-item>
           </el-col>
@@ -21,7 +21,7 @@
             <s-identify :identify-code="identifyCode"></s-identify>
           </el-col>
           <el-col :span="4">
-            <el-button id="codeBtn" @click="refreshCode">换一张</el-button>
+            <el-button id="code-button" @click="refreshCode">换一张</el-button>
           </el-col>
         </el-form-item>
         <el-form-item>
@@ -135,11 +135,11 @@ export default {
     width: 30%;
   }
 
-  #codeBtn {
+  #code-button {
     width: 100%;
   }
 
-  #codeItem {
+  #code-item {
     margin: 0;
     width: 100%;
   }
