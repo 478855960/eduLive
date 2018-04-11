@@ -51,16 +51,16 @@ export default new Router({
       name: 'Whiteboard',
       component: Whiteboard
     },
-	{
+    {
       path: '/UserCenter',
       name: 'UserCenter',
       component: UserCenter
     },
-	{
-	    path: '/CodeEditor',
-	    name: 'CodeEditor',
-	    component: CodeEditor
-	},
+    {
+      path: '/CodeEditor',
+      name: 'CodeEditor',
+      component: CodeEditor
+    },
     {
       path: '/video',
       name: 'Video',

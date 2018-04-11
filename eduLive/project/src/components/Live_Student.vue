@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>header</el-header>
+    <el-header></el-header>
     <el-container>
       <el-container class="ec_left">
         <el-main>
@@ -11,9 +11,9 @@
       <el-container direction="vertical" class="ec_right">
         <el-main>
         </el-main>
-        <el-container id="video-area">
+        <el-container id="container1">
           <el-main>
-            <div id="video" style="width: 500px;height: 300px;"></div>
+            <div id="video"></div>
           </el-main>
           <el-footer>
             <el-input
@@ -31,7 +31,6 @@
 
 <script>
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
-import {jquery} from '../assets/js/jquery.js'
 AgoraRTC.Logger.error('this is error')
 AgoraRTC.Logger.warning('this is warning')
 AgoraRTC.Logger.info('this is info')
@@ -113,8 +112,12 @@ export default {
     margin: 10px auto;
     width: 350px;
   }
-  #video-area{
+  #container1 {
     height:200px;
     border-top: #1b6d85 2px solid;
+  }
+  video {
+    width: 500px;
+    height: 300px;
   }
 </style>
