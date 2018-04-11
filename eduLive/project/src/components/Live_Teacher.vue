@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>header</el-header>
+    <el-header></el-header>
     <el-container>
       <el-container class="ec_left">
         <el-main>
@@ -32,7 +32,7 @@
         <el-main>
           <video id="video" controls></video>
         </el-main>
-        <el-container style="height:200px;border-top: #1b6d85 2px solid;">
+        <el-container id="container1">
           <el-main>
             <el-card class="box-card" id="content">
             </el-card>
@@ -91,7 +91,7 @@ if (navigator.getUserMedia) {
   this.$message('警告！该浏览器不支持')
 }
 
-var socket = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/server')
+let socket = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/server')
 
 $(function () {
   listen()
@@ -105,8 +105,8 @@ function encodeScript (data) {
 }
 
 function emit () {
-  var text = encodeScript($('#msg').val())
-  var msg = {
+  let text = encodeScript($('#msg').val())
+  let msg = {
     'message': text,
     'color': '#15b8ce',
     'bubbleColor': '#2E2E2E',
@@ -125,7 +125,7 @@ function listen () {
     $('#content').append('<kbd>Welcome!</kbd></br>')
   }
   socket.onmessage = function (evt) {
-    var data = JSON.parse(evt.data)
+    let data = JSON.parse(evt.data)
     $('#content').append("<kbd style='color: " + data.color + ';font-size: ' + data.fontSize + ";margin-top: 10px;'>" + data.message + '</kbd></br>')
   }
   socket.onclose = function (evt) {
@@ -137,7 +137,7 @@ function listen () {
 }
 
 document.onkeydown = function (event) {
-  var e = event || window.event || arguments.callee.caller.arguments[0]
+  let e = event || window.event || arguments.callee.caller.arguments[0]
   if (e && e.keyCode === 13) { // enter 键
     emit()
   }
@@ -192,5 +192,8 @@ document.onkeydown = function (event) {
   }
   .box-card {
     width: 400px;
+  }
+  #container1 {
+    height:200px;border-top: #1b6d85 2px solid;
   }
 </style>
