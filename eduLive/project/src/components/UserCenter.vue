@@ -3,15 +3,15 @@
     <el-main>
       <h1>个人中心</h1>
       <hr/>
-      <el-form ref="usernameForm" :model="usernameForm" :rules="usernameRules" id="usernameForm">
+      <el-form ref="usernameForm" :model="usernameForm" :rules="usernameRules" id="username-form">
         <el-form-item label="修改昵称" required>
           <el-col :span="18">
-            <el-form-item id="usernameItem" prop="nickname">
+            <el-form-item id="username-item" prop="nickname">
               <el-input v-model="usernameForm.nickname" placeholder="请输入新昵称"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-button type="primary" id="usernameBtn" @click="modifyUsername('usernameForm')">修改昵称</el-button>
+            <el-button type="primary" id="username-button" @click="modifyUsername('usernameForm')">修改昵称</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -29,12 +29,12 @@
         </el-form-item>
         <el-form-item label="短信验证码" required>
           <el-col :span="17">
-            <el-form-item id="codeItem" prop="code">
+            <el-form-item id="code-item" prop="code">
               <el-input v-model="usernameForm.code" placeholder="请输入验证码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-button type="primary" id="codeBtn" @click="getCode('newPasswordForm', $event)">获取验证码</el-button>
+            <el-button type="primary" id="code-button" @click="getCode('newPasswordForm', $event)">获取验证码</el-button>
           </el-col>
         </el-form-item>
         <el-form-item>
@@ -206,7 +206,7 @@ export default {
     text-align: center;
   }
 
-  #usernameForm {
+  #username-form {
     margin-bottom: 4%;
   }
 
@@ -230,22 +230,22 @@ export default {
     width: 30%;
   }
 
-  #usernameBtn {
+  #username-button {
     width: 100%;
     margin-left: 19%;
   }
 
-  #codeBtn {
+  #code-button {
     width: 100%;
     margin-left: 19%;
   }
 
-  #usernameItem {
+  #username-item {
     margin: 0;
     width: 100%;
   }
 
-  #codeItem {
+  #code-item {
      margin: 0;
      width: 100%;
    }

@@ -85,13 +85,4 @@ export default {
     margin-right: 80px;
     width: 100%;
   }
-
-  #codeBtn {
-    width: 100%;
-  }
-
-  #codeItem {
-    margin: 0;
-    width: 100%;
-  }
 </style>
