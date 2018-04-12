@@ -30,7 +30,7 @@
       </el-container>
       <el-container direction="vertical" class="ec_right">
         <el-main>
-          <video id="video" controls></video>
+          <Video></Video>
         </el-main>
         <el-container id="container1">
           <el-main>
@@ -57,12 +57,14 @@
 import CodeEditor from '@/components/CodeEditor'
 import SlideDisplay from '@/components/SlideDisplay'
 import Whiteboard from '@/components/whiteboard'
+import Video from '@/components/video'
 export default {
   name: 'Live_Teacher',
   components: {
     CodeEditor,
     Whiteboard,
-    SlideDisplay
+    SlideDisplay,
+    Video
   },
   data () {
     return {
@@ -73,25 +75,7 @@ export default {
   }
 }
 
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
-if (navigator.getUserMedia) {
-  navigator.getUserMedia({ audio: true, video: { width: 400, height: 350 } },
-    function (stream) {
-      let video = document.querySelector('video')
-      video.src = window.URL.createObjectURL(stream)
-      video.onloadedmetadata = function (e) {
-        video.play()
-      }
-    },
-    function (err) {
-      this.$message('发生错误: ' + err.name)
-    }
-  )
-} else {
-  this.$message('警告！该浏览器不支持')
-}
-
-let socket = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/server')
+/* let socket = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/server')
 
 $(function () {
   listen()
@@ -115,7 +99,6 @@ function emit () {
   }
   msg = JSON.stringify(msg)
 
-  socket.send(msg)
   $('#content').append("<kbd style='color: #" + 'ce181c' + ';float: right; font-size: ' + 12 + ";'>" + text + '</kbd><br/>')
   $('#msg').val('')
 }
@@ -141,7 +124,7 @@ document.onkeydown = function (event) {
   if (e && e.keyCode === 13) { // enter 键
     emit()
   }
-}
+} */
 
 </script>
 
@@ -190,10 +173,10 @@ document.onkeydown = function (event) {
     margin: 10px auto;
     width: 350px;
   }
-  .box-card {
+  .box-card{
     width: 400px;
   }
-  #container1 {
-    height:200px;border-top: #1b6d85 2px solid;
+  #container1{
+    height:320px;border-top: #1b6d85 2px solid;
   }
 </style>
