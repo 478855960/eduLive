@@ -13,6 +13,7 @@ import Whiteboard from '@/components/whiteboard'
 import CodeEditor from '@/components/CodeEditor'
 import Video from '@/components/video'
 import Upload from '@/components/Upload'
+import StudentList from'@/components/StudentList'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -70,6 +71,11 @@ export default new Router({
       path: '/Upload',
       name: 'Upload',
       component: Upload
+    },
+    {
+      path: '/studentList',
+      name: 'StudentList',
+      component: StudentList
     }
   ]
 })

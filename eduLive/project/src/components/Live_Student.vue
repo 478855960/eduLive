@@ -42,6 +42,9 @@ export default {
       input: ''
     }
   },
+  created () {
+    this.initWebsocket()
+  },
   methods: {
     joinLive () {
       let appID = 'a86334acf5c04a6aa7a85b66d0767612'
@@ -59,9 +62,13 @@ export default {
       })
       client.on('stream-subscribed', function (evt) {
         let stream = evt.stream
-        alert('coming!!!!!!!!!!!!!!!')
         stream.play('video')
       })
+    },
+    initWebsocket () {
+      alert('init')
+      // 设置websocket连接
+      this.wsObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList')
     }
   }
 }
@@ -116,7 +123,7 @@ export default {
     height:200px;
     border-top: #1b6d85 2px solid;
   }
-  video {
+  #video {
     width: 500px;
     height: 300px;
   }

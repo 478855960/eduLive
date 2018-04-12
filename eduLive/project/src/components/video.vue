@@ -31,7 +31,6 @@
 
 <script>
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
-import {jquery} from '../assets/js/jquery.js'
 if (!AgoraRTC.checkSystemRequirements()) {
   alert('browser is no support webRTC')
 }
@@ -51,6 +50,17 @@ export default {
     }
   },
   methods: {
+    getDevices: function getDevices () {
+      AgoraRTC.getDevices(function (devices) {
+        for (let i = 0; i !== devices.length; ++i) {
+          let device = devices[i]
+          if (device.kind === 'audioinput') {
+            camera = device.id
+            break
+          }
+        }
+      })
+    },
     join: function () {
       this.$refs.joinBtn.disabled = true
       this.$refs.hostCheckbox.disabled = true
@@ -58,10 +68,11 @@ export default {
       let channelInput = this.$refs.channelInput.value
       let hostCheckBox = this.$refs.hostCheckbox.value
       client = AgoraRTC.createClient({mode: 'interop'})
+      this.getDevices()
       client.init(appIDinput, function () {
         client.join(null, channelInput, null, function (uid) {
           if (hostCheckBox) {
-            camera = '2f0b505864b76c4e394e71d7c4ea248fad988940680be13798e3a2943fb7bd76'
+            // camera = '2f0b505864b76c4e394e71d7c4ea248fad988940680be13798e3a2943fb7bd76'
             microphone = 'default'
             localStream = AgoraRTC.createStream({
               streamID: uid,
@@ -84,7 +95,7 @@ export default {
             })
 
             localStream.init(function () {
-              localStream.play('teacherVideo')
+              localStream.play('teacher-Video')
 
               client.publish(localStream, function (err) {
                 alert('Publish stream failed' + err)
@@ -114,19 +125,6 @@ export default {
       client.on('stream-subscribed', function (evt) {
         let stream = evt.stream
         stream.play('studentVideo')
-      })
-    },
-    getDevices: function getDevices () {
-      AgoraRTC.getDevices(function (devices) {
-        for (let i = 0; i !== devices.length; ++i) {
-          let device = devices[i]
-          let option = document.createElement('option')
-          option.value = device.deviceId
-          if (device.kind === 'audioinput') {
-          } else if (device.kind === 'videoinput') {
-          } else {
-          }
-        }
       })
     }
   }
