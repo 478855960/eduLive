@@ -9,11 +9,11 @@
         </el-main>
       </el-container>
       <el-container direction="vertical" class="ec_right">
-        <el-main>
+        <el-main id="video">
+          该主播好像还没开播哦···
         </el-main>
-        <el-container id="container1">
+        <el-container id="container-text">
           <el-main>
-            <div id="video"></div>
           </el-main>
           <el-footer>
             <el-input
@@ -47,6 +47,7 @@ export default {
       let appID = 'a86334acf5c04a6aa7a85b66d0767612'
       let channel = '1000'
       let client = AgoraRTC.createClient({mode: 'interop'})
+      let _this = this
       client.init(appID, function () {
         client.join(null, channel, null, function (uid) {
         })
@@ -59,8 +60,12 @@ export default {
       })
       client.on('stream-subscribed', function (evt) {
         let stream = evt.stream
-        alert('coming!!!!!!!!!!!!!!!')
         stream.play('video')
+      })
+      client.on('peer-leave', function (evt) {
+        let stream = evt.stream
+        stream.stop()
+        _this.$message('老师关闭了摄像头')
       })
     }
   }
@@ -112,12 +117,11 @@ export default {
     margin: 10px auto;
     width: 350px;
   }
-  #container1 {
+  #container-text {
     height:200px;
-    border-top: #1b6d85 2px solid;
   }
-  video {
-    width: 500px;
-    height: 300px;
+  #video {
+    width: 100%;
+    height: 220px;
   }
 </style>
