@@ -57,6 +57,7 @@ export default {
       let channelInput = '1000'
       // this.getDevices()
       client = AgoraRTC.createClient({mode: 'interop'})
+      this.getDevices()
       client.init(appIDinput, function () {
         client.join(null, channelInput, null, function (uid) {
           microphone = 'default'
@@ -69,15 +70,12 @@ export default {
             screen: false
           })
           localStream.setVideoProfile('720p_3')
-
           // The user has granted access to the camera and mic.
           localStream.on('accessAllowed', function () {
           })
-
           // The user has denied access to the camera and mic.
           localStream.on('accessDenied', function () {
           })
-
           localStream.init(function () {
             localStream.play('teacher-video')
             client.publish(localStream, function (err) {

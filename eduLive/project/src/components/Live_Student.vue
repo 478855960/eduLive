@@ -42,6 +42,9 @@ export default {
       input: ''
     }
   },
+  created () {
+    this.initWebsocket()
+  },
   methods: {
     joinLive () {
       let appID = 'a86334acf5c04a6aa7a85b66d0767612'
@@ -67,6 +70,10 @@ export default {
         stream.stop()
         _this.$message('老师关闭了摄像头')
       })
+    },
+    initWebsocket () {
+      // 设置websocket连接
+      this.wsObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList')
     }
   }
 }
@@ -108,7 +115,7 @@ export default {
   .el-button-group{
     margin:40px 75px;
   }
-  
+
   .el-input{
     margin: 10px auto;
     width: 350px;
@@ -119,5 +126,6 @@ export default {
   #video {
     width: 100%;
     height: 220px;
+
   }
 </style>

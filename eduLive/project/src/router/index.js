@@ -15,6 +15,7 @@ import Video from '@/components/video'
 import Upload from '@/components/Upload'
 import VideoRoom from '@/components/VideoRoom'
 import HomePage from '@/components/HomePage'
+import StudentList from'@/components/StudentList'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -82,6 +83,11 @@ export default new Router({
       path: '/HomePage',
       name: 'HomePage',
       component: HomePage
+    },
+    {
+      path: '/studentList',
+      name: 'StudentList',
+      component: StudentList
     }
   ]
 })

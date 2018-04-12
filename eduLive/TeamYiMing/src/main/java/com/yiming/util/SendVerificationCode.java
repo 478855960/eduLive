@@ -68,9 +68,7 @@ public class SendVerificationCode {
         //System.out.println(EntityUtils.toString(response.getEntity(), "utf-8"));
         
         String result = EntityUtils.toString(response.getEntity());
-        System.out.println("result is: " + result);
         String[] object = result.split(",");
-        System.out.println("object[2] is:"+object[2].split(":")[1]);
         if(!object[0].split(":")[1].equals("200")){
             return object[0].split(":")[1];
         }else {
