@@ -12,7 +12,7 @@
         <el-main id="video">
           该主播好像还没开播哦···
         </el-main>
-        <el-container id="container1">
+        <el-container id="container-text">
           <el-main>
           </el-main>
           <el-footer>
@@ -117,9 +117,8 @@ export default {
     margin: 10px auto;
     width: 350px;
   }
-  #container1 {
+  #container-text {
     height:200px;
-    border-top: #1b6d85 2px solid;
   }
   #video {
     width: 100%;

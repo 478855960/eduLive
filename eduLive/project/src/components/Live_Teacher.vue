@@ -32,7 +32,7 @@
         <el-main>
           <Video></Video>
         </el-main>
-        <el-container id="container1">
+        <el-container id="container-text">
           <el-main>
             <el-card class="box-card" id="content">
             </el-card>
@@ -176,7 +176,8 @@ document.onkeydown = function (event) {
   .box-card{
     width: 400px;
   }
-  #container1{
-    height:320px;border-top: #1b6d85 2px solid;
+  #container-text{
+    height:320px;
+    border-top: #1b6d85 2px solid;
   }
 </style>

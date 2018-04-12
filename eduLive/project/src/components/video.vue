@@ -1,16 +1,16 @@
 <template>
   <el-container>
     <el-main>
-      <div id='teacher-Video' ref="teacherVideo"></div>
-      <div id="initVideo" ref="initTeacherVideo"></div>
+      <div id='teacher-video' ref="teachervideo"></div>
+      <div id="init-video" ref="initteachervideo"></div>
     </el-main>
     <el-footer>
       <el-form :inline="true">
         <el-form-item>
-          <el-button type="primary" @click="join()" id="joinBtn" ref="joinBtn">加入</el-button>
+          <el-button type="primary" @click="join()" id="join-btn" ref="joinBtn">加入</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="leave()" id="leaveBtn" ref="leaveBtn">离开</el-button>
+          <el-button type="primary" @click="leave()" id="leave-btn" ref="leaveBtn">离开</el-button>
         </el-form-item>
       </el-form>
     </el-footer>
@@ -46,8 +46,8 @@ export default {
     },
     join: function () {
       let _this = this
-      _this.$refs.teacherVideo.style.visibility = 'visible'
-      _this.$refs.initTeacherVideo.style.visibility = 'hidden'
+      _this.$refs.teachervideo.style.visibility = 'visible'
+      _this.$refs.initteachervideo.style.visibility = 'hidden'
       this.$refs.joinBtn.disabled = true
       if (this.$refs.leaveBtn.disabled === true) {
         this.$refs.leaveBtn.disabled = false
@@ -79,7 +79,7 @@ export default {
           })
 
           localStream.init(function () {
-            localStream.play('teacher-Video')
+            localStream.play('teacher-video')
             client.publish(localStream, function (err) {
               alert('Publish stream failed' + err)
             })
@@ -126,32 +126,32 @@ export default {
       client.unpublish(localStream, function (err) {
         console.log('Unpublish local stream failed' + err)
       })
-      _this.$refs.teacherVideo.style.visibility = 'hidden'
-      _this.$refs.initTeacherVideo.style.visibility = 'visible'
+      _this.$refs.teachervideo.style.visibility = 'hidden'
+      _this.$refs.initteachervideo.style.visibility = 'visible'
     }
   }
 }
 </script>
 
 <style scoped>
-  #teacher-Video{
+  #teacher-video{
     margin-top: -30px;
     width: 380px;
     height: 200px;
     background-color: #94d2d0;
     position: absolute;
   }
-  #initVideo{
+  #init-video{
     margin-top: -30px;
     width: 380px;
     height: 200px;
     background-color: #94d2d0;
     position: absolute;
   }
-  #joinBtn{
+  #join-btn{
     width: 100%;
   }
-  #leaveBtn{
+  #leave-btn{
     width: 100%;
   }
   .el-button{
