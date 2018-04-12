@@ -108,11 +108,7 @@ export default {
   .el-button-group{
     margin:40px 75px;
   }
-
-  .el-button-group .el-button{
-    width: 200px;
-    height: 50px;
-  }
+  
   .el-input{
     margin: 10px auto;
     width: 350px;
