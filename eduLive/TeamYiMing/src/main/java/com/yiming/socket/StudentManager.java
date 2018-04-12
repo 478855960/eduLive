@@ -42,14 +42,11 @@ public class StudentManager {
         this.session = session;
         this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
         User user = (User) this.httpSession.getAttribute(Constant.USER);
-        System.out.println(user);
         if(user != null && "1".equals(user.getIsStudent())) {
             users.add(user);
-            System.out.println("add user");
         }
         webSocketSet.add(this);     //加入set中
         addOnlineCount();           //在线数加1
-        System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
     }
     /**
      * 连接关闭调用的方法
@@ -60,7 +57,6 @@ public class StudentManager {
         User user = (User) this.httpSession.getAttribute(Constant.USER);
         users.remove(user);
         subOnlineCount();           //在线数减1
-        System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
     }
 
     /**
@@ -70,17 +66,13 @@ public class StudentManager {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        System.out.println("来自客户端的消息:" + message);
-        System.out.println(users.size());
         String retMessage = "";
         if(users.size() != 0) {
             retMessage = JSON.toJSONString(users);
         }
-        System.out.println(webSocketSet.size());
         //群发消息
         for(StudentManager item: webSocketSet){
             try {
-                System.out.println(retMessage);
                 item.sendMessage(retMessage);
             } catch (IOException e) {
                 e.printStackTrace();
