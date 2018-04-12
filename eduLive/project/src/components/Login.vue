@@ -124,15 +124,12 @@ export default {
     background-color: #37C6C0;
     color: #ffffff;
     margin: 0 auto;
+    margin-right: 80px;
+    width: 30%;
   }
 
   hr {
     width: 55%;
-  }
-
-  .el-button {
-    margin-right: 80px;
-    width: 30%;
   }
 
   #code-button {
