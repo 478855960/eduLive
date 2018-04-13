@@ -34,7 +34,10 @@
         </el-main>
         <el-container id="container1">
           <el-main>
-            <el-card class="box-card" id="content">
+            <el-card class="box-card" ref="chatcard">
+              <div v-for="item in list" class="text item">
+                <p v-bind:style="item.style">{{item.userId}}: {{item.message}} </p>
+              </div>
             </el-card>
           </el-main>
           <el-footer>
@@ -42,9 +45,9 @@
               placeholder="请输入内容"
               v-model="input"
               clearable
-              id="msg">
+              ref="msg">
             </el-input>
-            <el-button type="primary" icon="el-icon-d-arrow-right" id="btn1"></el-button>
+            <el-button type="primary" icon="el-icon-d-arrow-right" @click="submit" ref="btn"></el-button>
           </el-footer>
         </el-container>
       </el-container>
@@ -66,10 +69,91 @@ export default {
   },
   data () {
     return {
-      input: ''
+      input: '',
+      goEasy: '',
+      list: [],
+      userId: '',
+      stuStyleObj: {
+        color: '#15b8ce',
+        fontSize: '12px'
+      },
+      teaStyleObj: {
+        color: '#cc18ce',
+        fontSize: '12px'
+      }
     }
   },
-  method: {
+  created () {
+    this.input = ''
+    this.userId = 'Teacher'
+    this.list.push({
+      userId: this.userId,
+      message: '您已进入聊天室',
+      style: this.teaStyleObj
+    })
+    this.goEasy = new GoEasy({
+      appkey: 'BC-2c1b84e7528c4d37a2aec64c26343efe'
+    })
+  },
+  methods: {
+    encodeScript (data) {
+      if (data == null || data === '') {
+        return ''
+      }
+      return data.replace('<', '&lt;').replace('>', '&gt;')
+    },
+    submit () {
+      let text = this.encodeScript(this.input)
+      let message = "{'userId': '" + this.userId + "', 'message': '" + text + "'}"
+      this.goEasy.publish({
+        channel: 'teach',
+        message: message
+      })
+      this.list.push({
+        userId: this.userId,
+        message: text,
+        style: this.teaStyleObj
+      })
+      this.input = ''
+    },
+    emit () {
+      let text = this.encodeScript(this.input)
+      let message = "{'userId': '" + this.userId + "', 'message': '" + text + "'}"
+      this.goEasy.publish({
+        channel: 'teach',
+        message: message
+      })
+      this.input = ''
+    },
+    changeStyle () {
+      this.isTeacher = false
+    },
+    listen () {
+      let _list = this.list
+      let _stuStyleObj = this.stuStyleObj
+      this.goEasy.subscribe({
+        channel: 'stu',
+        onMessage: function (data) {
+          let result = eval('(' + data.content + ')')
+          alert(_stuStyleObj)
+          _list.push({
+            userId: result.userId,
+            message: result.message,
+            style: _stuStyleObj
+          })
+        }
+      })
+    },
+    enter (event) {
+      let e = event || window.event || arguments.callee.caller.arguments[0]
+      if (e && e.keyCode === 13) { // enter 键
+        this.emit()
+      }
+    }
+  },
+  mounted () {
+    this.listen()
+    document.onkeydown = this.enter
   }
 }
 
@@ -90,59 +174,6 @@ if (navigator.getUserMedia) {
 } else {
   this.$message('警告！该浏览器不支持')
 }
-
-let socket = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/server')
-
-$(function () {
-  listen()
-})
-
-function encodeScript (data) {
-  if (data == null || data === '') {
-    return ''
-  }
-  return data.replace('<', '&lt;').replace('>', '&gt;')
-}
-
-function emit () {
-  let text = encodeScript($('#msg').val())
-  let msg = {
-    'message': text,
-    'color': '#15b8ce',
-    'bubbleColor': '#2E2E2E',
-    'fontSize': '12',
-    'fontType': '黑体'
-  }
-  msg = JSON.stringify(msg)
-
-  socket.send(msg)
-  $('#content').append("<kbd style='color: #" + 'ce181c' + ';float: right; font-size: ' + 12 + ";'>" + text + '</kbd><br/>')
-  $('#msg').val('')
-}
-
-function listen () {
-  socket.onopen = function () {
-    $('#content').append('<kbd>Welcome!</kbd></br>')
-  }
-  socket.onmessage = function (evt) {
-    let data = JSON.parse(evt.data)
-    $('#content').append("<kbd style='color: " + data.color + ';font-size: ' + data.fontSize + ";margin-top: 10px;'>" + data.message + '</kbd></br>')
-  }
-  socket.onclose = function (evt) {
-    $('#content').append('<kbd>' + 'Close!' + '</kbd></br>')
-  }
-  socket.onerror = function (evt) {
-    $('#content').append('<kbd>' + 'ERROR!' + '</kbd></br>')
-  }
-}
-
-document.onkeydown = function (event) {
-  let e = event || window.event || arguments.callee.caller.arguments[0]
-  if (e && e.keyCode === 13) { // enter 键
-    emit()
-  }
-}
-
 </script>
 
 <style scoped>
@@ -194,6 +225,7 @@ document.onkeydown = function (event) {
     width: 400px;
   }
   #container1 {
-    height:200px;border-top: #1b6d85 2px solid;
+    height:200px;
+    border-top: #1b6d85 2px solid;
   }
 </style>

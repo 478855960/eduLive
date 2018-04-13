@@ -10,6 +10,11 @@
       </el-container>
       <el-container direction="vertical" class="ec_right">
         <el-main>
+          <el-card class="box-card" id="content">
+            <div v-for="item in list" class="text item">
+              <p v-bind:style="item.style">{{item.userId}}: {{item.message}} </p>
+            </div>
+          </el-card>
         </el-main>
         <el-container id="container1">
           <el-main>
@@ -19,9 +24,10 @@
             <el-input
               placeholder="请输入内容"
               v-model="input"
-              clearable>
+              clearable
+              id="msg">
             </el-input>
-            <el-button type="primary" icon="el-icon-d-arrow-right"></el-button>
+            <el-button type="primary" icon="el-icon-d-arrow-right" @click="submit" id="btn"></el-button>
           </el-footer>
         </el-container>
       </el-container>
@@ -39,8 +45,31 @@ export default {
   name: 'Live_Student',
   data () {
     return {
-      input: ''
+      input: '',
+      goEasy: '',
+      list: [],
+      userId: '',
+      stuStyleObj: {
+        color: '#15b8ce',
+        fontSize: '12px'
+      },
+      teaStyleObj: {
+        color: '#cc18ce',
+        fontSize: '12px'
+      }
     }
+  },
+  created () {
+    this.input = ''
+    this.userId = 'StudentX'
+    this.list.push({
+      userId: this.userId,
+      message: '您已进入聊天室',
+      style: this.stuStyleObj
+    })
+    this.goEasy = new GoEasy({
+      appkey: 'BC-2c1b84e7528c4d37a2aec64c26343efe'
+    })
   },
   methods: {
     joinLive () {
@@ -62,6 +91,59 @@ export default {
         alert('coming!!!!!!!!!!!!!!!')
         stream.play('video')
       })
+    },
+    encodeScript (data) {
+      if (data == null || data === '') {
+        return ''
+      }
+      return data.replace('<', '&lt;').replace('>', '&gt;')
+    },
+    submit () {
+      let text = this.encodeScript(this.input)
+      let message = "{'userId': '" + this.userId + "', 'message': '" + text + "'}"
+      this.goEasy.publish({
+        channel: 'stu',
+        message: message
+      })
+      this.input = ''
+    },
+    emit () {
+      let text = this.encodeScript(this.input)
+      let message = "{'userId': '" + this.userId + "', 'message': '" + text + "'}"
+      this.goEasy.publish({
+        channel: 'stu',
+        message: message
+      })
+      this.input = ''
+    },
+    changeStyle () {
+      this.isTeacher = false
+    },
+    listen () {
+      let _list = this.list
+      let _teaStyleObj = this.teaStyleObj
+      this.goEasy.subscribe({
+        channel: 'teach',
+        onMessage: function (data) {
+          let result = eval('(' + data.content + ')')
+          _list.push({
+            userId: result.userId,
+            message: result.message,
+            style: _teaStyleObj
+          })
+        }
+      })
+    },
+    enter (event) {
+      let e = event || window.event || arguments.callee.caller.arguments[0]
+      if (e && e.keyCode === 13) { // enter 键
+        this.emit()
+      }
+    },
+    mounted () {
+      alert('!!!!')
+      this.listen()
+      document.onkeydown = this.enter
     }
   }
 }
@@ -113,9 +195,11 @@ export default {
     width: 350px;
   }
   #container1 {
-    height:200px;border-top: #1b6d85 2px solid;
+    height:200px;
+    border-top: #1b6d85 2px solid;
   }
   video {
-    width: 500px;height: 300px;
+    width: 500px;
+    height: 300px;
   }
 </style>
