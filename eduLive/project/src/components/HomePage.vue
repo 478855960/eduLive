@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" type="flex" justify="end">
+      <el-menu :default-active="activeIndex" id="head-menu" class="el-menu" mode="horizontal" @select="handleSelect">
         <el-menu-item>硕学平台</el-menu-item>
         <el-menu-item index="LiveList">直播列表</el-menu-item>
         <el-menu-item index="VideoList">录播列表</el-menu-item>
@@ -102,5 +102,11 @@ export default {
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
   }
-
+  #head-menu{
+    background-color: #545c64;
+    text-color: #fff;
+    active-text-color: #ffd04b;
+    type: flex;
+    justify: end
+  }
 </style>
