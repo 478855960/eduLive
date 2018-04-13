@@ -75,57 +75,6 @@ export default {
   }
 }
 
-/* let socket = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/server')
-
-$(function () {
-  listen()
-})
-
-function encodeScript (data) {
-  if (data == null || data === '') {
-    return ''
-  }
-  return data.replace('<', '&lt;').replace('>', '&gt;')
-}
-
-function emit () {
-  let text = encodeScript($('#msg').val())
-  let msg = {
-    'message': text,
-    'color': '#15b8ce',
-    'bubbleColor': '#2E2E2E',
-    'fontSize': '12',
-    'fontType': '黑体'
-  }
-  msg = JSON.stringify(msg)
-
-  $('#content').append("<kbd style='color: #" + 'ce181c' + ';float: right; font-size: ' + 12 + ";'>" + text + '</kbd><br/>')
-  $('#msg').val('')
-}
-
-function listen () {
-  socket.onopen = function () {
-    $('#content').append('<kbd>Welcome!</kbd></br>')
-  }
-  socket.onmessage = function (evt) {
-    let data = JSON.parse(evt.data)
-    $('#content').append("<kbd style='color: " + data.color + ';font-size: ' + data.fontSize + ";margin-top: 10px;'>" + data.message + '</kbd></br>')
-  }
-  socket.onclose = function (evt) {
-    $('#content').append('<kbd>' + 'Close!' + '</kbd></br>')
-  }
-  socket.onerror = function (evt) {
-    $('#content').append('<kbd>' + 'ERROR!' + '</kbd></br>')
-  }
-}
-
-document.onkeydown = function (event) {
-  let e = event || window.event || arguments.callee.caller.arguments[0]
-  if (e && e.keyCode === 13) { // enter 键
-    emit()
-  }
-} */
-
 </script>
 
 <style scoped>
