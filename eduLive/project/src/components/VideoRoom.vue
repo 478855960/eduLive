@@ -1,8 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" type="flex" justify="end" align-self="flex-end"
-      >
+      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect">
         <el-menu-item>录播间</el-menu-item>
         <el-menu-item index="LiveList">直播列表</el-menu-item>
         <el-menu-item index="VideoList">录播列表</el-menu-item>
@@ -31,5 +30,12 @@ export default {
 </script>
 
 <style scoped>
-
+  #head-menu{
+    background-color: #545c64;
+    text-color: #fff;
+    active-text-color: #ffd04b;
+    type: flex;
+    justify: end;
+    align-self: flex-end;
+  }
 </style>
