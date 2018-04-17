@@ -38,7 +38,7 @@
 </template>
 
 <script>
-/* eslint-disable no-caller,no-eval */
+/* eslint-disable no-caller,no-eval,no-undef */
 
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
 AgoraRTC.Logger.error('this is error')
@@ -75,6 +75,8 @@ export default {
     this.goEasy = new GoEasy({
       appkey: 'BC-2c1b84e7528c4d37a2aec64c26343efe'
     })
+    this.listen()
+    document.onkeydown = this.enter
   },
   methods: {
     joinLive () {
@@ -119,15 +121,27 @@ export default {
         channel: 'stu',
         message: message
       })
+      this.list.push({
+        userId: this.userId,
+        message: text,
+        style: this.stuStyleObj
+      })
       this.input = ''
     },
     emit () {
       let text = this.encodeScript(this.input)
       let message = "{'userId': '" + this.userId + "', 'message': '" + text + "'}"
-      this.goEasy.publish({
-        channel: 'stu',
-        message: message
-      })
+      if (text !== '') {
+        this.goEasy.publish({
+          channel: 'stu',
+          message: message
+        })
+        this.list.push({
+          userId: this.userId,
+          message: text,
+          style: this.stuStyleObj
+        })
+      }
       this.input = ''
     },
     changeStyle () {
@@ -155,8 +169,6 @@ export default {
       }
     },
     mounted () {
-      this.listen()
-      document.onkeydown = this.enter
     }
   }
 }
