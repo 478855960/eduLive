@@ -5,17 +5,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -43,6 +47,7 @@ import com.yiming.entity.User;
 import com.yiming.service.UserService;
 import com.yiming.util.CheckSumBuilder;
 import com.yiming.util.Constant;
+import com.yiming.util.PPT2ImageUtil;
 import com.yiming.util.SendVerificationCode;
 
 @Controller
@@ -51,41 +56,43 @@ public class UserController {
     @Autowired
     UserMapper userDao;
     @Autowired
-    private  HttpSession session;
+    private HttpSession session;
+    @Autowired
+    private HttpServletRequest request;
     @Resource
     private UserService userService;
 
     /**
-    * 用户的登录函数
-    * 判断电话密码是否正确
-    * 如果正确，返回“success”，不正确返回“failure”（字符串）
-    */
+     * 用户的登录函数 判断电话密码是否正确 如果正确，返回“success”，不正确返回“failure”（字符串）
+     */
     @RequestMapping(value = "/userLogin.action", method = RequestMethod.POST)
     @ResponseBody
-    public String login(@RequestBody User reqUser){
+    public String login(@RequestBody User reqUser) {
         User user = null;
         user = userDao.login(reqUser.getPhoneNum(), reqUser.getPassword());
-        if(user != null){
+        if (user != null) {
             session.setAttribute(Constant.USER, user);
             return "success";
-        }else{
+        } else {
             return "failure";
         }
     }
+
     /**
      * 检查输入的旧密码是否正确
      */
     @RequestMapping(value = "/checkPassword.action", method = RequestMethod.POST)
     @ResponseBody
-    public int checkPassword(@RequestBody User reqUser){
+    public int checkPassword(@RequestBody User reqUser) {
         User sessionUser = (User) session.getAttribute(Constant.USER);
-        if(sessionUser.getPassword().equals(reqUser.getPassword())) {
+        if (sessionUser.getPassword().equals(reqUser.getPassword())) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
 
     }
+
     /**
      * checkPhoneNum.action
      */
@@ -93,12 +100,13 @@ public class UserController {
     @ResponseBody
     public int checkNickname(@RequestBody User user) {
         User result = userDao.getUserByNickname(user.getNickname());
-        if(result == null) {
+        if (result == null) {
             return 0;
-        }else {
+        } else {
             return 1;
         }
     }
+
     /**
      *
      * @param user
@@ -108,9 +116,9 @@ public class UserController {
     @ResponseBody
     public int checkPhoneNum(@RequestBody User user) {
         User result = userDao.getUserByPhoneNum(user.getPhoneNum());
-        if(result == null) {
+        if (result == null) {
             return 0;
-        }else {
+        } else {
             return 1;
         }
     }
@@ -126,9 +134,9 @@ public class UserController {
         SendVerificationCode sendCode = new SendVerificationCode(user.getPhoneNum());
         String code = sendCode.sendVerificationCode();
         System.out.println("code is: " + code);
-        if(code.length() != 6) {
+        if (code.length() != 6) {
             return 0;
-        }else {
+        } else {
             session.setAttribute("VerificationCode", code);
             return 1;
         }
@@ -142,13 +150,14 @@ public class UserController {
     public int isVerificationCodeTrue(@RequestBody User user) {
         System.out.println("sdadadadadadada");
         System.out.println("code si: " + user.getVerificationCode());
-        String verificationCode = (String)session.getAttribute("VerificationCode");
-        if(user.getVerificationCode().equals(verificationCode)) {
+        String verificationCode = (String) session.getAttribute("VerificationCode");
+        if (user.getVerificationCode().equals(verificationCode)) {
             return 1;
-        }else {
+        } else {
             return 0;
         }
     }
+
     /**
      * @throws IOException
      * @throws ClientProtocolException
@@ -162,90 +171,97 @@ public class UserController {
         System.out.println("code is: " + code);
         return 0;
     }
+
     /**
      *
      * @param user
      * @return 0注册失败 1注册成功
      */
-    @RequestMapping(value = "/userRegister.action",method = RequestMethod.POST)
+    @RequestMapping(value = "/userRegister.action", method = RequestMethod.POST)
     @ResponseBody
     public void register(@RequestBody User user) {
-        userDao.register(user.getPhoneNum(),user.getPassword(),user.getName(),user.getNickname());
-//		if(result == null)
-//			return 0;
-//		else
-//			return 1;
+        userDao.register(user.getPhoneNum(), user.getPassword(), user.getName(), user.getNickname());
+        // if(result == null)
+        // return 0;
+        // else
+        // return 1;
     }
+
     /**
      *
-     * @param nickname 用户想要修改的昵称
+     * @param nickname
+     *            用户想要修改的昵称
      * @return
      */
-    @RequestMapping(value="/userModifyNickname.action",method = RequestMethod.POST)
+    @RequestMapping(value = "/userModifyNickname.action", method = RequestMethod.POST)
     @ResponseBody
     public String userModifyNickName(@RequestBody User user) {
         User sessionUser = (User) session.getAttribute(Constant.USER);
-        if(null == sessionUser) {
+        if (null == sessionUser) {
             return "relogin";
         }
         int returnStatus = userService.setUserNickname(sessionUser.getPhoneNum(), user.getNickname());
-        if(-1 == returnStatus) {
+        if (-1 == returnStatus) {
             return "nicknameExist";
-        }else if(0 == returnStatus) {
+        } else if (0 == returnStatus) {
             return "modifyFail";
-        }else {
+        } else {
             return "success";
         }
     }
+
     /**
      *
      * @return
      */
-    @RequestMapping(value="/userModifyPassword.action",method = RequestMethod.POST)
+    @RequestMapping(value = "/userModifyPassword.action", method = RequestMethod.POST)
     @ResponseBody
     public String userModifyPassword(@RequestBody User user) {
         User sessionUser = (User) session.getAttribute(Constant.USER);
-        if(null == sessionUser) {
+        if (null == sessionUser) {
             return "relogin";
         }
         int returnStatus = userService.setUserPassword(sessionUser.getPhoneNum(), user.getPassword());
-        if(1 == returnStatus) {
+        if (1 == returnStatus) {
             sessionUser = userDao.getUserByPhoneNum(sessionUser.getPhoneNum());
             session.setAttribute(Constant.USER, sessionUser);
             System.err.println("succ");
             return "success";
-        }else {
+        } else {
             return "modifyFail";
         }
     }
 
     /**
      *
-     * @param file 前台传来的文件
+     * @param file
+     *            前台传来的文件
      * @return
      */
-    @RequestMapping(value="/upload.action",method = RequestMethod.POST)
+    @RequestMapping(value = "/upload.action", method = RequestMethod.POST)
     @ResponseBody
     public String upload(@RequestParam("file") MultipartFile file) {
+        String imgURLs = "";
         try {
-            //获取文件名
-            String realFileName = file.getOriginalFilename();
-            // 获取当前web服务器项目路径
-            String ctxPath = session.getServletContext().getRealPath("/")+ "fileupload/";
-            System.out.println(ctxPath);
-            // 创建文件夹
-            File dirPath = new File(ctxPath);
+            String realFileName = file.getOriginalFilename(); // 获取文件名
+            String ctxPath = session.getServletContext().getRealPath("/") + "fileupload/"; // 获取当前web服务器项目路径
+            File dirPath = new File(ctxPath); // 创建文件夹
             if (!dirPath.exists()) {
                 dirPath.mkdir();
             }
-            // 创建文件
-            File uploadFile = new File(ctxPath + realFileName);
-            // Copy文件
-            FileCopyUtils.copy(file.getBytes(), uploadFile);
+            File uploadFile = new File(ctxPath + realFileName); // 创建文件
+            FileCopyUtils.copy(file.getBytes(), uploadFile); // Copy文件
+            String imgPath = ctxPath + realFileName + "_images/"; // 处理图片
+            String fileURL = "http://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath() + "//fileupload//" + realFileName + "_images//";
+            if (realFileName.substring(realFileName.length() - 3, realFileName.length()).equals("ppt")) {
+                imgURLs = PPT2ImageUtil.getPPTImage(imgPath, ctxPath, realFileName, fileURL);
+            } else if (realFileName.substring(realFileName.length() - 4, realFileName.length()).equals("pptx")) {
+                imgURLs = PPT2ImageUtil.getPPTXImage(imgPath, ctxPath, realFileName, fileURL);
+            }
         } catch (Exception ex) {
+            ex.printStackTrace();
             return "failure";
         }
-        return "success";
+        return imgURLs;
     }
 }
-
