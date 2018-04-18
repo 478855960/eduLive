@@ -121,10 +121,17 @@ export default {
     emit () {
       let text = this.encodeScript(this.input)
       let message = "{'userId': '" + this.userId + "', 'message': '" + text + "'}"
-      this.goEasy.publish({
-        channel: 'teach',
-        message: message
-      })
+      if (text !== '') {
+        this.goEasy.publish({
+          channel: 'teach',
+          message: message
+        })
+        this.list.push({
+          userId: this.userId,
+          message: text,
+          style: this.teaStyleObj
+        })
+      }
       this.input = ''
     },
     changeStyle () {
@@ -137,7 +144,6 @@ export default {
         channel: 'stu',
         onMessage: function (data) {
           let result = eval('(' + data.content + ')')
-          alert(_stuStyleObj)
           _list.push({
             userId: result.userId,
             message: result.message,
