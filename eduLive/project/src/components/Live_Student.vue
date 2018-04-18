@@ -15,7 +15,7 @@
         <el-main>
           <el-card class="box-card" id="content">
             <div v-for="item in list" :key="item" class="text item">
-              <p v-bind:style="item.style">{{item.userId}}: {{item.message}} </p>
+              <p v-bind:style="item.style">{{item.userId}}: <span v-html="emoji(item.message)"></span> </p>
             </div>
           </el-card>
         </el-main>
@@ -23,6 +23,18 @@
           <el-main>
           </el-main>
           <el-footer>
+            <el-popover
+              ref="popover"
+              placement="top-start"
+              trigger="click">
+              <div class="emoji-box">
+                <vue-emoji
+                  @select="selectEmoji">
+                </vue-emoji>
+                <span class="pop-arrow arrow"></span>
+              </div>
+            </el-popover>
+            <i class="icon iconfont icon-face" v-popover:popover></i>
             <el-input
               placeholder="请输入内容"
               v-model="input"
@@ -41,12 +53,16 @@
 /* eslint-disable no-caller,no-eval,no-undef */
 
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
+import vueEmoji from '@/components/emoji'
 AgoraRTC.Logger.error('this is error')
 AgoraRTC.Logger.warning('this is warning')
 AgoraRTC.Logger.info('this is info')
 AgoraRTC.Logger.debug('this is debug')
 export default {
   name: 'Live_Student',
+  components: {
+    vueEmoji
+  },
   data () {
     return {
       input: '',
@@ -79,6 +95,9 @@ export default {
     document.onkeydown = this.enter
   },
   methods: {
+    selectEmoji (code) {
+      this.input += code
+    },
     joinLive () {
       let appID = 'a86334acf5c04a6aa7a85b66d0767612'
       let channel = '1000'
@@ -213,7 +232,7 @@ export default {
 
   .el-input{
     margin: 10px auto;
-    width: 350px;
+    width: 320px;
   }
   #container-text {
     height:200px;
@@ -221,5 +240,9 @@ export default {
   #video {
     width: 100%;
     height: 220px;
+  }
+  .iconfont {
+    cursor: pointer;
+    color: #f7793a;
   }
 </style>
