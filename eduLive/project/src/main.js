@@ -8,12 +8,15 @@ import router from './router'
 import $ from 'jquery'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import './assets/css/iconfont.css'
+import { emoji } from './utils/emoji.js'
 
 Vue.use(VueAwesomeSwiper)
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 Vue.prototype.rootUrl = '/TeamYiMing'
+Vue.prototype.emoji = emoji
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

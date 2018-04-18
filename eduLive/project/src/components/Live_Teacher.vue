@@ -36,11 +36,23 @@
           <el-main>
             <el-card class="box-card" ref="chatcard">
               <div v-for="item in list" class="text item">
-                <p v-bind:style="item.style">{{item.userId}}: {{item.message}} </p>
+                <p v-bind:style="item.style">{{item.userId}}: <span v-html="emoji(item.message)"></span> </p>
               </div>
             </el-card>
           </el-main>
           <el-footer>
+            <el-popover
+              ref="popover"
+              placement="top-start"
+              trigger="click">
+              <div class="emoji-box">
+                <vue-emoji
+                  @select="selectEmoji">
+                </vue-emoji>
+                <span class="pop-arrow arrow"></span>
+              </div>
+            </el-popover>
+            <i class="icon iconfont icon-face" v-popover:popover></i>
             <el-input
               placeholder="请输入内容"
               v-model="input"
@@ -61,13 +73,16 @@ import CodeEditor from '@/components/CodeEditor'
 import SlideDisplay from '@/components/SlideDisplay'
 import Whiteboard from '@/components/whiteboard'
 import Video from '@/components/video'
+import vueEmoji from '@/components/emoji'
+
 export default {
   name: 'Live_Teacher',
   components: {
     CodeEditor,
     Whiteboard,
     SlideDisplay,
-    Video
+    Video,
+    vueEmoji
   },
   data () {
     return {
@@ -98,6 +113,9 @@ export default {
     })
   },
   methods: {
+    selectEmoji (code) {
+      this.input += code
+    },
     encodeScript (data) {
       if (data == null || data === '') {
         return ''
@@ -190,13 +208,13 @@ export default {
 
   .ec_left{
     width: 70%;
-    height: 600px;
+    height: 650px;
     border: #1b6d85 2px solid;
   }
 
   .ec_right{
     width: 30%;
-    height: 600px;
+    height: 650px;
     border: #1b6d85 2px solid;
   }
 
@@ -210,7 +228,7 @@ export default {
   }
   .el-input{
     margin: 10px auto;
-    width: 350px;
+    width: 320px;
   }
   .box-card{
     width: 400px;
@@ -218,5 +236,9 @@ export default {
   #container-text{
     height:320px;
     border-top: #1b6d85 2px solid;
+  }
+   .iconfont {
+    cursor: pointer;
+    color: #f7793a;
   }
 </style>
