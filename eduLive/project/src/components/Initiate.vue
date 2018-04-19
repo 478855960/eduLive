@@ -4,13 +4,13 @@
     <el-main>
       <h1>发起直播</h1>
       <el-form ref="titleForm" :model="titleForm" :rules="titleRules">
-        <el-form-item label="直播主题" prop="title">
-          <el-input v-model="titleForm.title" placeholder="请输入直播主题"></el-input>
+        <el-form-item label="直播主题" prop="roomName">
+          <el-input v-model="titleForm.roomName" placeholder="请输入直播主题"></el-input>
         </el-form-item>
-        <el-form-item label="是否录播" prop="record">
-          <el-radio-group v-model="titleForm.record">
-            <el-radio label="是"></el-radio>
-            <el-radio label="否"></el-radio>
+        <el-form-item label="是否录播" prop="isRecording">
+          <el-radio-group v-model="titleForm.isRecording">
+            <el-radio label="1">是</el-radio>
+            <el-radio label="0">否</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -18,9 +18,6 @@
         <el-form-item label="上传封面">
           <el-col :span="8">
             <input type="file" @change="getCover($event)"/>
-          </el-col>
-          <el-col :span="4">
-            <el-button type="primary" @click="submitCover($event)">上传</el-button>
           </el-col>
         </el-form-item>
         <div v-show="coverUping==1">正在上传中</div>
@@ -30,16 +27,10 @@
           <el-col :span="8">
             <input type="file" @change="getFile($event)"/>
           </el-col>
-          <el-col :span="4">
-            <el-button type="primary" @click="submitFile($event)">上传</el-button>
-          </el-col>
         </el-form-item>
         <div v-show="fileUping==1">正在上传中</div>
       </el-form>
-      <el-button type="primary" @click="confirm('titleForm')" id="confirm-button">确定</el-button>
-      <!--<el-upload :action="uploadUrl" :data="uploadData" :onError="uploadError" :onSuccess="uploadSuccess" :before-upload="before" :headers="headersData">-->
-        <!--<el-button>选择文件</el-button>-->
-      <!--</el-upload>-->
+      <el-button type="primary" @click="confirm" id="confirm-button">确定</el-button>
     </el-main>
   </el-container>
 </template>
@@ -49,72 +40,68 @@ import ElUpload from 'element-ui/packages/upload/src/index'
 
 export default {
   components: {ElUpload},
-  name: 'Upload',
+  name: 'Initiate',
   data () {
     return {
       fileUping: 0,
       coverUping: 0,
       file: '',
       cover: '',
-      coverUrl: '/user/cover.action',
-      fileUrl: '/user/upload.action',
+      coverUrl: '/liveroom/cover.action',
+      fileUrl: '/liveroom/upload.action',
+      initiateUrl: '/liveroom/initiate.action',
       uploadData: {},
       headersData: {
         'Access-Control-Allow-Origin': '*'
       },
       titleForm: {
-        title: '',
-        record: ''
+        roomName: '',
+        isRecording: ''
       },
       titleRules: {
-        title: [
+        roomName: [
           { required: true, message: '请输入直播主题', trigger: 'blur' }
         ],
-        record: [
+        isRecording: [
           { required: true, message: '请选择是否录播', trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
-    submitFile (event) {
-      event.preventDefault()
+    submitFile () {
       let _this = this
       let zipFormData = new FormData()
       zipFormData.append('file', this.file)
       let config = {headers: {'Content-Type': 'multipart/form-data'}}
-      _this.fileUping = 1
-      // _this.$http.post
+      this.$message.info('教学资源上传中')
       this.$ajax.post(this.rootUrl + _this.fileUrl, zipFormData, config)
         .then((response) => {
-          _this.fileUping = 0
           if (response.data === '') {
-            this.$message.error('文件类型错误')
+            this.$message.error('教学资源文件类型错误')
           } else if (response.data === 'failure') {
-            this.$message.error('上传错误')
+            this.$message.error('系统错误')
           } else {
             sessionStorage.setItem('pptImages', response.data)
             this.$message.success('上传成功')
+            this.doInitiate()
           }
         })
     },
-    submitCover (event) {
-      event.preventDefault()
+    submitCover () {
       let _this = this
       let coverFormData = new FormData()
       coverFormData.append('cover', this.cover)
       let config = {headers: {'Content-Type': 'multipart/form-data'}}
-      _this.coverUping = 1
-      // _this.$http.post
+      this.$message.info('封面上传中')
       this.$ajax.post(this.rootUrl + _this.coverUrl, coverFormData, config)
         .then((response) => {
-          _this.coverUping = 0
           if (response.data === '') {
             this.$message.error('系统错误')
           } else if (response.data === 'failure') {
-            this.$message.error('上传错误')
+            this.$message.error('封面文件类型错误')
           } else {
-            this.$message.success('上传成功')
+            this.submitFile()
           }
         })
     },
@@ -124,14 +111,31 @@ export default {
     getCover (event) {
       this.cover = event.target.files[0]
     },
-    confirm (formName) {
-      this.$refs[formName].validate((valid) => {
+    confirm () {
+      this.$refs['titleForm'].validate((valid) => {
         if (valid) {
-          this.$router.push({path: '/Live_Teacher'})
+          this.submitCover()
         } else {
           return false
         }
       })
+    },
+    doInitiate () {
+      let _this = this
+      this.$ajax.post(this.rootUrl + _this.initiateUrl, _this.titleForm)
+        .then((response) => {
+          if (response.data === 'success') {
+            this.$message.success('开始直播')
+            this.$router.push({path: '/Live_Teacher'})
+          } else if (response.data === 'failure') {
+            this.$message.error('发起失败')
+          } else if (response.data === 'relogin') {
+            this.$message.error('请登录')
+            this.$router.push({path: '/Login'})
+          } else {
+            this.$message.error('系统错误')
+          }
+        })
     }
   }
 }

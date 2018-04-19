@@ -231,37 +231,4 @@ public class UserController {
             return "modifyFail";
         }
     }
-
-    /**
-     *
-     * @param file
-     *            前台传来的文件
-     * @return
-     */
-    @RequestMapping(value = "/upload.action", method = RequestMethod.POST)
-    @ResponseBody
-    public String upload(@RequestParam("file") MultipartFile file) {
-        String imgURLs = "";
-        try {
-            String realFileName = file.getOriginalFilename(); // 获取文件名
-            String ctxPath = session.getServletContext().getRealPath("/") + "fileupload/"; // 获取当前web服务器项目路径
-            File dirPath = new File(ctxPath); // 创建文件夹
-            if (!dirPath.exists()) {
-                dirPath.mkdir();
-            }
-            File uploadFile = new File(ctxPath + realFileName); // 创建文件
-            FileCopyUtils.copy(file.getBytes(), uploadFile); // Copy文件
-            String imgPath = ctxPath + realFileName + "_images/"; // 处理图片
-            String fileURL = "http://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath() + "//fileupload//" + realFileName + "_images//";
-            if (realFileName.substring(realFileName.length() - 3, realFileName.length()).equals("ppt")) {
-                imgURLs = PPT2ImageUtil.getPPTImage(imgPath, ctxPath, realFileName, fileURL);
-            } else if (realFileName.substring(realFileName.length() - 4, realFileName.length()).equals("pptx")) {
-                imgURLs = PPT2ImageUtil.getPPTXImage(imgPath, ctxPath, realFileName, fileURL);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return "failure";
-        }
-        return imgURLs;
-    }
 }

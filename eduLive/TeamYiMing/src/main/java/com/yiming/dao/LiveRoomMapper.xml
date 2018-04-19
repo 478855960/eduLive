@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.yiming.dao.LiveRoomMapper">
+      <insert id="initiate" parameterType="com.yiming.entity.LiveRoom">
+          insert into liveroom(liveRoomNum, roomName, teacherId, sourcePath, imgPath, isRecording) 
+          values(#{0},#{1},#{2},#{3},#{4},#{5})
+      </insert>
+  </mapper>	
+  
+  
