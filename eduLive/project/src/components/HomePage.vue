@@ -1,30 +1,38 @@
 <template>
-  <el-container>
+  <elcontainer>
     <el-header>
-      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" type="flex" justify="end">
-        <el-menu-item>硕学平台</el-menu-item>
+      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect"  text-color="#3b3a36" active-text-color="#3b3a36" router>
+        <el-menu-item index="HomePage">硕学平台</el-menu-item>
         <el-menu-item index="LiveList">直播列表</el-menu-item>
         <el-menu-item index="VideoList">录播列表</el-menu-item>
         <el-menu-item index="UserCenter">个人中心</el-menu-item>
-      </el-menu></el-header>
-    <el-container>
-      <el-container>
-        <el-main>
-          <el-carousel :interval="4000" type="card" height="360px">
-          <el-carousel-item v-for="item in 6" :key="item">
-            <h3>{{ item }}</h3>
-          </el-carousel-item>
-        </el-carousel></el-main>
-        <el-footer>
-          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
-            <el-menu-item index="HomePage">首页</el-menu-item>
-            <el-menu-item index="help">帮助中心</el-menu-item>
-            <el-menu-item index="aboutus">关于我们</el-menu-item>
-          </el-menu>
-        </el-footer>
-      </el-container>
-    </el-container>
-  </el-container>
+        <el-menu-item index="Login" >登陆</el-menu-item>
+        <el-menu-item index="Register" >注册</el-menu-item>
+      </el-menu>
+    </el-header>
+    <el-main>
+      <el-input class="search" v-model="input" placeholder="搜索感兴趣的课程"></el-input>
+      <el-button class="search-buttom" type="primary" icon="el-icon-search">搜索</el-button>
+      <el-carousel :interval="4000" type="card" height="360px">
+        <el-carousel-item v-for="item in 6" :key="item">
+          <h3>{{ item }}</h3>
+        </el-carousel-item>
+      </el-carousel>
+    </el-main>
+    <el-footer>
+      <el-row>
+        <el-col :span="4"></el-col>
+        <el-col :span="20">
+      <el-breadcrumb separator="/">
+     <el-breadcrumb-item>首页</el-breadcrumb-item>
+    <el-breadcrumb-item>帮助中心</el-breadcrumb-item>
+    <el-breadcrumb-item>关于我们</el-breadcrumb-item>
+    <el-breadcrumb-item>意见反馈</el-breadcrumb-item>
+    </el-breadcrumb>
+        </el-col>
+      </el-row>
+    </el-footer>
+  </elcontainer>
 </template>
 
 <script>
@@ -50,25 +58,45 @@ export default {
 </script>
 
 <style scoped>
+  .el-header {
+    background-color: #89bdd3;
+  }
+  .el-footer {
+    background-color: #3b3a36;
+    text-align: center;
+    center: true;
+  }
   .el-header, .el-footer {
-    background-color: #B3C0D1;
     color: #333;
     text-align: center;
     line-height: 60px;
   }
   .el-menu {
-    display: flex;
+    background-color: #89bdd3;
+  }
+  .search {
+    width: 200px;
+    margin-top: 1px;
+    margin-left: 900px;
+  }
+  .search-buttom{
+    height: 40px;
+    margin:10px 5px 15px;
+    background-color: #89bdd3;
+    border: none;
   }
   .el-menu-item{
     margin-right: 20px;
-    }
+  }
+  .login {
+    margin-left: 550px;
+  }
   .el-main {
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
     line-height: 160px;
   }
-
   body > .el-container {
     margin-bottom: 40px;
   }
@@ -96,11 +124,11 @@ export default {
   }
 
   .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
+    background-color: #b3c2bf;
   }
 
   .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+    background-color: #c0dfd9;
   }
 
 </style>

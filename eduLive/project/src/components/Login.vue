@@ -1,17 +1,26 @@
 <template>
   <el-container>
-    <el-header></el-header>
+    <el-header>
+      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect"  text-color="#3b3a36" active-text-color="#3b3a36" router>
+        <el-menu-item index="HomePage">硕学平台</el-menu-item>
+        <el-menu-item index="LiveList">直播列表</el-menu-item>
+        <el-menu-item index="VideoList">录播列表</el-menu-item>
+        <el-menu-item index="UserCenter">个人中心</el-menu-item>
+        <el-menu-item index="Login" >登陆</el-menu-item>
+        <el-menu-item index="Register" >注册</el-menu-item>
+      </el-menu>
+    </el-header>
     <el-main>
       <h1>欢迎使用硕学教育平台</h1>
       <hr>
-      <el-form ref="loginForm" :rules="loginRules" :model="loginForm">
+      <el-form ref="loginForm" :rules="loginRules" :model="loginForm" label-width="80px">
         <el-form-item label="手机号" prop="phoneNum">
           <el-input v-model="loginForm.phoneNum" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="loginForm.password" placeholder="请输入密码" type="password"></el-input>
         </el-form-item>
-        <el-form-item label="验证码" required>
+        <el-form-item label="验证码" required >
           <el-col :span="14">
             <el-form-item prop="code" id="code-item">
               <el-input v-model="loginForm.code" placeholder="请输入验证码" id="code"></el-input>
@@ -29,6 +38,14 @@
         </el-form-item>
       </el-form>
     </el-main>
+    <el-footer>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>首页</el-breadcrumb-item>
+        <el-breadcrumb-item>帮助中心</el-breadcrumb-item>
+        <el-breadcrumb-item>关于我们</el-breadcrumb-item>
+        <el-breadcrumb-item>意见反馈</el-breadcrumb-item>
+      </el-breadcrumb>
+    </el-footer>
   </el-container>
 </template>
 
@@ -111,7 +128,25 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .el-header {
+    background-color: #89bdd3;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
+  h1 {
+    color: #89bdd3;
+  }
+  .el-footer {
+    background-color: #3b3a36;
+    text-align: center;
+    center: true;
+  }
+  .el-menu {
+    background-color: #89bdd3;
+  }
   .el-container {
+    background-color: #e3e3e3;
     text-align: center;
   }
 
@@ -121,11 +156,12 @@ export default {
   }
 
   .el-button {
-    background-color: #37C6C0;
+    background-color: #89bdd3;
     color: #ffffff;
     margin: 0 auto;
     margin-right: 80px;
     width: 30%;
+    border: none;
   }
 
   hr {

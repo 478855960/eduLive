@@ -161,8 +161,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .el-main{
-    width: 500px;
-    height: 700px;
+    background-color: #c0dfd9;
   }
   .el-container{
     margin: 0 auto;
@@ -177,8 +176,9 @@ export default {
     margin: 0px;
   }
   .el-button{
-    background-color: #37C6C0;
+    background-color: #89bdd3;
     width: 223px;
+    border: none;
   }
   .el-input{
     color: #e3e3e3;
