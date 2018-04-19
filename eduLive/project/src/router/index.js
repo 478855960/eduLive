@@ -12,7 +12,7 @@ import UserCenter from '@/components/UserCenter'
 import Whiteboard from '@/components/whiteboard'
 import CodeEditor from '@/components/CodeEditor'
 import Video from '@/components/video'
-import Upload from '@/components/Upload'
+import Initiate from '@/components/Initiate'
 import VideoRoom from '@/components/VideoRoom'
 import HomePage from '@/components/HomePage'
 import StudentList from'@/components/StudentList'
@@ -70,9 +70,9 @@ export default new Router({
       component: Video
     },
     {
-      path: '/Upload',
-      name: 'Upload',
-      component: Upload
+      path: '/Initiate',
+      name: 'Initiate',
+      component: Initiate
     },
     {
       path: '/VideoRoom',
