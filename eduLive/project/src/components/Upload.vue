@@ -16,10 +16,10 @@
       </el-form>
       <el-form>
         <el-form-item label="上传封面">
-          <el-col span="8">
+          <el-col :span="8">
             <input type="file" @change="getCover($event)"/>
           </el-col>
-          <el-col span="4">
+          <el-col :span="4">
             <el-button type="primary" @click="submitCover($event)">上传</el-button>
           </el-col>
         </el-form-item>
@@ -27,10 +27,10 @@
       </el-form>
       <el-form>
         <el-form-item label="上传教学资源">
-          <el-col span="8">
+          <el-col :span="8">
             <input type="file" @change="getFile($event)"/>
           </el-col>
-          <el-col span="4">
+          <el-col :span="4">
             <el-button type="primary" @click="submitFile($event)">上传</el-button>
           </el-col>
         </el-form-item>
@@ -88,12 +88,13 @@ export default {
       this.$ajax.post(this.rootUrl + _this.fileUrl, zipFormData, config)
         .then((response) => {
           _this.fileUping = 0
-          if (response.data === 'success') {
-            this.$message.success('上传成功')
+          if (response.data === '') {
+            this.$message.error('文件类型错误')
           } else if (response.data === 'failure') {
             this.$message.error('上传错误')
           } else {
-            this.$message.error('系统错误')
+            sessionStorage.setItem('pptImages', response.data)
+            this.$message.success('上传成功')
           }
         })
     },
@@ -108,12 +109,12 @@ export default {
       this.$ajax.post(this.rootUrl + _this.coverUrl, coverFormData, config)
         .then((response) => {
           _this.coverUping = 0
-          if (response.data === 'success') {
-            this.$message.success('上传成功')
+          if (response.data === '') {
+            this.$message.error('系统错误')
           } else if (response.data === 'failure') {
             this.$message.error('上传错误')
           } else {
-            this.$message.error('系统错误')
+            this.$message.success('上传成功')
           }
         })
     },
