@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.yiming.dao.UserMapper;
 import com.yiming.entity.User;
 import com.yiming.service.UserService;
@@ -231,4 +232,42 @@ public class UserController {
             return "modifyFail";
         }
     }
+
+    /**
+     *
+     * @param file 前台传来的文件
+     * @return
+     */
+    @RequestMapping(value="/upload.action",method = RequestMethod.POST)
+    @ResponseBody
+    public String upload(@RequestParam("file") MultipartFile file) {
+        try {
+            //获取文件名
+            String realFileName = file.getOriginalFilename();
+            // 获取当前web服务器项目路径
+            String ctxPath = session.getServletContext().getRealPath("/")+ "fileupload/";
+            System.out.println(ctxPath);
+            // 创建文件夹
+            File dirPath = new File(ctxPath);
+            if (!dirPath.exists()) {
+                dirPath.mkdir();
+            }
+            // 创建文件
+            File uploadFile = new File(ctxPath + realFileName);
+            // Copy文件
+            FileCopyUtils.copy(file.getBytes(), uploadFile);
+        } catch (Exception ex) {
+            return "failure";
+        }
+        return "success";
+    }
+
+    @RequestMapping(value="/getCurUser.action",method = RequestMethod.POST)
+    @ResponseBody
+    public String getCurUser() {
+        User user = (User) session.getAttribute(Constant.USER);
+        String result = JSON.toJSONString(user);
+        return result;
+    }
+
 }
