@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.yiming.dao.UserMapper;
 import com.yiming.entity.User;
 import com.yiming.service.UserService;
@@ -247,5 +248,14 @@ public class UserController {
         }
         return "success";
     }
+
+    @RequestMapping(value="/getCurUser.action",method = RequestMethod.POST)
+    @ResponseBody
+    public String getCurUser() {
+        User user = (User) session.getAttribute(Constant.USER);
+        String result = JSON.toJSONString(user);
+        return result;
+    }
+
 }
 

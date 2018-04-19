@@ -1,6 +1,5 @@
 <template>
 <div>
-  {{msg}}
   <el-popover  ref="stulist"  placement="top" trigger="click" class="stulist">
   <el-table :data="stuListMsg" height="400">
     <el-table-column  property="phoneNum" label="电话" ref="stu-phone-num" class="stu-phone-num"></el-table-column>
@@ -22,11 +21,16 @@ export default {
     return {
       wsObj: null,
       msg: '',
-      stuListMsg: ''
+      stuListMsg: '',
+      url: '/user/getCurUser.action',
+      sessioUser: null
     }
   },
   created () {
     this.init()
+    this.$ajax.post(this.rootUrl + this.url).then((response) => {
+      this.sessioUser = JSON.parse(response)
+    })
   },
   methods: {
     init () {
@@ -44,7 +48,7 @@ export default {
       this.stuListMsg = JSON.parse(event.data)
     },
     queryStuList () {
-      this.wsObj.send('queryStudentList')
+      this.wsObj.send(JSON.stringify(this.sessioUser))
     }
   }
 }
