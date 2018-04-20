@@ -42,9 +42,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.yiming.dao.LiveRoomMapper;
 import com.yiming.entity.LiveRoom;
 import com.yiming.entity.User;
+import com.yiming.service.LiveRoomService;
 import com.yiming.util.CheckSumBuilder;
 import com.yiming.util.Constant;
 import com.yiming.util.PPT2ImageUtil;
@@ -60,6 +62,22 @@ public class LiveRoomController {
     @Autowired
     private HttpServletRequest request;
 
+    @RequestMapping(value = "/getAllLiveRoomInfo.action", method = RequestMethod.POST)
+    @ResponseBody
+    public String showLiveList(){
+    	String result;
+    	LiveRoomService liveRoomService = new LiveRoomService();
+        List<LiveRoom> liveRoomInfo = new ArrayList<>();
+        liveRoomInfo = liveRoomService.getAllLiveRoomInfo();
+        if(liveRoomInfo == null) {
+        	result = "failed";
+        }
+        else {
+        	result = JSON.toJSONString(liveRoomInfo);
+        }
+        System.out.println(result);
+        return result;
+    }
     /**
      *
      * @param file

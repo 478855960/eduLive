@@ -15,7 +15,7 @@ import Video from '@/components/video'
 import Initiate from '@/components/Initiate'
 import VideoRoom from '@/components/VideoRoom'
 import HomePage from '@/components/HomePage'
-import StudentList from'@/components/StudentList'
+import StudentList from '@/components/StudentList'
 
 Vue.use(Router)
 Vue.use(ElementUI)

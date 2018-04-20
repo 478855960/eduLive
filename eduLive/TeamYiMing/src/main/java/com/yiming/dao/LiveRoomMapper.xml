@@ -10,6 +10,9 @@
       <select id="getSourcePath" parameterType="com.yiming.entity.LiveRoom" resultType="String">
         select sourcePath from liveroom where liveRoomNum=#{0}
       </select>
+      <select id="getAllLiveRoom" resultType="LiveRoom">
+        select * from liveroom
+      </select>
   </mapper>	
   
   
