@@ -70,7 +70,7 @@ export default {
     this.$ajax
       .post(this.rootUrl + "/liveroom//getAllLiveRoomInfo.action", null)
       .then(response => {
-        // alert(response.data)
+        alert(response.data)
       });
   },
   methods: {
