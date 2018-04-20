@@ -4,8 +4,12 @@
     <el-container>
       <el-container class="ec_left">
         <el-main>
-            <el-button type="primary" @click="joinLive()">加入</el-button>
-            <el-button type="primary">离开</el-button>
+          <el-button type="primary" @click="joinLive()">加入</el-button>
+          <el-button type="primary">离开</el-button>
+          <el-form :model="liveRoomNumForm" :ref="liveRoomNumForm">
+            <el-input v-model="liveRoomNumForm.liveRoomNum" placeholder="输入直播间编号"></el-input>
+            <el-button type="primary" @click="download()">下载教学资源</el-button>
+          </el-form>
         </el-main>
       </el-container>
       <el-container direction="vertical" class="ec_right">
@@ -65,6 +69,11 @@ export default {
   },
   data () {
     return {
+      liveRoomNumForm: {
+        liveRoomNum: ''
+      },
+      downloadUrl: '/liveroom/getSourcePath.action',
+      teacherId: '',
       input: '',
       goEasy: '',
       list: [],
@@ -95,6 +104,17 @@ export default {
     document.onkeydown = this.enter
   },
   methods: {
+    download () {
+      let _this = this
+      this.$ajax.post(this.rootUrl + _this.downloadUrl, _this.liveRoomNumForm)
+        .then((response) => {
+          if (response.data === 'failure' || response.data === '') {
+            this.$message.error('系统错误')
+          } else {
+            window.open(response.data)
+          }
+        })
+    },
     selectEmoji (code) {
       this.input += code
     },
