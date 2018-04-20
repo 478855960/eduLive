@@ -43,7 +43,8 @@ public class StudentManager {
      * @param session  可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数
      */
     @OnOpen
-    public void onOpen(@PathParam("studentReqData")StudentReqData stuReqData ,Session session, EndpointConfig config){
+    public void onOpen(@PathParam("studentReqData")String reqData ,Session session, EndpointConfig config){
+        StudentReqData stuReqData = JSON.parseObject(reqData, StudentReqData.class);
         if(null == stuReqData || "".equals(stuReqData.getLiveRoomNum())) {
             System.out.println("连接失败");
             return;
@@ -67,10 +68,11 @@ public class StudentManager {
      * 连接关闭调用的方法
      */
     @OnClose
-    public void onClose(@PathParam("studentReqData")StudentReqData stuReqData ,Session session){
+    public void onClose(@PathParam("studentReqData")String reqData ,Session session){
 //        webSocketSet.remove(this);  //从set中删除
 //        User user = (User) this.httpSession.getAttribute(Constant.USER);
 //        users.remove(user);
+        StudentReqData stuReqData = JSON.parseObject(reqData, StudentReqData.class);
         if("0".equals(stuReqData.getIsStudent())) {
             webSocketMap.remove(stuReqData.getLiveRoomNum());
         } else {

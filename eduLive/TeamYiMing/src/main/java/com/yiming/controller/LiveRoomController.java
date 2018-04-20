@@ -157,4 +157,22 @@ public class LiveRoomController {
         }
         return "success";
     }
+    
+    /**
+     * 返回教学资源路径
+     * @param room
+     * @return failure 失败   或   资源路径
+     */
+    @RequestMapping(value = "/getSourcePath.action", method = RequestMethod.POST)
+    @ResponseBody
+    public String getSourcePath(@RequestBody LiveRoom room) {
+        String srcPath = "";
+        try {
+            srcPath = liveRoomDao.getSourcePath(room.getLiveRoomNum());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "failure";
+        }
+        return srcPath;
+    }
 }
