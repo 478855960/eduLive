@@ -69,7 +69,19 @@ export default {
       isMouseDown: false,
       hasSavedStatus: false,
       setTexted: false,
-      pathColor: 'black'
+      pathColor: 'black',
+      sessioUser: null,
+      url: '/user/getCurUser.action',
+      whiteboardData: null,
+      wsWhiteboardObj: null,
+      WhiteboardData: {
+        type: 'pen',
+        color: 'black',
+        oldX: 0,
+        oldY: 0,
+        curX: 0,
+        curY: 0
+      }
     }
   },
   mounted () {
@@ -85,6 +97,14 @@ export default {
     this.contextBack = this.$refs.ctxback.getContext('2d')
     this.basePosX = this.$refs.ctx.offsetLeft
     this.basePosY = this.$refs.ctx.offsetTop
+
+    this.$ajax.post(this.rootUrl + this.url).then((response) => {
+      this.sessioUser = JSON.parse(response.data)
+      this.wsWhiteboardObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/whiteboard/' +
+      this.sessioUser.isStudent + '/' +
+      this.sessioUser.phoneNum + '/' +
+      '12112345678')
+    })
   },
   methods: {
     dispatcher (value) {
@@ -102,6 +122,16 @@ export default {
       if (part[0] === 'clear') {
         this.clear(this.contextBack)
         this.functionPointer = 'clear'
+        this.wsWhiteboardObj.send(JSON.stringify(
+          {
+            type: 'clear',
+            color: this.pathColor,
+            oldX: this.oldPosX,
+            oldY: this.oldPosY,
+            curX: this.curPosX,
+            curY: this.curPos
+          }
+        ))
       }
       if (part[0] === 'shape') {
         this.functionPointer = part[1]
@@ -121,6 +151,16 @@ export default {
       if (this.isMouseDown) {
         if (this.functionPointer === 'pen') {
           this.handDraw(this.curPosX, this.curPosY, this.oldPosX, this.oldPosY)
+          this.wsWhiteboardObj.send(JSON.stringify(
+            {
+              type: 'pen',
+              color: this.pathColor,
+              oldX: this.oldPosX,
+              oldY: this.oldPosY,
+              curX: this.curPosX,
+              curY: this.curPosY
+            }
+          ))
         } else if (this.functionPointer === 'clear') {
 
         } else if (this.functionPointer === 'eraser') {
@@ -128,6 +168,16 @@ export default {
           this.context.fillStyle = 'aquamarine'
           this.context.fillRect(this.curPosX, this.curPosY, 50, 50)
           this.contextBack.clearRect(this.curPosX, this.curPosY, 50, 50)
+          this.wsWhiteboardObj.send(JSON.stringify(
+            {
+              type: 'eraser',
+              color: this.pathColor,
+              oldX: this.oldPosX,
+              oldY: this.oldPosY,
+              curX: this.curPosX,
+              curY: this.curPosY
+            }
+          ))
         } else if (this.functionPointer === 'text') {
 
         } else {
@@ -164,14 +214,44 @@ export default {
         let r = Math.sqrt(Math.pow(this.curPosX - this.oldPosX, 2) + Math.pow(this.curPosY - this.oldPosY, 2))
         this.clear(this.context)
         this.circleDraw(this.contextBack, this.oldPosX, this.oldPosY, r)
+        this.wsWhiteboardObj.send(JSON.stringify(
+          {
+            type: 'circle',
+            color: this.pathColor,
+            oldX: this.oldPosX,
+            oldY: this.oldPosY,
+            curX: this.curPosX,
+            curY: this.curPosY
+          }
+        ))
       } if (this.functionPointer === 'line') {
         this.clear(this.context)
         this.lineDraw(this.contextBack, this.curPosX, this.curPosY)
+        this.wsWhiteboardObj.send(JSON.stringify(
+          {
+            type: 'line',
+            color: this.pathColor,
+            oldX: this.oldPosX,
+            oldY: this.oldPosY,
+            curX: this.curPosX,
+            curY: this.curPosY
+          }
+        ))
       } if (this.functionPointer === 'rectangle') {
         this.clear(this.context)
         let width = this.curPosX - this.oldPosX
         let height = this.curPosY - this.oldPosY
         this.rectangleDraw(this.contextBack, this.oldPosX, this.oldPosY, width, height)
+        this.wsWhiteboardObj.send(JSON.stringify(
+          {
+            type: 'rectangle',
+            color: this.pathColor,
+            oldX: this.oldPosX,
+            oldY: this.oldPosY,
+            curX: this.curPosX,
+            curY: this.curPosY
+          }
+        ))
       }
       this.oldPosX = this.curPosX
       this.oldPosY = this.curPosY

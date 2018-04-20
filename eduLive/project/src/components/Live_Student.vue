@@ -3,6 +3,9 @@
     <el-header></el-header>
     <el-container>
       <el-container class="ec_left">
+        <canvas id='stuContent' ref='stuContent'/>
+      </el-container>
+      <el-container direction="vertical" class="ec_right">
         <el-main>
           <el-button type="primary" @click="joinLive()">加入</el-button>
           <el-button type="primary">离开</el-button>
@@ -11,8 +14,6 @@
             <el-button type="primary" @click="download()">下载教学资源</el-button>
           </el-form>
         </el-main>
-      </el-container>
-      <el-container direction="vertical" class="ec_right">
         <el-main id="video">
           该主播好像还没开播哦···
         </el-main>
@@ -85,11 +86,25 @@ export default {
       teaStyleObj: {
         color: '#cc18ce',
         fontSize: '12px'
+      },
+      canvasCtx: null,
+      url: '/user/getCurUser.action',
+      sessioUser: null,
+      wsStulistObj: null,
+      wsWhiteboardObj: null,
+      WhiteboardData: {
+        type: 'pen',
+        color: 'black',
+        oldX: 0,
+        oldY: 0,
+        curX: 0,
+        curY: 0
       }
     }
   },
   created () {
     this.initWebsocket()
+    // alert('succ')
     this.input = ''
     this.userId = 'StudentX'
     this.list.push({
@@ -102,6 +117,9 @@ export default {
     })
     this.listen()
     document.onkeydown = this.enter
+  },
+  mounted () {
+    this.initCanvas()
   },
   methods: {
     download () {
@@ -143,9 +161,28 @@ export default {
         _this.$message('老师关闭了摄像头')
       })
     },
+    initCanvas () {
+      let canvas = this.$refs.stuContent
+      canvas.width = 900
+      canvas.height = 350
+      this.canvasCtx = this.$refs.stuContent.getContext('2d')
+    },
     initWebsocket () {
+      this.$ajax.post(this.rootUrl + this.url).then((response) => {
+        this.sessioUser = JSON.parse(response.data)
+        // alert(this.sessioUser.phoneNum)
+        this.wsWhiteboardObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/whiteboard/' +
+        this.sessioUser.isStudent + '/' +
+        this.sessioUser.phoneNum + '/' +
+        '12112345678')
+        this.wsWhiteboardObj.onmessage = this.whiteboardDraw
+        // alert(response.data)
+        this.wsStulistObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList/' +
+        this.sessioUser.isStudent + '/' +
+        this.sessioUser.phoneNum + '/' +
+        '12112345678')
+      })
       // 设置websocket连接
-      this.wsObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList')
     },
     encodeScript (data) {
       if (data == null || data === '') {
@@ -207,7 +244,40 @@ export default {
         this.emit()
       }
     },
-    mounted () {
+    whiteboardDraw (msg) {
+      // alert(typeof msg.data)
+      let drawData = JSON.parse(msg.data)
+      // alert(typeof drawData)
+      if (drawData.type === 'pen') {
+        this.canvasCtx.strokeStyle = drawData.color
+        this.canvasCtx.beginPath()
+        this.canvasCtx.moveTo(drawData.oldX, drawData.oldY)
+        this.canvasCtx.lineTo(drawData.curX, drawData.curY)
+        this.canvasCtx.stroke()
+        this.canvasCtx.closePath()
+      } else if (drawData.type === 'eraser') {
+        // this.context.fillStyle = 'aquamarine'
+        // this.canvasCtx.fillRect(this.curPosX, this.curPosY, 50, 50)
+        this.canvasCtx.clearRect(drawData.curX, drawData.curY, 50, 50)
+      } else if (drawData.type === 'circle') {
+        this.canvasCtx.strokeStyle = 'black'
+        let r = Math.sqrt(Math.pow(drawData.curX - drawData.oldX, 2) + Math.pow(drawData.curY - drawData.oldY, 2))
+        this.canvasCtx.beginPath()
+        this.canvasCtx.arc(drawData.oldX, drawData.oldY, r, 0, 2 * Math.PI, false)
+        this.canvasCtx.stroke()
+      } else if (drawData.type === 'line') {
+        this.canvasCtx.beginPath()
+        this.canvasCtx.moveTo(drawData.oldX, drawData.oldY)
+        this.canvasCtx.lineTo(drawData.curX, drawData.curY)
+        this.canvasCtx.stroke()
+        this.canvasCtx.closePath()
+      } else if (drawData.type === 'rectangle') {
+        this.canvasCtx.beginPath()
+        this.canvasCtx.rect(drawData.oldX, drawData.oldY, drawData.curX - drawData.oldX, drawData.curY - drawData.oldY)
+        this.canvasCtx.stroke()
+      } else if (drawData.type === 'clear') {
+        this.canvasCtx.clearRect(0, 0, this.$refs.stuContent.width, this.$refs.stuContent.height)
+      }
     }
   }
 }
