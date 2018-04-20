@@ -21,23 +21,26 @@ export default {
     return {
       wsObj: null,
       msg: '',
-      stuListMsg: '',
-      url: '/user/getCurUser.action',
-      sessioUser: null
+      stuListMsg: [],
+      sessioUser: null,
+      url: '/user/getCurUser.action'
     }
   },
   created () {
     this.init()
     this.$ajax.post(this.rootUrl + this.url).then((response) => {
-      this.sessioUser = JSON.parse(response)
+      this.sessioUser = JSON.parse(response.data)
+      // alert(this.sessioUser.phoneNum)
+      this.wsObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList/' +
+      this.sessioUser.isStudent + '/' +
+      this.sessioUser.phoneNum + '/' +
+      '12112345678')
+      this.wsObj.onmessage = this.updateMsg
     })
   },
   methods: {
     init () {
-      // 设置websocket连接
-      this.wsObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList')
       // 绑定websocket事件
-      this.wsObj.onmessage = this.updateMsg
       // 设置样式
       // this.$refs.stulist.width = 600
       // this.$refs.stu-phoneNum.width = 150
@@ -46,6 +49,7 @@ export default {
     updateMsg (event) {
       this.msg = event.data
       this.stuListMsg = JSON.parse(event.data)
+      alert('onmsg' + JSON.stringify(this.stuListMsg))
     },
     queryStuList () {
       this.wsObj.send(JSON.stringify(this.sessioUser))

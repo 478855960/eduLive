@@ -21,6 +21,7 @@
         </el-main>
         <el-footer height="150px">
           <el-button-group>
+            <student-list></student-list>
             <el-button type="primary" plain>结束直播</el-button>
             <el-button type="success" plain>暂停直播</el-button>
             <el-button type="success" plain>学生列表</el-button>
@@ -74,6 +75,7 @@ import SlideDisplay from '@/components/SlideDisplay'
 import Whiteboard from '@/components/whiteboard'
 import Video from '@/components/video'
 import vueEmoji from '@/components/emoji'
+import StudentList from '@/components/StudentList'
 
 export default {
   name: 'Live_Teacher',
@@ -82,7 +84,8 @@ export default {
     Whiteboard,
     SlideDisplay,
     Video,
-    vueEmoji
+    vueEmoji,
+    StudentList
   },
   data () {
     return {
