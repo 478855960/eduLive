@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import Vuex from 'vuex'
 import App from './App'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -13,14 +14,39 @@ import { emoji } from './utils/emoji.js'
 
 Vue.use(VueAwesomeSwiper)
 Vue.use(ElementUI)
+Vue.use(Vuex)
 
 Vue.config.productionTip = false
 Vue.prototype.rootUrl = '/TeamYiMing'
 Vue.prototype.emoji = emoji
+
+let store = new Vuex.Store({
+  state: {
+    whiteBoardWebsocket: null,
+    studentListWebsocket: null
+  },
+  mutations: {
+    setWhiteBoardWebsocket (state, ws) {
+      state.whiteBoardWebsocket = ws
+    },
+    setStudentListWebsocket (state, ws) {
+      state.studentListWebsocket = ws
+    }
+  },
+  getters: {
+    getStudentListWebsocket () {
+      return this.state.studentListWebsocket
+    },
+    getWhiteBoardWebsocket () {
+      return this.state.whiteBoardWebsocket
+    }
+  }
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   render: h => h(App)

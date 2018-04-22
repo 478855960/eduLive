@@ -45,6 +45,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.alibaba.fastjson.JSON;
 import com.yiming.dao.LiveRoomMapper;
 import com.yiming.entity.LiveRoom;
+import com.yiming.entity.StuGagBanData;
 import com.yiming.entity.User;
 import com.yiming.service.LiveRoomService;
 import com.yiming.util.CheckSumBuilder;
@@ -59,6 +60,8 @@ public class LiveRoomController {
     LiveRoomMapper liveRoomDao;
     @Autowired
     private HttpSession session;
+    @Autowired
+    private LiveRoomService liveRoomService;
     @Autowired
     private HttpServletRequest request;
 
@@ -75,7 +78,6 @@ public class LiveRoomController {
         else {
         	result = JSON.toJSONString(liveRoomInfo);
         }
-        System.out.println(result);
         return result;
     }
     /**
@@ -192,5 +194,19 @@ public class LiveRoomController {
             return "failure";
         }
         return srcPath;
+    }
+
+    @RequestMapping(value = "/addGaglist.action", method = RequestMethod.POST)
+    @ResponseBody
+    public String addGaglist(@RequestBody StuGagBanData gagStudent) {
+        String liveroomNum = gagStudent.getLiveroomNum();
+        String phoneNum = gagStudent.getPhoneNum();
+        String otherInfo = gagStudent.getOtherInfo();
+        boolean status = liveRoomService.updateGagList(liveroomNum, phoneNum, otherInfo);
+        String retMsg = gagStudent.getOtherInfo();
+        if(status) {
+            retMsg = "failure";
+        }
+        return retMsg;
     }
 }

@@ -104,7 +104,6 @@ export default {
   },
   created () {
     this.initWebsocket()
-    // alert('succ')
     this.input = ''
     this.userId = 'StudentX'
     this.list.push({
@@ -168,21 +167,27 @@ export default {
       this.canvasCtx = this.$refs.stuContent.getContext('2d')
     },
     initWebsocket () {
+      // 设置websocket连接
       this.$ajax.post(this.rootUrl + this.url).then((response) => {
         this.sessioUser = JSON.parse(response.data)
-        // alert(this.sessioUser.phoneNum)
         this.wsWhiteboardObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/whiteboard/' +
         this.sessioUser.isStudent + '/' +
         this.sessioUser.phoneNum + '/' +
         '12112345678')
         this.wsWhiteboardObj.onmessage = this.whiteboardDraw
-        // alert(response.data)
         this.wsStulistObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList/' +
         this.sessioUser.isStudent + '/' +
         this.sessioUser.phoneNum + '/' +
+        this.sessioUser.name + '/' +
         '12112345678')
+        this.wsStulistObj.onmessage = function (msg) {
+          alert(msg.data)
+        }
+        window.onbeforeunload = function () {
+          this.wsWhiteboardObj.close()
+          this.wsStulistObj.close()
+        }
       })
-      // 设置websocket连接
     },
     encodeScript (data) {
       if (data == null || data === '') {
@@ -245,9 +250,7 @@ export default {
       }
     },
     whiteboardDraw (msg) {
-      // alert(typeof msg.data)
       let drawData = JSON.parse(msg.data)
-      // alert(typeof drawData)
       if (drawData.type === 'pen') {
         this.canvasCtx.strokeStyle = drawData.color
         this.canvasCtx.beginPath()

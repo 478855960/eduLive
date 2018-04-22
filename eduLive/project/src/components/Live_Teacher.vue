@@ -20,8 +20,8 @@
           </el-tabs>
         </el-main>
         <el-footer height="150px">
+          <student-list></student-list>
           <el-button-group>
-            <student-list></student-list>
             <el-button type="primary" plain>结束直播</el-button>
             <el-button type="success" plain>暂停直播</el-button>
             <el-button type="success" plain>学生列表</el-button>

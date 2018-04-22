@@ -50,6 +50,7 @@ public class Whiteboard {
             @PathParam("phoneNum")String phoneNum,
             @PathParam("liveroomNum")String liveroomNum,
             Session session){
+        System.out.println("连接whiteboard socket");
         if(null == isStudent || "".equals(isStudent)) {
             return;
         }
@@ -80,10 +81,14 @@ public class Whiteboard {
             @PathParam("phoneNum")String phoneNum,
             @PathParam("liveroomNum")String liveroomNum,
             Session session){
+        System.out.println("关闭whiteboard socket");
         if("0".equals(isStudent)) {
             webSocketMap.remove(liveroomNum);
         } else {
             List<Whiteboard> students = webSocketMap.get(liveroomNum);
+            if(null == students) {
+                return;
+            }
             students.remove(this);
         }
         webSocketSet.remove(this);
@@ -115,7 +120,6 @@ public class Whiteboard {
      */
     @OnError
     public void onError(Session session, Throwable error){
-        error.printStackTrace();
     }
 
     /**

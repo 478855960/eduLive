@@ -104,6 +104,7 @@ export default {
       this.sessioUser.isStudent + '/' +
       this.sessioUser.phoneNum + '/' +
       '12112345678')
+      this.$store.commit('setWhiteBoardWebsocket', this.wsWhiteboardObj)
     })
   },
   methods: {

@@ -13,6 +13,13 @@
       <select id="getAllLiveRoom" resultType="LiveRoom">
         select * from liveroom
       </select>
+
+    <select id="getLiveroomByRoomNum" resultType="com.yiming.entity.LiveRoom">
+        select * from liveroom where liveRoomNum = #{0}
+    </select>
+    <update id="updateGaglistByRoomNum">
+        update liveroom set gagList = #{1} where liveRoomNum = #{0}
+    </update>
   </mapper>	
   
   
