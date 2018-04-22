@@ -10,4 +10,6 @@ public interface LiveRoomMapper {
             String imgPath, char isRecording);
     public String getSourcePath (String liveRoomNum);
     public List<LiveRoom> getAllLiveRoom();
+    public LiveRoom getLiveroomByRoomNum(String liveroomNum);
+    public int updateGaglistByRoomNum(String liveroomNum, String gagStr);
 }

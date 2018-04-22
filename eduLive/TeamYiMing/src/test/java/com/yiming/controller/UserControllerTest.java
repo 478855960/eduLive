@@ -278,6 +278,7 @@ public class UserControllerTest {
     }
     
     @Test
+    @Ignore
     public void testSendMessage() throws Exception {
         User user = new User();
         user.setPhoneNum("12112345678");
