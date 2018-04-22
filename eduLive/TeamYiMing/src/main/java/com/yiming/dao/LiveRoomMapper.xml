@@ -20,6 +20,12 @@
     <update id="updateGaglistByRoomNum">
         update liveroom set gagList = #{1} where liveRoomNum = #{0}
     </update>
+      <select id="getQueriedLiveRoom" parameterType="String" resultType="LiveRoom">
+      	select * from liveroom where roomName LIKE CONCAT(CONCAT('%', #{otherInfo}), '%');
+      </select>
+      <select id="getBlackList" parameterType="String" resultType="String">
+      	select blackList from liveroom where teacherId=#{0}
+      </select>
   </mapper>	
   
   

@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.2",
     "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-plugin-transform-vue-jsx": "^3.3.0",
     "babel-polyfill": "^6.0.0",
     "element-ui": "^2.2.2",
