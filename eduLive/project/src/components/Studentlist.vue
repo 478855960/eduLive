@@ -11,7 +11,7 @@
             <el-button type="danger" size="mini" @click="handleBan(scope.row)" v-if="scope.row.banned === false"> 禁言</el-button>
             <el-button type="danger" size="mini" @click="handleBan(scope.row)" v-else> 解除禁言</el-button>
           </el-col>
-          <el-col :span="12"><el-button type="danger" size="mini"> 拉黑</el-button></el-col>
+          <el-col :span="12"><el-button type="danger" size="mini" @click="handleBlacklist(scope.row)"> 拉黑</el-button></el-col>
         </el-row>
       </template>
     </el-table-column>
@@ -85,7 +85,10 @@ export default {
       }
     },
     handleBlacklist (row) {
-      // row.phoneNum
+      this.teacherOp.type = 'addBlacklist'
+      this.teacherOp.phoneNum = row.phoneNum
+      this.teacherOp.liveroomNum = this.sessioUser.phoneNum
+      this.wsObj.send(JSON.stringify(this.teacherOp))
     }
   }
 }
