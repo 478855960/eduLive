@@ -111,6 +111,6 @@ public class LiveRoom {
                 + isRecording + ", gagList=" + gagList + ", blackList=" + blackList + "]";
     }
 
-    
+
 
 }

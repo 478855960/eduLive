@@ -14,4 +14,5 @@ public interface LiveRoomMapper {
     public int updateGaglistByRoomNum(String liveroomNum, String gagStr);
     public List<LiveRoom> getQueriedLiveRoom(String queryInfo);
     public String getBlackList(String teacherId);
+    public int updateBlacklistByPhoneNum(String phoneNum, String blacklist);
 }

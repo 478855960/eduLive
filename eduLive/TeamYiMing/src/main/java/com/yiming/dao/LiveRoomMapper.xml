@@ -26,6 +26,9 @@
       <select id="getBlackList" parameterType="String" resultType="String">
       	select blackList from liveroom where teacherId=#{0}
       </select>
-  </mapper>	
+      <update id="updateBlacklistByPhoneNum">
+        update liveroom set blackList = #{1} where liveRoomNum = #{0}
+      </update>
+  </mapper>
   
   

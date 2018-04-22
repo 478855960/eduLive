@@ -2,6 +2,7 @@ package com.yiming.socket;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,10 +23,13 @@ import javax.websocket.server.ServerEndpoint;
 import org.springframework.web.context.ContextLoader;
 
 import com.alibaba.fastjson.JSON;
+import com.yiming.dao.LiveRoomMapper;
 import com.yiming.dao.UserMapper;
+import com.yiming.entity.LiveRoom;
 import com.yiming.entity.StudentReqData;
 import com.yiming.entity.TeacherOpData;
 import com.yiming.entity.User;
+import com.yiming.service.LiveRoomService;
 import com.yiming.util.Constant;
 import com.yiming.util.GetHttpSessionConfigurator;
 
@@ -44,6 +48,8 @@ public class StudentManager {
     private static List<User> users = new LinkedList<>();
     private User user = new User();
     private String liveroomNum;
+
+
     /**
      * 连接建立成功调用的方法
      * @param session  可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数
@@ -113,23 +119,23 @@ public class StudentManager {
             String retStr = refreshStudentList(teacherOp.getLiveroomNum());
             this.sendMessage(retStr);
         } else if("banStu".equals(teacherOp.getType())) {
-            List<StudentManager> students = webSocketMap.get(teacherOp.getLiveroomNum());
-            for(StudentManager student: students) {
-                if(student.user.getPhoneNum().equals(teacherOp.getPhoneNum())) {
-                    student.user.setBanned(true);
-                    student.sendMessage("banned");
-                }
-            }
+            StudentManager stuManager = findStudentManager(teacherOp.getLiveroomNum(), teacherOp.getPhoneNum());
+            stuManager.user.setBanned(true);
+            stuManager.sendMessage("banned");
             String retStr = refreshStudentList(teacherOp.getLiveroomNum());
             this.sendMessage(retStr);
         } else if("cancelBanStu".equals(teacherOp.getType())) {
-            List<StudentManager> students = webSocketMap.get(teacherOp.getLiveroomNum());
-            for(StudentManager student: students) {
-                if(student.user.getPhoneNum().equals(teacherOp.getPhoneNum())) {
-                    student.user.setBanned(false);
-                    student.sendMessage("cancelBanned");
-                }
-            }
+            StudentManager stuManager = findStudentManager(teacherOp.getLiveroomNum(), teacherOp.getPhoneNum());
+            stuManager.user.setBanned(false);
+            stuManager.sendMessage("cancelBanned");
+            String retStr = refreshStudentList(teacherOp.getLiveroomNum());
+            this.sendMessage(retStr);
+        } else if("addBlacklist".equals(teacherOp.getType())) {
+            addBlackList(teacherOp.getLiveroomNum(), teacherOp.getPhoneNum());
+            StudentManager stuManager = findStudentManager(teacherOp.getLiveroomNum(), teacherOp.getPhoneNum());
+            stuManager.user.setInBlacklist(true);
+            stuManager.sendMessage("inBlacklist");
+            webSocketMap.get(teacherOp.getLiveroomNum()).remove(stuManager);
             String retStr = refreshStudentList(teacherOp.getLiveroomNum());
             this.sendMessage(retStr);
         }
@@ -172,5 +178,30 @@ public class StudentManager {
         }
         String retStr = JSON.toJSONString(retList);
         return retStr;
+    }
+    public static StudentManager findStudentManager(String liveroomNum, String studentPhoneNum) {
+        List<StudentManager> students = webSocketMap.get(liveroomNum);
+        for(StudentManager student: students) {
+            if(student.user.getPhoneNum().equals(studentPhoneNum)) {
+                return  student;
+            }
+        }
+        return null;
+    }
+    public static void addBlackList(String liveroomNum, String phoneNum) {
+        LiveRoomMapper liveRoomMapper = (LiveRoomMapper) ContextLoader.getCurrentWebApplicationContext().getBean("liveRoomMapper");
+        LiveRoom liveroom = liveRoomMapper.getLiveroomByRoomNum(liveroomNum);
+        if(liveroom == null) {
+            return;
+        }
+        String blackListStr = liveroom.getBlackList();
+        if(blackListStr == null) {
+            blackListStr = "";
+        }
+        List<String> blackList = Arrays.asList(blackListStr.split(","));
+        if(!blackList.contains(phoneNum)) {
+            blackListStr = blackListStr.concat(phoneNum + ",");
+        }
+        liveRoomMapper.updateBlacklistByPhoneNum(liveroomNum, blackListStr);
     }
 }
