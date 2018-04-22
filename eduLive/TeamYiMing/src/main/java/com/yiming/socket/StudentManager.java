@@ -138,6 +138,11 @@ public class StudentManager {
             webSocketMap.get(teacherOp.getLiveroomNum()).remove(stuManager);
             String retStr = refreshStudentList(teacherOp.getLiveroomNum());
             this.sendMessage(retStr);
+        } else if("editor".equals(teacherOp.getType())) {
+            List<StudentManager> studentManagers = webSocketMap.get(teacherOp.getLiveroomNum());
+            for(StudentManager studentManager: studentManagers) {
+                studentManager.sendMessage(message);
+            }
         }
     }
     /**
