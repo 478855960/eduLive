@@ -1,7 +1,15 @@
 package com.yiming.entity;
 
 public class StudentReqData {
-    String reqType, phoneNum, name, nickname, isStudent, liveRoomNum;
+    String reqType, phoneNum, name, nickname, isStudent, liveRoomNum, otherInfo;
+
+    public String getOtherInfo() {
+        return otherInfo;
+    }
+
+    public void setOtherInfo(String otherInfo) {
+        this.otherInfo = otherInfo;
+    }
 
     public String getReqType() {
         return reqType;

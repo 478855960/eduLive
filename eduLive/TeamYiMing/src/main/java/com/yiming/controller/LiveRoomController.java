@@ -17,19 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.io.FileUtils;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -45,12 +32,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.alibaba.fastjson.JSON;
 import com.yiming.dao.LiveRoomMapper;
 import com.yiming.entity.LiveRoom;
+import com.yiming.entity.StudentReqData;
 import com.yiming.entity.User;
 import com.yiming.service.LiveRoomService;
-import com.yiming.util.CheckSumBuilder;
 import com.yiming.util.Constant;
 import com.yiming.util.PPT2ImageUtil;
-import com.yiming.util.SendVerificationCode;
 
 @Controller
 @RequestMapping(value = "/liveroom")
@@ -62,6 +48,12 @@ public class LiveRoomController {
     @Autowired
     private HttpServletRequest request;
 
+    
+    /**
+     * @author xs
+     * @desc 获取所有正在直播的直播间信息
+     * @return JSON对象数组的字符串
+     */
     @RequestMapping(value = "/getAllLiveRoomInfo.action", method = RequestMethod.POST)
     @ResponseBody
     public String showLiveList(){
@@ -78,6 +70,54 @@ public class LiveRoomController {
         System.out.println(result);
         return result;
     }
+    
+    
+    /**
+     * @author xs
+     * @desc 模糊查询正在直播的直播间
+     * @return JSON对象数组的字符串
+     */
+    @RequestMapping(value = "/queryLiveRoomInfo.action", method = RequestMethod.POST)
+    @ResponseBody
+    public String queryLiveList(@RequestBody StudentReqData studentReqData){
+    	String queryInfo,result;
+    	LiveRoomService liveRoomService = new LiveRoomService();
+        List<LiveRoom> liveRoomInfo = new ArrayList<>();
+        queryInfo = studentReqData.getOtherInfo();
+        liveRoomInfo = liveRoomService.getQueriedLiveRoomInfo(queryInfo);
+        if(liveRoomInfo == null) {
+        	result = "failed";
+        }
+        else {
+        	result = JSON.toJSONString(liveRoomInfo);
+        }
+        System.out.println(result);
+        return result;
+    }
+    
+    /**
+     * @author xs
+     * @desc 获取学生是否被拉黑（即当前学生是否有进入该老师直播间的权限）
+     * @return JSON对象数组的字符串
+     */
+    @RequestMapping(value = "/queryStatus.action", method = RequestMethod.POST)
+    @ResponseBody
+    public int queryCurStuStatus(@RequestBody LiveRoom liveRoom){
+    	int result = 0;//0代表该学生没有权限进入该教师直播间，即在黑名单中
+    	System.out.println(liveRoom.getTeacherId());
+    	String teacherID;
+    	User user = (User) session.getAttribute(Constant.USER);
+    	LiveRoomService liveRoomService = new LiveRoomService();
+        String blackList = "";
+        blackList = liveRoomService.getBlackList(liveRoom.getTeacherId());
+        
+        if(blackList == null || blackList.contains(user.getPhoneNum()) == false) {
+        	result = 1;
+        }
+        System.out.println(blackList);
+        return result;
+    }
+    
     /**
      *
      * @param file
@@ -135,12 +175,13 @@ public class LiveRoomController {
                 return "failure";
             }
             String ctxPath = session.getServletContext().getRealPath("/") + "coverupload/"; // 获取当前web服务器项目路径
+            System.out.println(ctxPath);
             File dirPath = new File(ctxPath); // 创建文件夹
             if (!dirPath.exists()) {
                 dirPath.mkdir();
             }
             File uploadFile = new File(ctxPath + realFileName); // 创建文件
-            String fileURL = "http://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath() + "//fileupload//" + realFileName;
+            String fileURL = "http://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath() + "//coverupload//" + realFileName;
             session.setAttribute(Constant.IMGPATH, fileURL);
             FileCopyUtils.copy(file.getBytes(), uploadFile); // Copy文件
         } catch (Exception ex) {

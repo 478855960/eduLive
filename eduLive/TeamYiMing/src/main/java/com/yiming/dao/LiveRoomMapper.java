@@ -10,4 +10,6 @@ public interface LiveRoomMapper {
             String imgPath, char isRecording);
     public String getSourcePath (String liveRoomNum);
     public List<LiveRoom> getAllLiveRoom();
+    public List<LiveRoom> getQueriedLiveRoom(String queryInfo);
+    public String getBlackList(String teacherId);
 }

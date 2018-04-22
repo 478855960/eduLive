@@ -13,7 +13,6 @@ import { emoji } from './utils/emoji.js'
 
 Vue.use(VueAwesomeSwiper)
 Vue.use(ElementUI)
-
 Vue.config.productionTip = false
 Vue.prototype.rootUrl = '/TeamYiMing'
 Vue.prototype.emoji = emoji

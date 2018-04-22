@@ -12,29 +12,25 @@
       </el-menu>
     </el-header>
     <el-main>
-      <el-input class="search" v-model="input" placeholder="搜索感兴趣的课程"></el-input>
-      <el-button class="search-buttom" type="primary" icon="el-icon-search">搜索</el-button>
+      <el-input ref="selectLiveRoomInfo" class="search" placeholder="搜索感兴趣的课程"></el-input>
+      <el-button class="search-buttom" type="primary" icon="el-icon-search" @click="queryLiveRoom">搜索</el-button>
       <el-carousel :interval="4000" type="card" height="360px">
         <el-carousel-item v-for="item in 6" :key="item">
           <h3>{{ item }}</h3>
         </el-carousel-item>
       </el-carousel>
-
-      <el-row>
-  <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
-    <el-card :body-style="{ padding: '0px' }">
-      <img src="../assets/logo.png" class="image">
-      <div style="padding: 14px;margin-top:20px">
-        <span>好吃的汉堡</span>
-        <div class="bottom clearfix">
-          <time class="time">{{ currentDate }}</time>
-          <el-button type="text" class="button">操作按钮</el-button>
-        </div>
-      </div>
-    </el-card>
-  </el-col>
-</el-row>
-
+  
+      <el-row :gutter="20">
+      <el-col :span="8" v-for="item in liveRoomList">
+        <el-card :body-style="{ padding: '14px' }">
+          <div id="all-area">
+            <img :src="item.imgPath" class="image">
+          </div>
+          <span ref="teacherID">{{item.roomName}} {{item.teacherId}}</span>
+          <el-button type="text" class="button" @click="routerToLiveRoom(item.teacherId)">观看直播</el-button>
+        </el-card>
+      </el-col>
+      </el-row>
     </el-main>
     <el-footer>
       <el-row>
@@ -57,7 +53,14 @@ export default {
   name: "home-page",
   data() {
     return {
-      currentDate: new Date()
+      currentDate: new Date(),
+      liveRoomList: [],
+      queryInfo: {
+        info: ''
+      },
+      blackList: {
+        teacherId: ''
+      }
     };
   },
   computed: {
@@ -67,16 +70,46 @@ export default {
   },
   mounted() {
     // alert('hhh')
+    let _this = this
     this.$ajax
       .post(this.rootUrl + "/liveroom//getAllLiveRoomInfo.action", null)
       .then(response => {
-        // alert(response.data)
+        if(response.data === 'failed'){
+          this.$message.error('获取直播列表失败！')
+        }
+        _this.liveRoomList = JSON.parse(response.data)
       });
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(this);
       console.log(key, keyPath);
+    },
+    routerToLiveRoom: function(teacherid) {
+      this.blackList.teacherId = teacherid
+      let _this = this
+      this.$ajax
+      .post(this.rootUrl + "/liveroom/queryStatus.action", _this.blackList)
+      .then(response => {
+        if(response.data === 0){
+          this.$message.error('您已被拉黑，无法进入该直播间！')
+        }else{
+          sessionStorage.setItem("teacherID",teacherid)
+          alert(sessionStorage.getItem("teacherID"))
+          this.$router.push({path: '/Live_Student'})
+        }
+      });
+    },
+    queryLiveRoom: function() {
+      let _this = this
+      this.$nextTick(() => {
+        alert(_this.$refs.selectLiveRoomInfo.value) 
+      });
+      this.$ajax
+        .post(this.rootUrl + "/liveroom/queryLiveRoomInfo.action", {'otherInfo':'c'})
+        .then(response => {
+          alert(JOSN.parse(response.data))
+      });
     }
   }
 };
@@ -163,8 +196,17 @@ body > .el-container {
   type: flex;
   justify: end;
 }
+
+.image{
+  width: 100%;
+  height: 100%;
+}
+#all-area{
+  height: 210px;
+}
 .el-card{
-  /* width: 25%;
-  height: 500px; */
+  width:350px;
 }
 </style>
+
+/root/java/jdk1.8.0_141/include

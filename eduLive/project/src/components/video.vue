@@ -1,7 +1,10 @@
 <template>
   <el-container>
     <el-main>
-      <div id='teacher-video' ref="teachervideo"></div>
+      <!-- <div id='teacher-video' ref="teachervideo"></div> -->
+      <div v-for="list in liveList">
+        <div id="teacher-video" ref="teachervideo"></div>
+      </div>
       <div id="init-video" ref="initteachervideo"></div>
     </el-main>
     <el-footer>
@@ -19,6 +22,8 @@
 
 <script>
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
+let MediaStreamRecorder = require('../assets/js/MediaStreamRecorder.js')
+
 if (!AgoraRTC.checkSystemRequirements()) {
   alert('browser is no support webRTC')
 }
@@ -27,9 +32,11 @@ AgoraRTC.Logger.warning('this is warning')
 AgoraRTC.Logger.info('this is info')
 AgoraRTC.Logger.debug('this is debug')
 let client, localStream, camera, microphone
+// let mediaRecorder = new MediaStreamRecorder.WhammyRecorder()
 export default {
   data () {
     return {
+      liveList: [{id: 'id'}]
     }
   },
   methods: {
@@ -46,7 +53,12 @@ export default {
     },
     join: function () {
       let _this = this
-      _this.$refs.teachervideo.style.visibility = 'visible'
+      if(this.liveList.length === 0){
+        alert('hhh')
+        this.liveList.push({id: 'teacher'})
+      }
+      document.getElementById('teacher-video').style.visibility = 'visible'
+      //_this.$refs.teachervideo.style.visibility = 'visible'
       _this.$refs.initteachervideo.style.visibility = 'hidden'
       this.$refs.joinBtn.disabled = true
       if (this.$refs.leaveBtn.disabled === true) {
@@ -110,6 +122,8 @@ export default {
       })
     },
     leave: function () {
+      // mediaRecorder.stop()
+      this.liveList.splice(0,1)
       this.$refs.leaveBtn.disabled = true
       if (this.$refs.joinBtn.disabled === true) {
         this.$refs.joinBtn.disabled = false
@@ -124,7 +138,8 @@ export default {
       client.unpublish(localStream, function (err) {
         console.log('Unpublish local stream failed' + err)
       })
-      _this.$refs.teachervideo.style.visibility = 'hidden'
+      //_this.$refs.teachervideo.style.visibility = 'hidden'
+      document.getElementById('teacher-video').style.visibility = 'hidden'
       _this.$refs.initteachervideo.style.visibility = 'visible'
     }
   }
