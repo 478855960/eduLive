@@ -5,6 +5,11 @@
       <el-container class="ec_left">
         <canvas id='stuContent' ref='stuContent'/>
       </el-container>
+      <el-container class="ec_left">
+        <div>
+          <img v-bind:src="pptPage" class="image"/>
+        </div>
+      </el-container>
       <el-container direction="vertical" class="ec_right">
         <el-main>
           <el-button type="primary" @click="joinLive()">加入</el-button>
@@ -99,7 +104,8 @@ export default {
         oldY: 0,
         curX: 0,
         curY: 0
-      }
+      },
+      pptPage: ''
     }
   },
   created () {
@@ -166,6 +172,11 @@ export default {
       canvas.height = 350
       this.canvasCtx = this.$refs.stuContent.getContext('2d')
     },
+    setValue: function (value) {
+      alert('coming')
+      this.pptPage.push(value)
+      // alert(this.pptPage)
+    },
     initWebsocket () {
       // 设置websocket连接
       let _this = this
@@ -182,10 +193,16 @@ export default {
         this.sessioUser.name + '/' +
         '12112345678')
         this.wsStulistObj.onmessage = function (msg) {
-          alert(msg.data)
-          alert(msg.data)
-          if(msg.data === 'inBlacklist')
-          _this.toHomePage()
+          let message = JSON.parse(msg.data)
+          if (msg.data === 'inBlacklist') {
+            _this.toHomePage()
+          } else if (message.type === 'ppt') {
+            // _this.setValue(JSON.parse(msg.data))
+            _this.pptPage = message.otherInfo
+            // alert(msg.data)
+            // alert(this.pptPage)
+            console.log(_this.pptPage)
+          }
         }
         window.onbeforeunload = function () {
           this.wsWhiteboardObj.close()

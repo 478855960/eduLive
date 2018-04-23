@@ -70,22 +70,22 @@
 
 <script>
 /* eslint-disable no-caller */
+import StudentList from '@/components/StudentList'
 import CodeEditor from '@/components/CodeEditor'
 import SlideDisplay from '@/components/SlideDisplay'
 import Whiteboard from '@/components/whiteboard'
 import Video from '@/components/video'
 import vueEmoji from '@/components/emoji'
-import StudentList from '@/components/StudentList'
 
 export default {
   name: 'Live_Teacher',
   components: {
+    StudentList,
     CodeEditor,
     Whiteboard,
     SlideDisplay,
     Video,
-    vueEmoji,
-    StudentList
+    vueEmoji
   },
   data () {
     return {

@@ -65,6 +65,7 @@ public class StudentManager {
         if(null == isStudent || "".equals(isStudent)) {
             return;
         }
+        System.out.println("studentListWS open");
         this.user.setIsStudent(isStudent);
         this.user.setPhoneNum(phoneNum);
         this.user.setName(name);
@@ -103,6 +104,7 @@ public class StudentManager {
             }
             students.remove(this);
         }
+        System.out.println("studentListWS close");
         subOnlineCount();           //在线数减1
     }
 
@@ -114,6 +116,7 @@ public class StudentManager {
      */
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
+        System.out.println("message: " + message);
         TeacherOpData teacherOp = JSON.parseObject(message, TeacherOpData.class);
         if("query".equals(teacherOp.getType())) {
             String retStr = refreshStudentList(teacherOp.getLiveroomNum());

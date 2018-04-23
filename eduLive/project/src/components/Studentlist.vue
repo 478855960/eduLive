@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import Bus from './bus.js'
+
 export default {
   data () {
     return {
@@ -40,22 +42,28 @@ export default {
   },
   created () {
     this.init()
+  },
+  mounted () {
     this.$ajax.post(this.rootUrl + this.url).then((response) => {
       this.sessioUser = JSON.parse(response.data)
       this.wsObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList/' +
-      this.sessioUser.isStudent + '/' +
-      this.sessioUser.phoneNum + '/' +
-      this.sessioUser.name + '/' +
-      '12112345678')
+        this.sessioUser.isStudent + '/' +
+        this.sessioUser.phoneNum + '/' +
+        this.sessioUser.name + '/' +
+        '12112345678')
       this.wsObj.onmessage = this.updateMsg
+      alert('stulistWS connected')
       window.onbeforeunload = function () {
         let whiteboardWs = this.$store.getters.getWhiteBoardWebsocket
         whiteboardWs.close()
         this.wsObj.close()
+        alert('stulistWS closed')
       }
+      this.$store.commit('setStudentListWebsocket', this.wsObj)
     })
-  },
-  mounted () {
+    Bus.$on('pageIndex', (msg) => {
+      this.wsObj.send(JSON.stringify(msg))
+    })
   },
   methods: {
     init () {
