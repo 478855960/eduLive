@@ -2,7 +2,7 @@
   <el-container>
     <el-main>
       <!-- <div id='teacher-video' ref="teachervideo"></div> -->
-      <div v-for="list in liveList">
+      <div v-for="list in liveList" :key="list.id">
         <div id="teacher-video" ref="teachervideo"></div>
       </div>
       <div id="init-video" ref="initteachervideo"></div>
@@ -14,6 +14,18 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="leave()" id="leave-btn" ref="leaveBtn">离开</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-select v-model="selectedDefinition" @change="changeDefinition(selectedDefinition)" placeholder="清晰度选择">
+            <el-option
+              v-for="item in definition"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+              <span style="float: left">{{ item.label }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
     </el-footer>
@@ -36,7 +48,19 @@ let client, localStream, camera, microphone
 export default {
   data () {
     return {
-      liveList: [{id: 'id'}]
+      liveList: [{id: 'id'}],
+      definition: [{
+        value: '720P',
+        label: '超清'
+      }, {
+        value: '480P',
+        label: '高清'
+      }, {
+        value: '270P',
+        label: '标清'
+      }],
+      selectedDefinition: '',
+      difineDefinition: '720p_3'
     }
   },
   methods: {
@@ -51,14 +75,36 @@ export default {
         }
       })
     },
+    changeDefinition: function(selectedDefinition) {
+      let _this = this
+      if(selectedDefinition === '480P'){
+        _this.difineDefinition = '360P_8'
+        _this.leave()
+        _this.join()
+        _this.$message.success("清晰度切换至高清（480P）")
+      }else if(selectedDefinition === '270P'){
+        _this.difineDefinition = '120P' //240P_3
+        _this.leave()
+        _this.join()
+        _this.$message.success("清晰度切换至标清（270P）")
+      }else{
+        _this.difineDefinition = selectedDefinition
+        _this.leave()
+        _this.join()
+        _this.$message.success("清晰度切换至超清（720P）")
+      }
+    },
     join: function () {
       let _this = this
+      alert('join' + this.liveList.length)
       if(this.liveList.length === 0){
         alert('hhh')
         this.liveList.push({id: 'teacher'})
       }
-      document.getElementById('teacher-video').style.visibility = 'visible'
-      //_this.$refs.teachervideo.style.visibility = 'visible'
+      alert('join' + this.liveList.length)
+      if(document.getElementById('teacher-video') === null)
+        alert('is null')
+      //document.getElementById('teacher-video').style.visibility = 'visible'
       _this.$refs.initteachervideo.style.visibility = 'hidden'
       this.$refs.joinBtn.disabled = true
       if (this.$refs.leaveBtn.disabled === true) {
@@ -81,7 +127,8 @@ export default {
             video: true,
             screen: false
           })
-          localStream.setVideoProfile('720p_3')
+          alert(_this.difineDefinition)
+          localStream.setVideoProfile(_this.difineDefinition)
           // The user has granted access to the camera and mic.
           localStream.on('accessAllowed', function () {
           })
@@ -122,8 +169,10 @@ export default {
       })
     },
     leave: function () {
-      // mediaRecorder.stop()
-      this.liveList.splice(0,1)
+      if(this.liveList.length > 0){
+        alert('hhh')
+        this.liveList.splice(0,1)
+      }
       this.$refs.leaveBtn.disabled = true
       if (this.$refs.joinBtn.disabled === true) {
         this.$refs.joinBtn.disabled = false
@@ -138,8 +187,7 @@ export default {
       client.unpublish(localStream, function (err) {
         console.log('Unpublish local stream failed' + err)
       })
-      //_this.$refs.teachervideo.style.visibility = 'hidden'
-      document.getElementById('teacher-video').style.visibility = 'hidden'
+      //document.getElementById('teacher-video').style.visibility = 'hidden'
       _this.$refs.initteachervideo.style.visibility = 'visible'
     }
   }
@@ -169,6 +217,9 @@ export default {
   }
   .el-button{
     width: 100%;
+  }
+  .el-select{
+    width: 130px;
   }
   .el-footer{
     margin-top: 170px;

@@ -48,5 +48,7 @@ CREATE TABLE `video`(
 
 INSERT INTO user(phoneNum, password, name, nickname) VALUE ("13112345678","root","小明","jack");
 INSERT INTO user(phoneNum, password, name, nickname, isStudent) VALUE ("12112345678","admin","李老师","teacherLee",0);
-
+INSERT INTO user(phoneNum, password, name, nickname, isStudent) VALUE ("10086","admin","王老师","teacherWang",0);
 SELECT * FROM user;
+
+INSERT INTO liveroom(liveRoomNum, roomName, teacherId,imgPath,blackList) VALUE ("10086","Java","10086","hhh","13112345678,10086");

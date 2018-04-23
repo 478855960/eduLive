@@ -21,7 +21,7 @@
       </el-carousel>
   
       <el-row :gutter="20">
-      <el-col :span="8" v-for="item in liveRoomList">
+      <el-col :span="8" v-for="item in liveRoomList" :key="item.teacherId">
         <el-card :body-style="{ padding: '14px' }">
           <div id="all-area">
             <img :src="item.imgPath" class="image">
