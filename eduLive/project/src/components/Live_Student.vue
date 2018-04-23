@@ -168,6 +168,7 @@ export default {
     },
     initWebsocket () {
       // 设置websocket连接
+      let _this = this
       this.$ajax.post(this.rootUrl + this.url).then((response) => {
         this.sessioUser = JSON.parse(response.data)
         this.wsWhiteboardObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/whiteboard/' +
@@ -182,6 +183,9 @@ export default {
         '12112345678')
         this.wsStulistObj.onmessage = function (msg) {
           alert(msg.data)
+          alert(msg.data)
+          if(msg.data === 'inBlacklist')
+          _this.toHomePage()
         }
         window.onbeforeunload = function () {
           this.wsWhiteboardObj.close()
@@ -208,6 +212,9 @@ export default {
         style: this.stuStyleObj
       })
       this.input = ''
+    },
+    toHomePage: function() {
+      this.$router.push({path: '/HomePage'})
     },
     emit () {
       let text = this.encodeScript(this.input)

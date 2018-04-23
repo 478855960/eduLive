@@ -1,52 +1,31 @@
 <template>
-  <el-container>
-    <el-header>
-      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect"  text-color="#3b3a36" active-text-color="#3b3a36" router>
-        <el-menu-item index="HomePage">硕学平台</el-menu-item>
-        <el-menu-item index="LiveList">直播列表</el-menu-item>
-        <el-menu-item index="VideoList">录播列表</el-menu-item>
-        <el-menu-item index="UserCenter">个人中心</el-menu-item>
-        <el-menu-item index="Login" >登陆</el-menu-item>
-        <el-menu-item index="Register" >注册</el-menu-item>
-      </el-menu>
-    </el-header>
-    <el-main>
-      <h1>欢迎使用硕学教育平台</h1>
-      <hr>
-      <el-form ref="loginForm" :rules="loginRules" :model="loginForm" label-width="80px">
-        <el-form-item label="手机号" prop="phoneNum">
-          <el-input v-model="loginForm.phoneNum" placeholder="请输入手机号"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="loginForm.password" placeholder="请输入密码" type="password"></el-input>
-        </el-form-item>
-        <el-form-item label="验证码" required >
-          <el-col :span="14">
-            <el-form-item prop="code" id="code-item">
-              <el-input v-model="loginForm.code" placeholder="请输入验证码" id="code"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" @click="refreshCode">
-            <s-identify :identify-code="identifyCode"></s-identify>
-          </el-col>
-          <el-col :span="4">
-            <el-button id="code-button" @click="refreshCode">换一张</el-button>
-          </el-col>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" v-on:click="submitForm('loginForm')">登录</el-button>
-        </el-form-item>
-      </el-form>
-    </el-main>
-    <el-footer>
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>首页</el-breadcrumb-item>
-        <el-breadcrumb-item>帮助中心</el-breadcrumb-item>
-        <el-breadcrumb-item>关于我们</el-breadcrumb-item>
-        <el-breadcrumb-item>意见反馈</el-breadcrumb-item>
-      </el-breadcrumb>
-    </el-footer>
-  </el-container>
+  <div class="login-container">
+    <el-form autoComplete="on" ref="loginForm" :rules="loginRules" :model="loginForm" label-position="left" label-width="0px"
+      class="card-box login-form">
+      <h3 class="title">Welcome to SXTV</h3>
+      <el-form-item prop="phoneNum">
+        <el-input name="phoneNum" v-model="loginForm.phoneNum" type="text" autoComplete="on" placeholder="Phone"
+        prefix-icon="el-icon-phone"/>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input type="password" v-model="loginForm.password" placeholder="Password" prefix-icon="el-icon-goods"></el-input>
+      </el-form-item>
+      <el-form-item prop="code" id="code-item">
+          <el-input v-model="loginForm.code" placeholder="请输入验证码" id="code"></el-input>
+      </el-form-item>
+      <el-row :gutter="10">
+        <el-col style="display:table">
+          <s-identify :identify-code="identifyCode" id="identify"></s-identify>
+          <el-button id="code-button" @click="refreshCode" type="primary">换一张</el-button>
+        </el-col>
+        <el-col style="margin-top: 20px">
+          <el-form-item>
+            <el-button type="primary" v-on:click="submitForm('loginForm')" id="loginBtn">登录</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -126,54 +105,100 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  .el-header {
-    background-color: #89bdd3;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
-  h1 {
-    color: #89bdd3;
-  }
-  .el-footer {
-    background-color: #3b3a36;
-    text-align: center;
-    center: true;
-  }
-  .el-menu {
-    background-color: #89bdd3;
-  }
-  .el-container {
-    background-color: #e3e3e3;
-    text-align: center;
-  }
+<style lang="scss" scoped>
+  $bg:#2d3a4b;
+  $dark_gray:#889aa4;
+  $light_gray:#eee;
 
-  .el-form-item {
-    width: 40%;
-    margin: 30px auto;
-  }
-
-  .el-button {
-    background-color: #89bdd3;
-    color: #ffffff;
-    margin: 0 auto;
-    margin-right: 80px;
-    width: 30%;
-    border: none;
-  }
-
-  hr {
-    width: 55%;
-  }
-
-  #code-button {
-    width: 100%;
-  }
-
-  #code-item {
-    margin: 0;
-    width: 100%;
+  .login-container {
+    position: fixed;
+    height: 100%;
+    width:100%;
+    background-color: $bg;
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
+      -webkit-text-fill-color: #fff !important;
+    }
+    #identify{
+      height: 40px;
+      display: inline-block;
+      vertical-align:middle
+    }
+    #loginBtn{
+      width: 100%;
+    }
+    #code-item{
+      vertical-align:middle
+    }
+    #code-button{
+      margin-left: 20px;
+      width: 66%;
+    }
+    input {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+    }
+    .el-input {
+      display: inline-block;
+      height: 40px;
+      width: 100%;
+      background: transparent;
+    }
+    .tips {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .svg-container {
+      padding: 6px 5px 6px 15px;
+      color: $dark_gray;
+      vertical-align: middle;
+      width: 30px;
+      display: inline-block;
+      &_login {
+        font-size: 20px;
+      }
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 400;
+      color: $light_gray;
+      margin: 0px auto 40px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+    .login-form {
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 400px;
+      padding: 35px 35px 15px 35px;
+      margin: 120px auto;
+    }
+    .el-form-item {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      color: #454545;
+    }
+    .show-pwd {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $dark_gray;
+      cursor: pointer;
+      user-select:none;
+    }
+    .thirdparty-button{
+      position: absolute;
+      right: 35px;
+      bottom: 28px;
+    }
   }
 </style>
