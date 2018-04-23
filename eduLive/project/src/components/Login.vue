@@ -2,28 +2,36 @@
   <div class="login-container">
     <el-form autoComplete="on" ref="loginForm" :rules="loginRules" :model="loginForm" label-position="left" label-width="0px"
       class="card-box login-form">
-      <h3 class="title">Welcome to SXTV</h3>
+      <h3 class="title">欢迎来到硕学教育平台</h3>
       <el-form-item prop="phoneNum">
-        <el-input name="phoneNum" v-model="loginForm.phoneNum" type="text" autoComplete="on" placeholder="Phone"
+        <el-input name="phoneNum" v-model="loginForm.phoneNum" type="text" autoComplete="on" placeholder="电话号"
         prefix-icon="el-icon-phone"/>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" v-model="loginForm.password" placeholder="Password" prefix-icon="el-icon-goods"></el-input>
+        <el-input type="password" v-model="loginForm.password" placeholder="密码" prefix-icon="el-icon-goods"></el-input>
       </el-form-item>
       <el-form-item prop="code" id="code-item">
           <el-input v-model="loginForm.code" placeholder="请输入验证码" id="code"></el-input>
       </el-form-item>
-      <el-row :gutter="10">
-        <el-col style="display:table">
+      <el-row type="flex" :gutter="10" justify="space-around">
+        <el-col :span="8">
           <s-identify :identify-code="identifyCode" id="identify"></s-identify>
-          <el-button id="code-button" @click="refreshCode" type="primary">换一张</el-button>
         </el-col>
-        <el-col style="margin-top: 20px">
+        <el-col :span="16">
+          <el-button id="code-button" @click="refreshCode" type="primary" class="change-btn">换一张</el-button>
+        </el-col>
+      </el-row>
+      <br>
           <el-form-item>
             <el-button type="primary" v-on:click="submitForm('loginForm')" id="loginBtn">登录</el-button>
           </el-form-item>
-        </el-col>
-      </el-row>
+    <el-row type="flex" justify="end">
+      <el-col :span="15">
+      </el-col>
+      <el-col :span="9">
+        <label class="reg-label" @click="toReg">没有账号?立即注册!</label>
+      </el-col>
+    </el-row>
     </el-form>
   </div>
 </template>
@@ -100,6 +108,9 @@ export default {
       for (let i = 0; i < l; i++) {
         this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
       }
+    },
+    toReg () {
+      this.$router.push({path: '/Register'})
     }
   }
 }
@@ -115,24 +126,15 @@ export default {
     height: 100%;
     width:100%;
     background-color: $bg;
-    input:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
-      -webkit-text-fill-color: #fff !important;
-    }
     #identify{
-      height: 40px;
-      display: inline-block;
-      vertical-align:middle
+      height: 100%;
+      width: 100%;
     }
     #loginBtn{
       width: 100%;
     }
     #code-item{
       vertical-align:middle
-    }
-    #code-button{
-      margin-left: 20px;
-      width: 66%;
     }
     input {
       background: transparent;
@@ -199,6 +201,12 @@ export default {
       position: absolute;
       right: 35px;
       bottom: 28px;
+    }
+    .change-btn {
+      width: 100%;
+    }
+    .reg-label {
+      color: #eee;
     }
   }
 </style>

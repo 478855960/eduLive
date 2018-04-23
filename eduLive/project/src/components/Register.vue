@@ -1,39 +1,42 @@
 <template>
-  <el-container>
+  <el-container  class='register-container'>
     <el-header></el-header>
-    <el-main>
-      <h1>欢 迎 使 用 硕 学 教 育 平 台</h1>
-      <hr>
-      <el-form status-icon :rules="rules" :model="form" ref="form" size="small">
-        <el-form-item label="昵称" prop="nickname">
-          <el-input placeholder="输入自定义昵称" v-model="form.nickname"></el-input>
+    <el-main class='register-main'>
+      <h3 class='register-title'>欢迎使用硕学教育平台</h3>
+      <el-form status-icon :rules="rules" :model="form" ref="form" class="register-form">
+        <el-form-item prop="nickname" >
+          <el-input placeholder="输入自定义昵称" v-model="form.nickname" prefix-icon="el-icon-news"></el-input>
         </el-form-item>
-        <el-form-item label="真实姓名" prop="name">
-          <el-input placeholder="输入真实姓名" v-model="form.name"></el-input>
+        <el-form-item  prop="name">
+          <el-input placeholder="输入真实姓名" v-model="form.name" prefix-icon="el-icon-edit"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="phoneNum">
-          <el-input placeholder="输入手机号码" v-model="form.phoneNum"></el-input>
+        <el-form-item  prop="phoneNum">
+          <el-input placeholder="输入手机号码" v-model="form.phoneNum" prefix-icon="el-icon-phone"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" placeholder="输入密码" v-model="form.password"></el-input>
+        <el-form-item  prop="password">
+          <el-input type="password" placeholder="输入密码" v-model="form.password" prefix-icon="el-icon-goods"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="checkPassword">
-          <el-input type="password" placeholder="再次输入密码" v-model="form.checkPassword"></el-input>
+        <el-form-item  prop="checkPassword">
+          <el-input type="password" placeholder="再次输入密码" v-model="form.checkPassword" prefix-icon="el-icon-goods"></el-input>
         </el-form-item>
-        <el-row :gutter="10">
-          <el-col :span="180">
-            <el-form-item label="验证码" prop="verificationCode">
-              <el-input placeholder="输入短信验证码" v-model="form.verificationCode" style="width: 310px"></el-input>
+        <el-row :gutter="6" justify="space-around">
+          <el-col :span="18">
+            <el-form-item prop="verificationCode">
+              <el-input placeholder="输入短信验证码" v-model="form.verificationCode" prefix-icon="el-icon-message"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="80">
-            <el-button type="primary" id="sendCode-button" size="small" v-on:click="sendMessage('form',$event)">获取验证码</el-button>
+          <el-col :span="6">
+            <el-button type="primary" id="sendCode-button" v-on:click="sendMessage('form',$event)" class="getverifi-btn">获取验证码</el-button>
           </el-col>
         </el-row>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('form')">注册</el-button>
-          <el-button type="primary">重置</el-button>
-        </el-form-item>
+        <el-row :gutter="10" justify="space-around">
+          <el-col :span="12">
+            <el-button type="primary" @click="submitForm('form')" class="reg-btn">注册</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button type="primary" class="reset-btn">重置</el-button>
+          </el-col>
+        </el-row>
       </el-form>
     </el-main>
   </el-container>
@@ -103,9 +106,11 @@ export default {
       },
       rules: {
         password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
           { validator: validatePass, trigger: 'blur' }
         ],
         checkPassword: [
+          { required: true, message: '请输再次输入密码', trigger: 'blur' },
           { validator: validatePass2, trigger: 'blur' }
         ],
         nickname: [
@@ -123,6 +128,7 @@ export default {
           { validator: validatePhoneNum, trigger: 'blur' }
         ],
         verificationCode: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
           { validator: validateCode, trigger: 'blur' }
         ]
       }
@@ -140,7 +146,6 @@ export default {
               this.$router.push({path: '/Login'})
             })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -160,38 +165,59 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .el-main{
-    background-color: #c0dfd9;
-  }
-  .el-container{
+  .register-container {
     margin: 0 auto;
-    width: 500px;
-    height: 715px;
-    background-repeat: no-repeat;
+    background-color: #2d3a4b;
   }
-  .el-form{
-    color: white;
-  }
-  .body{
-    margin: 0px;
-  }
-  .el-button{
-    background-color: #89bdd3;
-    width: 223px;
-    border: none;
-  }
-  .el-input{
-    color: #e3e3e3;
-  }
-  hr {
-    width: 75%;
-  }
-  h1 {
+  .register-main {
+    width: 440px;
+    height: 699px;
     margin: 0 auto;
-    text-align: center
   }
+  .el-form-item {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      color: #454545;
+    }
   #sendCode-button {
-    width: 130px;
-    margin-top: 32px;
+    margin-top: 0px;
   }
+  .register-title {
+    font-size: 26px;
+    font-weight: 400;
+    color: #eee;
+    margin: 0px auto 40px auto;
+    text-align: center;
+    font-weight: bold;
+  }
+  input {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: #889aa4;
+      height: 47px;
+    }
+  .el-input {
+      display: inline-block;
+      height: 30px;
+      width: 100%;
+      background: transparent;
+    }
+    .reset-btn {
+      width: 100%;
+      border: 20px;
+    }
+    .reg-btn {
+      width: 100%;
+      border: 20px;
+    }
+    .getverifi-btn {
+      width: 100%;
+      border: 20px;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
 </style>

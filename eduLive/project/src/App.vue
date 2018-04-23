@@ -11,8 +11,8 @@ export default {
 </script>
 
 <style>
-  .body {
-    padding: 0;
+  * {
+    margin: 0px;
   }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
