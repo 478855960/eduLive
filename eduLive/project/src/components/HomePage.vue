@@ -12,7 +12,7 @@
       </el-menu>
     </el-header>
     <el-main>
-      <el-input ref="selectLiveRoomInfo" class="search" placeholder="搜索感兴趣的课程"></el-input>
+      <el-input id="selectLiveRoomInfo" class="search" placeholder="搜索感兴趣的课程"></el-input>
       <el-button class="search-buttom" type="primary" icon="el-icon-search" @click="queryLiveRoom">搜索</el-button>
       <el-carousel :interval="4000" type="card" height="360px">
         <el-carousel-item v-for="item in 6" :key="item">
@@ -55,7 +55,7 @@ export default {
       currentDate: new Date(),
       liveRoomList: [],
       queryInfo: {
-        info: ''
+        otherInfo: ''
       },
       blackList: {
         teacherId: ''
@@ -100,12 +100,14 @@ export default {
         })
     },
     queryLiveRoom: function () {
-      let _this = this
-      this.$nextTick(() => {
-        alert(_this.$refs.selectLiveRoomInfo.value)
-      })
+      // let _this = this
+      // this.$nextTick(() => {
+      //   alert(_this.$refs.selectLiveRoomInfo.value)
+      // })
+      this.queryInfo.otherInfo = document.getElementById('selectLiveRoomInfo').value
+      alert(this.queryInfo)
       this.$ajax
-        .post(this.rootUrl + '/liveroom/queryLiveRoomInfo.action', {'otherInfo': 'c'})
+        .post(this.rootUrl + '/liveroom/queryLiveRoomInfo.action', this.queryInfo)
         .then(response => {
           alert(JSON.parse(response.data))
         })
@@ -207,5 +209,3 @@ body > .el-container {
   width:350px;
 }
 </style>
-
-/root/java/jdk1.8.0_141/include
