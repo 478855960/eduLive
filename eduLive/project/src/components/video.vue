@@ -43,7 +43,7 @@ AgoraRTC.Logger.error('this is error')
 AgoraRTC.Logger.warning('this is warning')
 AgoraRTC.Logger.info('this is info')
 AgoraRTC.Logger.debug('this is debug')
-let client, localStream, camera, microphone
+let client, localStream, camera, microphone,recordClient,recordStream
 // let mediaRecorder = new MediaStreamRecorder.WhammyRecorder()
 export default {
   data () {

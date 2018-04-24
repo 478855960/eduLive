@@ -16,7 +16,7 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/TeamYiMing': '/TeamYiMing'
-      }
+        }
       }
     },
 
