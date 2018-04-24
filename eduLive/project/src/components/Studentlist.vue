@@ -103,4 +103,10 @@ export default {
 </script>
 
 <style>
+  #showstu{
+    display: inline-block;
+  }
+  .el-button{
+    margin: 0 20px;
+  }
 </style>
