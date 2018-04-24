@@ -120,6 +120,7 @@ public class Whiteboard {
      */
     @OnError
     public void onError(Session session, Throwable error){
+        error.printStackTrace();
     }
 
     /**
