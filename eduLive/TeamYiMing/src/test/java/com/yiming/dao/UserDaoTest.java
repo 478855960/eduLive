@@ -2,6 +2,10 @@ package com.yiming.dao;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import javax.transaction.Transactional;
 
 import org.junit.After;
@@ -74,5 +78,4 @@ public class UserDaoTest extends BaseTest{
         User user = userDao.getUserByPhoneNum("12112345678");
         assertEquals("teacherLee", user.getNickname());
     }
-
 }
