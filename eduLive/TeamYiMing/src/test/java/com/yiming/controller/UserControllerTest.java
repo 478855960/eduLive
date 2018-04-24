@@ -67,6 +67,8 @@ public class UserControllerTest {
         user.setPhoneNum("12112345678");
         user.setPassword("hs");
         String reqJSONErr = JSONObject.toJSONString(user);
+        System.out.println(reqJSONSucc);
+        System.out.println(reqJSONErr);
         String responseString = mockMvc.perform
                 (
                     post("/user/userLogin.action")          //请求的url,请求的方法是get

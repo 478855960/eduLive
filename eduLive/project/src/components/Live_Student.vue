@@ -1,53 +1,90 @@
 <template>
   <el-container>
-    <el-header></el-header>
+    <el-aside class="aside" width="200px">
+      <el-menu
+        default-active="2"
+        class="el-menu-vertical"
+        @open="handleOpen"
+        @close="handleClose"
+        background-color="#2d3a4b"
+        text-color="#fff"
+        active-text-color="#ffd04b">
+        <el-menu-item index="1">
+          <i class="el-icon-location"></i>
+          <span slot="title">导航一</span>
+        </el-menu-item>
+        <el-menu-item index="2">
+          <i class="el-icon-menu"></i>
+          <span slot="title">导航二</span>
+        </el-menu-item>
+        <el-menu-item index="3">
+          <i class="el-icon-document"></i>
+          <span slot="title">导航三</span>
+        </el-menu-item>
+        <el-menu-item index="4">
+          <i class="el-icon-setting"></i>
+          <span slot="title">导航四</span>
+        </el-menu-item>
+      </el-menu>
+    </el-aside>
     <el-container>
-      <el-container class="ec_left">
-        <canvas id='stuContent' ref='stuContent'/>
-      </el-container>
-      <el-container direction="vertical" class="ec_right">
-        <el-main>
-          <el-button type="primary" @click="joinLive()">加入</el-button>
-          <el-button type="primary">离开</el-button>
-          <el-form :model="liveRoomNumForm" :ref="liveRoomNumForm">
-            <el-input v-model="liveRoomNumForm.liveRoomNum" placeholder="输入直播间编号"></el-input>
-            <el-button type="primary" @click="download()">下载教学资源</el-button>
-          </el-form>
-        </el-main>
-        <el-main id="video">
-          该主播好像还没开播哦···
-        </el-main>
-        <el-main>
-          <el-card class="box-card" id="content">
-            <div v-for="item in list" :key="item" class="text item">
-              <p v-bind:style="item.style">{{item.userId}}: <span v-html="emoji(item.message)"></span> </p>
-            </div>
-          </el-card>
-        </el-main>
-        <el-container id="container-text">
-          <el-main>
-          </el-main>
-          <el-footer>
-            <el-popover
-              ref="popover"
-              placement="top-start"
-              trigger="click">
-              <div class="emoji-box">
-                <vue-emoji
-                  @select="selectEmoji">
-                </vue-emoji>
-                <span class="pop-arrow arrow"></span>
+      <el-header></el-header>
+      <el-container>
+        <el-container class="ec_left">
+          <el-tabs type="border-card">
+            <el-tab-pane label="代码" class="codeEditor">
+              <div class="cm-container">
+                <codemirror v-model="codeMsg" :options="options"></codemirror>
               </div>
-            </el-popover>
-            <i class="icon iconfont icon-face" v-popover:popover></i>
-            <el-input
-              placeholder="请输入内容"
-              v-model="input"
-              clearable
-              id="msg">
-            </el-input>
-            <el-button type="primary" icon="el-icon-d-arrow-right" @click="submit" id="btn"></el-button>
-          </el-footer>
+            </el-tab-pane>
+            <el-tab-pane label="白板">
+              <canvas id='stuContent' ref='stuContent'/>
+            </el-tab-pane>
+          </el-tabs>
+        </el-container>
+        <el-container direction="vertical" class="ec_right">
+          <el-main class="ec_right-main">
+            <el-button type="primary" @click="joinLive()">加入</el-button>
+            <el-button type="primary">离开</el-button>
+            <el-form :model="liveRoomNumForm" :ref="liveRoomNumForm">
+              <el-input v-model="liveRoomNumForm.liveRoomNum" placeholder="输入直播间编号"></el-input>
+              <el-button type="primary" @click="download()">下载教学资源</el-button>
+            </el-form>
+          </el-main>
+          <el-main id="video">
+            该主播好像还没开播哦···
+          </el-main>
+          <el-main class="chat-room">
+            <el-card class="box-card" id="content">
+              <div v-for="item in list" :key="item" class="text item">
+                <p v-bind:style="item.style">{{item.userId}}: <span v-html="emoji(item.message)"></span> </p>
+              </div>
+            </el-card>
+          </el-main>
+          <el-container id="container-text">
+            <el-footer>
+              <el-popover
+                ref="popover"
+                placement="top-start"
+                trigger="click">
+                <div class="emoji-box">
+                  <vue-emoji
+                    @select="selectEmoji">
+                  </vue-emoji>
+                  <span class="pop-arrow arrow"></span>
+                </div>
+              </el-popover>
+              <i class="icon iconfont icon-face" v-popover:popover></i>
+              <el-input
+                placeholder="请输入内容"
+                v-model="input"
+                clearable
+                id="msg"
+                :disabled="isBanned">
+              </el-input>
+              <el-button type="primary" icon="el-icon-d-arrow-right" @click="submit" id="btn"></el-button>
+            </el-footer>
+          </el-container>
         </el-container>
       </el-container>
     </el-container>
@@ -59,6 +96,15 @@
 
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
 import vueEmoji from '@/components/emoji'
+import { codemirror } from 'vue-codemirror-lite'
+require('codemirror/mode/javascript/javascript')
+require('codemirror/mode/vue/vue')
+
+require('codemirror/addon/hint/show-hint.js')
+require('codemirror/addon/hint/html-hint.js')
+require('codemirror/addon/hint/css-hint.js')
+require('codemirror/addon/hint/show-hint.css')
+require('codemirror/addon/hint/javascript-hint.js')
 AgoraRTC.Logger.error('this is error')
 AgoraRTC.Logger.warning('this is warning')
 AgoraRTC.Logger.info('this is info')
@@ -66,7 +112,8 @@ AgoraRTC.Logger.debug('this is debug')
 export default {
   name: 'Live_Student',
   components: {
-    vueEmoji
+    vueEmoji,
+    codemirror
   },
   data () {
     return {
@@ -79,6 +126,8 @@ export default {
       goEasy: '',
       list: [],
       userId: '',
+      codeMsg: '',
+      isBanned: false,
       stuStyleObj: {
         color: '#15b8ce',
         fontSize: '12px'
@@ -90,6 +139,7 @@ export default {
       canvasCtx: null,
       url: '/user/getCurUser.action',
       sessioUser: null,
+      ws: null,
       wsStulistObj: null,
       wsWhiteboardObj: null,
       WhiteboardData: {
@@ -104,8 +154,8 @@ export default {
   },
   created () {
     this.initWebsocket()
+    this.codeMsg = '//'
     this.input = ''
-    this.userId = 'StudentX'
     this.list.push({
       userId: this.userId,
       message: '您已进入聊天室',
@@ -116,6 +166,17 @@ export default {
     })
     this.listen()
     document.onkeydown = this.enter
+  },
+  computed: {
+    options: function () {
+      return {
+        mode: 'javascript',
+        tabSize: 2,
+        lineWrapping: true,
+        extraKeys: {'Ctrl-Space': 'autocomplete'},
+        readOnly: true
+      }
+    }
   },
   mounted () {
     this.initCanvas()
@@ -162,7 +223,7 @@ export default {
     },
     initCanvas () {
       let canvas = this.$refs.stuContent
-      canvas.width = 900
+      canvas.width = 720
       canvas.height = 350
       this.canvasCtx = this.$refs.stuContent.getContext('2d')
     },
@@ -170,6 +231,12 @@ export default {
       // 设置websocket连接
       this.$ajax.post(this.rootUrl + this.url).then((response) => {
         this.sessioUser = JSON.parse(response.data)
+        this.getUId(this.sessioUser.nickname)
+        this.ws = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/codeEditor/' +
+          this.sessioUser.isStudent + '/' +
+          this.sessioUser.phoneNum + '/' +
+          '12112345678')
+        this.ws.onmessage = this.changeCode
         this.wsWhiteboardObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/whiteboard/' +
         this.sessioUser.isStudent + '/' +
         this.sessioUser.phoneNum + '/' +
@@ -180,12 +247,11 @@ export default {
         this.sessioUser.phoneNum + '/' +
         this.sessioUser.name + '/' +
         '12112345678')
-        this.wsStulistObj.onmessage = function (msg) {
-          alert(msg.data)
-        }
+        this.wsStulistObj.onmessage = this.changeInput
         window.onbeforeunload = function () {
           this.wsWhiteboardObj.close()
           this.wsStulistObj.close()
+          this.ws.close()
         }
       })
     },
@@ -198,15 +264,17 @@ export default {
     submit () {
       let text = this.encodeScript(this.input)
       let message = "{'userId': '" + this.userId + "', 'message': '" + text + "'}"
-      this.goEasy.publish({
-        channel: 'stu',
-        message: message
-      })
-      this.list.push({
-        userId: this.userId,
-        message: text,
-        style: this.stuStyleObj
-      })
+      if (text !== '') {
+        this.goEasy.publish({
+          channel: 'stu',
+          message: message
+        })
+        this.list.push({
+          userId: this.userId,
+          message: text,
+          style: this.stuStyleObj
+        })
+      }
       this.input = ''
     },
     emit () {
@@ -249,6 +317,19 @@ export default {
         this.emit()
       }
     },
+    getUId (nickname) {
+      this.userId = nickname
+    },
+    changeInput (msg) {
+      if (msg.data === 'banned') {
+        this.isBanned = true
+      } else if (msg.data === 'cancelBanned') {
+        this.isBanned = false
+      }
+    },
+    changeCode (msg) {
+      this.codeMsg = msg.data
+    },
     whiteboardDraw (msg) {
       let drawData = JSON.parse(msg.data)
       if (drawData.type === 'pen') {
@@ -287,36 +368,41 @@ export default {
 </script>
 
 <style scoped>
+  .el-aside{
+    background-color: #2d3a4b;
+    color: #333;
+    border: #afb1aa 1px solid;
+    border-right: 0;
+  }
+  .el-menu{
+    width: 198px;
+    border: 0;
+  }
   .el-header {
-    background-color: #B3C0D1;
+    background-color: #0996d1;
     color: #333;
     height: 60px;
   }
-
++
   .el-footer {
     background-color: #B3C0D1;
     color: #333;
   }
-  .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-  }
-
   .el-main {
     background-color: #E9EEF3;
     color: #333;
   }
 
   .ec_left{
-    width: 70%;
+    width: 60%;
     height: 600px;
-    border: #1b6d85 2px solid;
+    border: #afb1aa 1px solid;
   }
 
   .ec_right{
-    width: 30%;
+    width: 40%;
     height: 600px;
-    border: #1b6d85 2px solid;
+    border: #afb1aa 1px solid;
   }
 
   .el-button-group{
@@ -337,5 +423,24 @@ export default {
   .iconfont {
     cursor: pointer;
     color: #f7793a;
+  }
+  .cm-container{
+    border: #ddd solid 1px;
+    margin-bottom: 10px
+  }
+  .codeEditor{
+    width: 720px;
+  }
+  .ec_right-main{
+    height: 150px;
+  }
+  #video{
+    height: 160px;
+  }
+  .chat-room{
+    height: 230px;
+  }
+  #container-text{
+    height: 60px;
   }
 </style>

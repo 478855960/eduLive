@@ -19,7 +19,6 @@
           <h3>{{ item }}</h3>
         </el-carousel-item>
       </el-carousel>
-  
       <el-row :gutter="20">
       <el-col :span="8" v-for="item in liveRoomList">
         <el-card :body-style="{ padding: '14px' }">
@@ -50,8 +49,8 @@
 
 <script>
 export default {
-  name: "home-page",
-  data() {
+  name: 'home-page',
+  data () {
     return {
       currentDate: new Date(),
       liveRoomList: [],
@@ -61,58 +60,58 @@ export default {
       blackList: {
         teacherId: ''
       }
-    };
-  },
-  computed: {
-    activeIndex() {
-      return this.$route.path.replace("/", "");
     }
   },
-  mounted() {
+  computed: {
+    activeIndex () {
+      return this.$route.path.replace('/', '')
+    }
+  },
+  mounted () {
     // alert('hhh')
     let _this = this
     this.$ajax
-      .post(this.rootUrl + "/liveroom//getAllLiveRoomInfo.action", null)
+      .post(this.rootUrl + '/liveroom//getAllLiveRoomInfo.action', null)
       .then(response => {
-        if(response.data === 'failed'){
+        if (response.data === 'failed') {
           this.$message.error('获取直播列表失败！')
         }
         _this.liveRoomList = JSON.parse(response.data)
-      });
+      })
   },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(this);
-      console.log(key, keyPath);
+    handleSelect (key, keyPath) {
+      console.log(this)
+      console.log(key, keyPath)
     },
-    routerToLiveRoom: function(teacherid) {
+    routerToLiveRoom: function (teacherid) {
       this.blackList.teacherId = teacherid
       let _this = this
       this.$ajax
-      .post(this.rootUrl + "/liveroom/queryStatus.action", _this.blackList)
-      .then(response => {
-        if(response.data === 0){
-          this.$message.error('您已被拉黑，无法进入该直播间！')
-        }else{
-          sessionStorage.setItem("teacherID",teacherid)
-          alert(sessionStorage.getItem("teacherID"))
-          this.$router.push({path: '/Live_Student'})
-        }
-      });
+        .post(this.rootUrl + '/liveroom/queryStatus.action', _this.blackList)
+        .then(response => {
+          if (response.data === 0) {
+            this.$message.error('您已被拉黑，无法进入该直播间！')
+          } else {
+            sessionStorage.setItem('teacherID', teacherid)
+            alert(sessionStorage.getItem('teacherID'))
+            this.$router.push({path: '/Live_Student'})
+          }
+        })
     },
-    queryLiveRoom: function() {
+    queryLiveRoom: function () {
       let _this = this
       this.$nextTick(() => {
-        alert(_this.$refs.selectLiveRoomInfo.value) 
-      });
+        alert(_this.$refs.selectLiveRoomInfo.value)
+      })
       this.$ajax
-        .post(this.rootUrl + "/liveroom/queryLiveRoomInfo.action", {'otherInfo':'c'})
+        .post(this.rootUrl + '/liveroom/queryLiveRoomInfo.action', {'otherInfo': 'c'})
         .then(response => {
-          alert(JOSN.parse(response.data))
-      });
+          alert(JSON.parse(response.data))
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -108,6 +108,10 @@ export default {
     })
   },
   methods: {
+    change: function (code) {
+      alert(code)
+      this.codeMsg = code
+    },
     dispatcher (value) {
       let part = value.split('-')
       this.saveLastText(this.contextBack, this.savedText, this.textPosX, this.textPosY)

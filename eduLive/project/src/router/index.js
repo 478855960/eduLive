@@ -32,12 +32,16 @@ export default new Router({
     {
       path: '/live_teacher',
       name: 'Live_Teacher',
-      component: LiveTeacher
+      component: LiveTeacher,
+      meta: { requiresAuth: true
+      }
     },
     {
       path: '/live_student',
       name: 'Live_Student',
-      component: LiveStudent
+      component: LiveStudent,
+      meta: { requiresAuth: true
+      }
     },
     {
       path: '/Login',
@@ -57,7 +61,9 @@ export default new Router({
     {
       path: '/UserCenter',
       name: 'UserCenter',
-      component: UserCenter
+      component: UserCenter,
+      meta: { requiresAuth: true
+      }
     },
     {
       path: '/CodeEditor',
@@ -72,7 +78,9 @@ export default new Router({
     {
       path: '/Initiate',
       name: 'Initiate',
-      component: Initiate
+      component: Initiate,
+      meta: { requiresAuth: true
+      }
     },
     {
       path: '/VideoRoom',

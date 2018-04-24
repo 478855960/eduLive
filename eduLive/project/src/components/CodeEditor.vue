@@ -43,7 +43,10 @@ export default {
   },
   data () {
     return {
-      mode: 'javascript'
+      mode: 'javascript',
+      sessioUser: null,
+      url: '/user/getCurUser.action',
+      ws: null
     }
   },
   computed: {
@@ -60,8 +63,18 @@ export default {
       }
     }
   },
+  mounted () {
+    this.$ajax.post(this.rootUrl + this.url).then((response) => {
+      this.sessioUser = JSON.parse(response.data)
+      this.ws = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/codeEditor/' +
+        this.sessioUser.isStudent + '/' +
+        this.sessioUser.phoneNum + '/' +
+        '12112345678')
+    })
+  },
   methods: {
     change: function (code) {
+      this.ws.send(code)
     }
   }
 }
