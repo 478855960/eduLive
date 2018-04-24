@@ -52,16 +52,17 @@ export default {
         this.sessioUser.name + '/' +
         '12112345678')
       this.wsObj.onmessage = this.updateMsg
-      alert('stulistWS connected')
       window.onbeforeunload = function () {
         let whiteboardWs = this.$store.getters.getWhiteBoardWebsocket
         whiteboardWs.close()
         this.wsObj.close()
-        alert('stulistWS closed')
       }
       this.$store.commit('setStudentListWebsocket', this.wsObj)
     })
     Bus.$on('pageIndex', (msg) => {
+      this.wsObj.send(JSON.stringify(msg))
+    })
+    Bus.$on('tabIndex', (msg) => {
       this.wsObj.send(JSON.stringify(msg))
     })
   },

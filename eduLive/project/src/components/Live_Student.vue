@@ -31,16 +31,15 @@
       <el-header></el-header>
       <el-container>
         <el-container class="ec_left">
-          <el-tabs type="border-card">
-            <el-tab-pane label="代码" class="codeEditor">
-              <div class="cm-container">
-                <codemirror v-model="codeMsg" :options="options"></codemirror>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="白板">
-              <canvas id='stuContent' ref='stuContent'/>
-            </el-tab-pane>
-          </el-tabs>
+          <div v-show="tabIndex==0">
+            <canvas id='stuContent' ref='stuContent'/>
+          </div>
+          <div v-show="tabIndex==1">
+            <img v-bind:src="pptPage" class="image"/>
+          </div>
+          <div v-show="tabIndex==2" class="cm-container">
+            <codemirror v-model="codeMsg" :options="options"></codemirror>
+          </div>
         </el-container>
         <el-container direction="vertical" class="ec_right">
           <el-main class="ec_right-main">
@@ -149,7 +148,9 @@ export default {
         oldY: 0,
         curX: 0,
         curY: 0
-      }
+      },
+      pptPage: '',
+      tabIndex: 0
     }
   },
   created () {
@@ -228,6 +229,7 @@ export default {
       this.canvasCtx = this.$refs.stuContent.getContext('2d')
     },
     initWebsocket () {
+      let _this = this
       // 设置websocket连接
       this.$ajax.post(this.rootUrl + this.url).then((response) => {
         this.sessioUser = JSON.parse(response.data)
@@ -243,11 +245,24 @@ export default {
             '12112345678')
         this.wsWhiteboardObj.onmessage = this.whiteboardDraw
         this.wsStulistObj = new WebSocket('ws://localhost:8080/TeamYiMing/websocket/studentList/' +
-            this.sessioUser.isStudent + '/' +
-            this.sessioUser.phoneNum + '/' +
-            this.sessioUser.name + '/' +
-            '12112345678')
-        this.wsStulistObj.onmessage = this.changeInput
+        this.sessioUser.isStudent + '/' +
+        this.sessioUser.phoneNum + '/' +
+        this.sessioUser.name + '/' +
+        '12112345678')
+        this.wsStulistObj.onmessage = function (msg) {
+          let message = JSON.parse(msg.data)
+          if (msg.data === 'inBlacklist') {
+            _this.toHomePage()
+          } else if (msg.data === 'banned' || msg.data === 'cancelBanned'){
+            this.changeInput
+          } else if (message.type === 'ppt') {
+            _this.pptPage = message.otherInfo
+            console.log(_this.pptPage)
+          } else if (message.type === 'tabSwitch') {
+            _this.tabIndex = message.otherInfo
+            console.log(_this.tabIndex)
+          }
+        }
         window.onbeforeunload = function () {
           this.wsWhiteboardObj.close()
           this.wsStulistObj.close()
@@ -383,7 +398,6 @@ export default {
     color: #333;
     height: 60px;
   }
-  +
   .el-footer {
     background-color: #B3C0D1;
     color: #333;

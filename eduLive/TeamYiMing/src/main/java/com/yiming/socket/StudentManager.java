@@ -151,6 +151,11 @@ public class StudentManager {
             for(StudentManager studentManager: studentManagers) {
                 studentManager.sendMessage(message);
             }
+        } else if("tabSwitch".equals(teacherOp.getType())) {
+            List<StudentManager> studentManagers = webSocketMap.get(teacherOp.getLiveroomNum());
+            for(StudentManager studentManager: studentManagers) {
+                studentManager.sendMessage(message);
+            }
         }
     }
     /**
