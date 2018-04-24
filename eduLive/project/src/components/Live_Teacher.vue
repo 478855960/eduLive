@@ -4,18 +4,18 @@
     <el-container>
       <el-container class="ec_left">
         <el-main>
-          <el-tabs type="border-card">
-            <el-tab-pane label="PPT">
+          <el-tabs v-model="activeTab" type="border-card" @tab-click="switchTab">
+            <el-tab-pane label="白板" name="whiteboard">
+              <whiteboard>
+              </whiteboard>
+            </el-tab-pane>
+            <el-tab-pane label="PPT" name="ppt">
               <SlideDisplay>
               </SlideDisplay>
             </el-tab-pane>
-            <el-tab-pane label="代码">
+            <el-tab-pane label="代码" name="code">
               <CodeEditor>
               </CodeEditor>
-            </el-tab-pane>
-            <el-tab-pane label="白板">
-              <whiteboard>
-              </whiteboard>
             </el-tab-pane>
           </el-tabs>
         </el-main>
@@ -76,6 +76,7 @@ import SlideDisplay from '@/components/SlideDisplay'
 import Whiteboard from '@/components/whiteboard'
 import Video from '@/components/video'
 import vueEmoji from '@/components/emoji'
+import Bus from './bus.js'
 
 export default {
   name: 'Live_Teacher',
@@ -100,7 +101,17 @@ export default {
       teaStyleObj: {
         color: '#cc18ce',
         fontSize: '12px'
-      }
+      },
+      tabSwitchOp: {
+        type: '',
+        liveroomNum: '',
+        phoneNum: '',
+        otherInfo: ''
+      },
+      sessionUser: null,
+      tabIndex: 0,
+      getCurrentUserUrl: '/user/getCurUser.action',
+      activeTab: 'ppt'
     }
   },
   created () {
@@ -178,11 +189,29 @@ export default {
       if (e && e.keyCode === 13) { // enter 键
         this.emit()
       }
+    },
+    switchTab (tab, e) {
+      this.tabIndex = tab.index
+      this.tabSwitchOp.otherInfo = this.tabIndex
+      Bus.$emit('tabIndex', this.tabSwitchOp)
+      if (tab.index === '1') {
+        Bus.$emit('pptSwitched', 1)
+      }
     }
   },
   mounted () {
     this.listen()
     document.onkeydown = this.enter
+    this.$ajax.post(this.rootUrl + this.getCurrentUserUrl)
+      .then((response) => {
+        this.sessionUser = JSON.parse(response.data)
+        this.tabSwitchOp.type = 'tabSwitch'
+        this.tabSwitchOp.liveroomNum = this.sessionUser.phoneNum
+        this.tabSwitchOp.phoneNum = this.sessionUser.phoneNum
+      })
+    this.tabSwitchOp.otherInfo = this.tabIndex
+    Bus.$emit('tabIndex', this.tabSwitchOp)
+    this.activeTab = 'whiteboard'
   }
 }
 

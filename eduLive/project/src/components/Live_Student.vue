@@ -3,11 +3,14 @@
     <el-header></el-header>
     <el-container>
       <el-container class="ec_left">
-        <canvas id='stuContent' ref='stuContent'/>
-      </el-container>
-      <el-container class="ec_left">
-        <div>
+        <div v-show="tabIndex==0">
+          <canvas id='stuContent' ref='stuContent'/>
+        </div>
+        <div v-show="tabIndex==1">
           <img v-bind:src="pptPage" class="image"/>
+        </div>
+        <div v-show="tabIndex==2">
+          代码区在这里
         </div>
       </el-container>
       <el-container direction="vertical" class="ec_right">
@@ -105,7 +108,8 @@ export default {
         curX: 0,
         curY: 0
       },
-      pptPage: ''
+      pptPage: '',
+      tabIndex: 0
     }
   },
   created () {
@@ -197,11 +201,11 @@ export default {
           if (msg.data === 'inBlacklist') {
             _this.toHomePage()
           } else if (message.type === 'ppt') {
-            // _this.setValue(JSON.parse(msg.data))
             _this.pptPage = message.otherInfo
-            // alert(msg.data)
-            // alert(this.pptPage)
-            console.log(_this.pptPage)
+            console.log(_thiss.pptPage)
+          } else if (message.type === 'tabSwitch') {
+            _this.tabIndex = message.otherInfo
+            console.log(_this.tabIndex)
           }
         }
         window.onbeforeunload = function () {

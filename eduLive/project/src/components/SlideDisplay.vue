@@ -63,6 +63,10 @@ export default {
       })
     this.pageIndexOp.otherInfo = this.slides[this.pageIndex]
     Bus.$emit('pageIndex', this.pageIndexOp)
+    Bus.$on('pptSwitched', (msg) => {
+      this.pageIndexOp.otherInfo = this.slides[this.pageIndex]
+      Bus.$emit('pageIndex', this.pageIndexOp)
+    })
   },
   components: {
     swiper,
