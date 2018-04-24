@@ -34,6 +34,7 @@ import com.yiming.dao.LiveRoomMapper;
 import com.yiming.entity.LiveRoom;
 import com.yiming.entity.StuGagBanData;
 import com.yiming.entity.StudentReqData;
+import com.yiming.entity.TeacherOpData;
 import com.yiming.entity.User;
 import com.yiming.service.LiveRoomService;
 import com.yiming.util.Constant;
@@ -236,7 +237,11 @@ public class LiveRoomController {
         }
         return srcPath;
     }
-
+    /**
+     * 将学生添加到禁言列表
+     * @param gagStudent 禁言学生的信息
+     * @return
+     */
     @RequestMapping(value = "/addGaglist.action", method = RequestMethod.POST)
     @ResponseBody
     public String addGaglist(@RequestBody StuGagBanData gagStudent) {
@@ -249,5 +254,47 @@ public class LiveRoomController {
             retMsg = "failure";
         }
         return retMsg;
+    }
+    /**
+     * 获取开启录播的post请求
+     * @param teacherOpData
+     * @return
+     */
+    @RequestMapping(value="/postVideo.action", method = RequestMethod.POST)
+    @ResponseBody
+    public String changePage(@RequestBody TeacherOpData teacherOpData) {
+        String type = teacherOpData.getType();
+        if("stop".equals(type)) {
+            String channel = "1000";
+            channel = teacherOpData.getOtherInfo();
+            String cmd = "stop commend";
+            try{
+                Runtime rt = Runtime.getRuntime();
+                Process proc = rt.exec(cmd);
+            }catch (Exception e){
+                e.printStackTrace();
+                return "fail";
+            }
+        }else {
+            String channel = "1000";
+            channel = teacherOpData.getOtherInfo();
+            String cmd = "./recorder_local "
+                    + "--appId a86334acf5c04a6aa7a85b66d0767612 "
+                    + "--uid 0 "
+                    + "--channel " + channel + " "
+                    + " --appliteDir /root/agoraRecord/Agora_Recording_SDK_for_Linux_FULL/bin/ "
+                    + "--channelProfile 1 "
+                    + "--isVideoOnly 1 "
+                    + "--recordFileRootDir /root/\r\n";
+            try{
+                Runtime rt = Runtime.getRuntime();
+                //执行命令, 最后一个参数，可以使用new File("path")指定运行的命令的位置
+                Process proc = rt.exec(cmd);
+            }catch (Exception e){
+                e.printStackTrace();
+                return "fail";
+            }
+        }
+        return "succeed";
     }
 }
