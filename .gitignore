@@ -5,7 +5,7 @@ npm-debug.log*
 /eduLive/project/test/unit/coverage/
 /eduLive/project/test/e2e/reports/
 /eduLive/project/dist/
-
+/eduLive/TeamYiMing/src/main/webapp/static/
 #Interlij
 *.iml
 */*.iml

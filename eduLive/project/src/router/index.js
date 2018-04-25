@@ -24,6 +24,7 @@ Vue.prototype.$ajax = Axios
 
 export default new Router({
   mode: 'history',
+  base: '/TeamYiMing/',
   routes: [
     {
       path: '/',
