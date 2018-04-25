@@ -29,7 +29,7 @@
           </el-main>
           <el-main class="chat-room">
             <el-card class="box-card" id="content">
-              <div v-for="item in list" :key="item" class="text item">
+              <div v-for="item in list" :key="item.style" class="text item">
                 <p v-bind:style="item.style">{{item.userId}}: <span v-html="emoji(item.message)"></span> </p>
               </div>
             </el-card>
@@ -198,6 +198,9 @@ export default {
         _this.$message('老师关闭了摄像头')
       })
     },
+    toHomePage () {
+      this.$router.push({path: '/HomePage'})
+    },
     initCanvas () {
       let canvas = this.$refs.stuContent
       canvas.width = 720
@@ -226,12 +229,16 @@ export default {
         this.sessioUser.name + '/' +
         '12112345678')
         this.wsStulistObj.onmessage = function (msg) {
-          let message = JSON.parse(msg.data)
+          // alert(msg.data)
           if (msg.data === 'inBlacklist') {
             _this.toHomePage()
+            return;
           } else if (msg.data === 'banned' || msg.data === 'cancelBanned'){
-            this.changeInput
-          } else if (message.type === 'ppt') {
+            _this.changeInput(msg)
+            return;
+          }
+          let message = JSON.parse(msg.data)
+          if (message.type === 'ppt') {
             _this.pptPage = message.otherInfo
             console.log(_this.pptPage)
           } else if (message.type === 'tabSwitch') {

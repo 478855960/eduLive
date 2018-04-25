@@ -4,6 +4,7 @@
     <el-container class="main">
       <el-header></el-header>
       <el-container>
+        <div id="test"></div>
         <el-container class="ec_left">
           <el-main>
             <el-tabs v-model="activeTab" type="border-card" @tab-click="switchTab">
@@ -27,6 +28,7 @@
               <el-button type="success" class="btn">暂停直播</el-button>
               <student-list></student-list>
               <el-button type="info">全员禁言</el-button>
+              <el-button  @click="recordStart()">开始录制</el-button>
             </div>
           </el-footer>
         </el-container>
@@ -37,7 +39,7 @@
           <el-container id="container-text">
             <el-main>
               <el-card class="box-card" ref="chatcard">
-                <div v-for="item in list" class="text item">
+                <div v-for="item in list" class="text item" :key="item.userId">
                   <p v-bind:style="item.style">{{item.userId}}: <span v-html="emoji(item.message)"></span> </p>
                 </div>
               </el-card>
@@ -80,7 +82,7 @@ import Video from '@/components/video'
 import vueEmoji from '@/components/emoji'
 import Bus from './bus.js'
 import Sidebar from '@/components/Sidebar'
-
+import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
 export default {
   name: 'Live_Teacher',
   components: {
@@ -205,6 +207,41 @@ export default {
       if (tab.index === '1') {
         Bus.$emit('pptSwitched', 1)
       }
+    },
+    recordStart: function() {
+      let recordClient,recordStream
+      let _this = this
+      let appIDinput = 'a86334acf5c04a6aa7a85b66d0767612'
+      let channelInput = '10001'
+      alert(channelInput)
+      recordClient = AgoraRTC.createClient({mode: 'interop'})
+      recordClient.init(appIDinput, function () {
+        recordClient.join(null, channelInput, null, function (uid) {
+          recordStream = AgoraRTC.createStream({
+            streamID: uid,
+            audio: false,
+            video: false,
+            screen: true,
+            extensionId: 'minllpmhdgpndnkomcoccfekfegnlikg'
+          })
+          recordStream.setVideoProfile('720p_3')
+          // The user has granted access to the camera and mic.
+          recordStream.on('accessAllowed', function () {
+          })
+          // The user has denied access to the camera and mic.
+          recordStream.on('accessDenied', function () {
+          })
+          recordStream.init(function () {
+            recordStream.play('test')
+            recordClient.publish(recordStream, function (err) {
+              alert('Publish stream failed' + err)
+            })
+            recordClient.on('stream-published', function (evt) {
+              _this.$message.success('发起录制成功！')
+            })
+          })
+        })
+      })
     }
   },
   mounted () {
