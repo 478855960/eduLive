@@ -37,6 +37,8 @@ export default {
     width: 100%;
     text-align: right;
     padding-right: 1%;
+    top:0;
+    position:fixed;
   }
   .search {
     width: 200px;

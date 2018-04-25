@@ -1,10 +1,12 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header class="header">
       <HeaderBar></HeaderBar>
     </el-header>
     <el-container class="main">
-      <Sidebar></Sidebar>
+      <div class="sidebar">
+        <Sidebar></Sidebar>
+      </div>
       <el-main>
         <el-row>
           <el-col span="16">
@@ -223,6 +225,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .sidebar{
+    width: 202px;
+  }
   .el-header {
     padding: 0;
   }

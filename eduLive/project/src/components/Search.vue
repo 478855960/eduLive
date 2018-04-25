@@ -1,11 +1,12 @@
 <template>
   <el-container>
-    <el-header class="header">
-      <el-input class="search" placeholder="搜索感兴趣的课程"></el-input>
-      <el-button class="search-button" type="primary" icon="el-icon-search">搜索</el-button>
-    </el-header>
-    <el-container>
-      <sidebar></sidebar>
+    <div class="headerbar">
+      <HeaderBar></HeaderBar>
+    </div>
+    <el-container class="main">
+      <div class="sidebar">
+        <Sidebar></Sidebar>
+      </div>
       <el-container>
         <el-header height="120px" class="ec-header">
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -32,10 +33,12 @@
 
 <script>
 import Sidebar from '@/components/Sidebar'
+import HeaderBar from '@/components/HeaderBar'
 export default {
   name: 'search',
   components: {
-    Sidebar
+    Sidebar,
+    HeaderBar
   },
   data () {
     return {
@@ -53,6 +56,18 @@ export default {
 </script>
 
 <style scoped>
+  .sidebar{
+    width: 202px;
+  }
+  .main{
+    top:60px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+  }
   .header{
     background-color: #0996d1;
     color: #333;

@@ -1,10 +1,12 @@
 <template>
   <el-container>
-    <el-header>
+    <div class="headerbar">
       <HeaderBar></HeaderBar>
-    </el-header>
+    </div>
     <el-container class="main">
-      <Sidebar></Sidebar>
+      <div class="sidebar">
+        <Sidebar></Sidebar>
+      </div>
       <el-main>
         <el-carousel :interval="3000" type="card" indicator-position="none">
           <el-carousel-item v-for="(item, index) in carouselImg" :key="index">
@@ -123,6 +125,21 @@ export default {
 </script>
 
 <style scoped>
+  .headerbar{
+    height: 60px;
+  }
+  .main{
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+  }
+  .sidebar{
+    width: 202px;
+  }
   .el-header {
     padding: 0;
   }

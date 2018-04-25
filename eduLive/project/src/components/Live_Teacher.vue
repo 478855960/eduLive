@@ -1,11 +1,13 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header class="header">
       <HeaderBar></HeaderBar>
     </el-header>
     <el-container class="main">
-      <Sidebar></Sidebar>
-      <el-container>
+      <div class="sidebar">
+        <Sidebar></Sidebar>
+      </div>
+      <el-container class="ec">
         <div id="test"></div>
         <el-container class="ec_left">
           <el-main>
@@ -213,8 +215,8 @@ export default {
         Bus.$emit('pptSwitched', 1)
       }
     },
-    recordStart: function() {
-      let recordClient,recordStream
+    recordStart: function () {
+      let recordClient, recordStream
       let _this = this
       let appIDinput = 'a86334acf5c04a6aa7a85b66d0767612'
       let channelInput = '10001'
@@ -268,6 +270,9 @@ export default {
 </script>
 
 <style scoped>
+  .sidebar{
+    width: 202px;
+  }
   .main{
   }
   .el-header {
@@ -286,13 +291,13 @@ export default {
 
   .ec_left{
     width: 60%;
-    height: 650px;
+    height: 699px;
     border: #afb1aa 1px solid;
   }
 
   .ec_right{
     width: 40%;
-    height: 650px;
+    height: 699px;
     border: #afb1aa 1px solid;
   }
   .el-input{
@@ -300,11 +305,11 @@ export default {
     width: 320px;
   }
   .button-group{
-    width: 620px;
+    width: 720px;
     margin: 10px 100px;
   }
   .button-group .el-button{
-    margin: 0 20px;
+    margin: 0 10px;
   }
   .box-card{
     width: 400px;
