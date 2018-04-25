@@ -34,7 +34,6 @@
 
 <script>
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
-let MediaStreamRecorder = require('../assets/js/MediaStreamRecorder.js')
 
 if (!AgoraRTC.checkSystemRequirements()) {
   alert('browser is no support webRTC')
@@ -43,7 +42,7 @@ AgoraRTC.Logger.error('this is error')
 AgoraRTC.Logger.warning('this is warning')
 AgoraRTC.Logger.info('this is info')
 AgoraRTC.Logger.debug('this is debug')
-let client, localStream, camera, microphone,recordClient,recordStream
+let client, localStream, camera, microphone
 // let mediaRecorder = new MediaStreamRecorder.WhammyRecorder()
 export default {
   data () {
@@ -96,14 +95,9 @@ export default {
     },
     join: function () {
       let _this = this
-      alert('join' + this.liveList.length)
       if(this.liveList.length === 0){
-        alert('hhh')
         this.liveList.push({id: 'teacher'})
       }
-      alert('join' + this.liveList.length)
-      if(document.getElementById('teacher-video') === null)
-        alert('is null')
       //document.getElementById('teacher-video').style.visibility = 'visible'
       _this.$refs.initteachervideo.style.visibility = 'hidden'
       this.$refs.joinBtn.disabled = true
