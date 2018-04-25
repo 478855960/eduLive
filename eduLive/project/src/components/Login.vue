@@ -83,8 +83,9 @@ export default {
           let _this = this
           this.$ajax.post(this.rootUrl + _this.url, _this.loginForm)
             .then((response) => {
-              if (response.data === 'success') {
+              if (response.data !== 'failure') {
                 this.$message.success('登录成功')
+                sessionStorage.setItem('loginUser',JSON.parse(response.data).isStudent)
                 sessionStorage.setItem('accessToken', 'Login Successfully')
                 this.$router.push({path: '/HomePage'})
               } else if (response.data === 'failure') {

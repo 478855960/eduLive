@@ -9,19 +9,19 @@
       text-color="#fff">
       <el-menu-item index="1">
         <i class="el-icon-location"></i>
-        <span slot="title">导航一</span>
+        <span slot="title" @click="routerToHomePage()">首页</span>
       </el-menu-item>
       <el-menu-item index="2">
         <i class="el-icon-menu"></i>
-        <span slot="title">导航二</span>
+        <span slot="title" @click="routerToUserCenter()">个人中心</span>
       </el-menu-item>
-      <el-menu-item index="3">
+      <el-menu-item index="3" @click="routerToLogin()">
         <i class="el-icon-document"></i>
-        <span slot="title">导航三</span>
+        <span slot="title">注销</span>
       </el-menu-item>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航四</span>
+      <el-menu-item index="4" v-show="user==0" @click="routerToInitiate()">
+        <i class="el-icon-document"></i>
+        <span slot="title">发起直播</span>
       </el-menu-item>
     </el-menu>
   </el-aside>
@@ -30,11 +30,38 @@
 <script>
 export default {
   name: 'sidebar',
+  data () {
+    return {
+      user: [
+        ''
+      ]
+    }
+  },
   methods: {
     handleOpen (key, keyPath) {
     },
     handleClose (key, keyPath) {
+    },
+    routerToHomePage: function() {
+      this.$router.push({path: '/HomePage'})
+    },
+    routerToUserCenter: function() {
+      this.$router.push({path: '/UserCenter'})
+    },
+    routerToLogin: function() {
+      this.$ajax.post(this.rootUrl + '/user/userSignOut.action', null)
+            .then((response) => {
+              this.$message.success('注销成功！')
+              //  跳转到登录页
+              this.$router.push({path: '/Login'})
+            })
+    },
+    routerToInitiate: function() {
+      this.$router.push({path: '/Initiate'})
     }
+  },
+  mounted () {
+    this.user = sessionStorage.getItem('loginUser')
   }
 }
 </script>

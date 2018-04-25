@@ -73,12 +73,21 @@ public class UserController {
         user = userDao.login(reqUser.getPhoneNum(), reqUser.getPassword());
         if (user != null) {
             session.setAttribute(Constant.USER, user);
-            return "success";
+            return JSON.toJSONString(user);
         } else {
             return "failure";
         }
     }
-
+    /**
+     *@author 57656
+     *@desc 注销功能，即清除后台中的User的session
+     */
+    @RequestMapping(value = "/userSignOut.action", method = RequestMethod.POST)
+    @ResponseBody
+    public String signOut() {
+        session.setAttribute(Constant.USER, null);
+        return "success";
+    }
     /**
      * 检查输入的旧密码是否正确
      */
