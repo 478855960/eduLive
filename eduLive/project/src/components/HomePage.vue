@@ -8,14 +8,14 @@
         <Sidebar></Sidebar>
       </div>
       <el-main>
-        <el-carousel :interval="3000" type="card" indicator-position="none">
+        <el-carousel :interval="0" type="card" indicator-position="none">
           <el-carousel-item v-for="(item, index) in carouselImg" :key="index">
             <img id="carouselImg" v-bind:src="item"/>
           </el-carousel-item>
         </el-carousel>
-        <el-row :gutter="20">
+        <el-row :gutter="20" id="cardRow">
           <el-col :span="8" v-for="item in liveRoomList" :key="item.teacherId">
-            <el-card :body-style="{ padding: '14px' }">
+            <el-card :body-style="{ padding: '14px' }" id="card">
               <div id="all-area">
                 <img :src="item.imgPath" class="image">
               </div>
@@ -25,31 +25,7 @@
           </el-col>
         </el-row>
       </el-main>
-      <!--<el-footer>-->
-        <!--<el-row>-->
-          <!--<el-col :span="4"></el-col>-->
-          <!--<el-col :span="20">-->
-            <!--<el-breadcrumb separator="/">-->
-              <!--<el-breadcrumb-item>首页</el-breadcrumb-item>-->
-              <!--<el-breadcrumb-item>帮助中心</el-breadcrumb-item>-->
-              <!--<el-breadcrumb-item>关于我们</el-breadcrumb-item>-->
-              <!--<el-breadcrumb-item>意见反馈</el-breadcrumb-item>-->
-            <!--</el-breadcrumb>-->
-          <!--</el-col>-->
-        <!--</el-row>-->
-      <!--</el-footer>-->
     </el-container>
-    <!--<el-header>-->
-      <!--<el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect"  text-color="#3b3a36" active-text-color="#3b3a36" router>-->
-        <!--<el-menu-item index="HomePage">硕学平台</el-menu-item>-->
-        <!--<el-menu-item index="LiveList">直播列表</el-menu-item>-->
-        <!--<el-menu-item index="VideoList">录播列表</el-menu-item>-->
-        <!--<el-menu-item index="UserCenter">个人中心</el-menu-item>-->
-        <!--<el-menu-item index="Login" >登陆</el-menu-item>-->
-        <!--<el-menu-item index="Register" >注册</el-menu-item>-->
-        <!--<el-menu-item index="Initiate" >发起直播</el-menu-item>-->
-      <!--</el-menu>-->
-    <!--</el-header>-->
   </el-container>
 </template>
 
@@ -78,7 +54,7 @@ export default {
         '/static/carousel/class2.jpg',
         '/static/carousel/class3.jpg',
         '/static/carousel/class4.jpg',
-        '/static/carousel/class5.jpg'
+        '../../static/carousel/class5.jpg'
       ],
       itemPath: '../assets/logo.png'
     }
@@ -201,12 +177,18 @@ export default {
     type: flex;
     justify: end;
   }
-
-  .image{
+  .row {
+    margin-left: 60px;
+  }
+  #card {
+    width: 360px;
+    margin-left: 32px;
+  }
+  .image {
     width: 100%;
     height: 100%;
   }
-  #all-area{
+  #all-area {
     height: 210px;
   }
   .el-carousel {
