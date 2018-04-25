@@ -4,14 +4,14 @@
       class="card-box login-form">
       <h3 class="title">欢迎来到硕学教育平台</h3>
       <el-form-item prop="phoneNum">
-        <el-input name="phoneNum" v-model="loginForm.phoneNum" type="text" autoComplete="on" placeholder="电话号"
+        <el-input name="phoneNum" v-model="loginForm.phoneNum" type="text" autoComplete="on" placeholder="输入电话号"
         prefix-icon="el-icon-phone"/>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" v-model="loginForm.password" placeholder="密码" prefix-icon="el-icon-goods"></el-input>
+        <el-input type="password" v-model="loginForm.password" placeholder="输入密码" prefix-icon="el-icon-goods"></el-input>
       </el-form-item>
       <el-form-item prop="code" id="code-item">
-          <el-input v-model="loginForm.code" placeholder="请输入验证码" id="code"></el-input>
+          <el-input v-model="loginForm.code" placeholder="输入验证码" id="code" prefix-icon="el-icon-picture"></el-input>
       </el-form-item>
       <el-row type="flex" :gutter="10" justify="space-around">
         <el-col :span="8">
