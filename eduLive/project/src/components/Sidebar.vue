@@ -6,8 +6,7 @@
       @open="handleOpen"
       @close="handleClose"
       background-color="#2d3a4b"
-      text-color="#fff"
-      active-text-color="#ffd04b">
+      text-color="#fff">
       <el-menu-item index="1">
         <i class="el-icon-location"></i>
         <span slot="title">导航一</span>

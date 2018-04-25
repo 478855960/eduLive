@@ -1,8 +1,10 @@
 <template>
   <el-container>
-    <sidebar></sidebar>
+    <el-header>
+      <HeaderBar></HeaderBar>
+    </el-header>
     <el-container>
-      <el-header></el-header>
+      <sidebar></sidebar>
       <el-container>
         <el-container class="ec_left">
           <div v-show="tabIndex==0">
@@ -71,6 +73,7 @@ import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
 import vueEmoji from '@/components/emoji'
 import { codemirror } from 'vue-codemirror-lite'
 import Sidebar from '@/components/Sidebar'
+import HeaderBar from '@/components/HeaderBar'
 require('codemirror/mode/javascript/javascript')
 require('codemirror/mode/vue/vue')
 
@@ -88,7 +91,8 @@ export default {
   components: {
     vueEmoji,
     codemirror,
-    Sidebar
+    Sidebar,
+    HeaderBar
   },
   data () {
     return {
@@ -367,9 +371,7 @@ export default {
 
 <style scoped>
   .el-header {
-    background-color: #0996d1;
-    color: #333;
-    height: 60px;
+    padding: 0;
   }
   .el-footer {
     background-color: #B3C0D1;
