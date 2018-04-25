@@ -1,53 +1,74 @@
 <template>
   <el-container>
-    <el-main>
-      <h1>个人中心</h1>
-      <hr/>
-      <el-form ref="usernameForm" :model="usernameForm" :rules="usernameRules" id="username-form">
-        <el-form-item label="修改昵称" required>
-          <el-col :span="18">
-            <el-form-item id="username-item" prop="nickname">
-              <el-input v-model="usernameForm.nickname" placeholder="请输入新昵称"></el-input>
-            </el-form-item>
+    <el-header>
+      <HeaderBar></HeaderBar>
+    </el-header>
+    <el-container class="main">
+      <Sidebar></Sidebar>
+      <el-main>
+        <el-row>
+          <el-col span="16">
+            <h1>修改昵称</h1>
           </el-col>
-          <el-col :span="5">
-            <el-button type="primary" id="username-button" @click="modifyUsername('usernameForm')">修改昵称</el-button>
+        </el-row>
+        <el-form ref="usernameForm" :model="usernameForm" :rules="usernameRules" id="username-form">
+          <el-form-item label="" required>
+            <el-col :span="18">
+              <el-form-item id="username-item" prop="nickname">
+                <el-input v-model="usernameForm.nickname" placeholder="输入新昵称" prefix-icon="el-icon-edit-outline"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-button type="primary" id="username-button" @click="modifyUsername('usernameForm')">修改昵称</el-button>
+            </el-col>
+          </el-form-item>
+        </el-form>
+        <el-row>
+          <el-col span="16">
+            <h1>修改密码</h1>
           </el-col>
-        </el-form-item>
-      </el-form>
-      <el-form ref="passwordForm" :model="passwordForm" :rules="passwordRules">
-        <el-form-item label="旧密码" prop="password">
-          <el-input v-model="passwordForm.password" placeholder="请输入旧密码" type="password"></el-input>
-        </el-form-item>
-      </el-form>
-      <el-form ref="newPasswordForm" :model="newPasswordForm" :rules="newPasswordRules">
-        <el-form-item label="新密码" prop="password">
-          <el-input v-model="newPasswordForm.password" placeholder="请输入新密码" type="password"></el-input>
-        </el-form-item>
-        <el-form-item label="确认新密码" prop="confirm">
-          <el-input v-model="newPasswordForm.confirm" placeholder="请确认新密码" type="password" id="code"></el-input>
-        </el-form-item>
-        <el-form-item label="短信验证码" required>
-          <el-col :span="17">
-            <el-form-item id="code-item" prop="code">
-              <el-input v-model="usernameForm.code" placeholder="请输入验证码"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-button type="primary" id="code-button" @click="getCode('newPasswordForm', $event)">获取验证码</el-button>
-          </el-col>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="modifyPassword('passwordForm','newPasswordForm')">修改密码</el-button>
-        </el-form-item>
-      </el-form>
-    </el-main>
+        </el-row>
+        <el-form ref="passwordForm" :model="passwordForm" :rules="passwordRules">
+          <el-form-item label="" prop="password">
+            <el-input v-model="passwordForm.password" placeholder="输入旧密码" type="password" prefix-icon="el-icon-goods"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-form ref="newPasswordForm" :model="newPasswordForm" :rules="newPasswordRules">
+          <el-form-item label="" prop="password">
+            <el-input v-model="newPasswordForm.password" placeholder="输入新密码" type="password" prefix-icon="el-icon-goods"></el-input>
+          </el-form-item>
+          <el-form-item label="" prop="confirm">
+            <el-input v-model="newPasswordForm.confirm" placeholder="确认新密码" type="password" prefix-icon="el-icon-goods"></el-input>
+          </el-form-item>
+          <el-form-item label="" required>
+            <el-col :span="17">
+              <el-form-item id="code-item" prop="code">
+                <el-input v-model="usernameForm.code" placeholder="输入验证码" prefix-icon="el-icon-message"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-button type="primary" id="code-button" @click="getCode('newPasswordForm', $event)">获取验证码</el-button>
+            </el-col>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="modifyPassword('passwordForm','newPasswordForm')">修改密码</el-button>
+          </el-form-item>
+        </el-form>
+      </el-main>
+    </el-container>
   </el-container>
 </template>
 
 <script>
+import Sidebar from '@/components/Sidebar'
+import HeaderBar from '@/components/HeaderBar'
+
 export default {
   name: 'UserCenter',
+  components: {
+    Sidebar,
+    HeaderBar
+  },
   data () {
     let validateConfirm = (rule, value, callback) => {
       if (value !== this.newPasswordForm.password) {
@@ -202,12 +223,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .el-header {
+    padding: 0;
+  }
   .el-container {
     text-align: center;
-  }
-
-  #username-form {
-    margin-bottom: 4%;
   }
 
   .el-form-item {
@@ -216,7 +236,6 @@ export default {
   }
 
   .el-button {
-    background-color: #37C6C0;
     color: #ffffff;
     margin: 0 auto;
   }
@@ -249,4 +268,7 @@ export default {
      margin: 0;
      width: 100%;
    }
+  .el-main {
+    margin-left: -7%;
+  }
 </style>

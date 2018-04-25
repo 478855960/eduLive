@@ -5,7 +5,7 @@
       <h3 class='register-title'>欢迎使用硕学教育平台</h3>
       <el-form status-icon :rules="rules" :model="form" ref="form" class="register-form">
         <el-form-item prop="nickname" >
-          <el-input placeholder="输入自定义昵称" v-model="form.nickname" prefix-icon="el-icon-news"></el-input>
+          <el-input placeholder="输入自定义昵称" v-model="form.nickname" prefix-icon="el-icon-edit-outline"></el-input>
         </el-form-item>
         <el-form-item  prop="name">
           <el-input placeholder="输入真实姓名" v-model="form.name" prefix-icon="el-icon-edit"></el-input>
