@@ -1,32 +1,6 @@
 <template>
   <el-container>
-    <el-aside class="aside" width="200px">
-      <el-menu
-        default-active="2"
-        class="el-menu-vertical"
-        @open="handleOpen"
-        @close="handleClose"
-        background-color="#2d3a4b"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-menu-item index="1">
-          <i class="el-icon-location"></i>
-          <span slot="title">导航一</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item>
-      </el-menu>
-    </el-aside>
+    <sidebar></sidebar>
     <el-container>
       <el-header></el-header>
       <el-container>
@@ -96,6 +70,7 @@
 import {AgoraRTC} from '../assets/js/AgoraRTCSDK-2.1.1'
 import vueEmoji from '@/components/emoji'
 import { codemirror } from 'vue-codemirror-lite'
+import Sidebar from '@/components/Sidebar'
 require('codemirror/mode/javascript/javascript')
 require('codemirror/mode/vue/vue')
 
@@ -112,7 +87,8 @@ export default {
   name: 'Live_Student',
   components: {
     vueEmoji,
-    codemirror
+    codemirror,
+    Sidebar
   },
   data () {
     return {
@@ -383,16 +359,6 @@ export default {
 </script>
 
 <style scoped>
-  .el-aside{
-    background-color: #2d3a4b;
-    color: #333;
-    border: #afb1aa 1px solid;
-    border-right: 0;
-  }
-  .el-menu{
-    width: 198px;
-    border: 0;
-  }
   .el-header {
     background-color: #0996d1;
     color: #333;
