@@ -1,8 +1,10 @@
 <template>
   <el-container>
-    <Sidebar></Sidebar>
+    <el-header>
+      <HeaderBar></HeaderBar>
+    </el-header>
     <el-container class="main">
-      <el-header></el-header>
+      <Sidebar></Sidebar>
       <el-container>
         <el-container class="ec_left">
           <el-main>
@@ -80,6 +82,7 @@ import Video from '@/components/video'
 import vueEmoji from '@/components/emoji'
 import Bus from './bus.js'
 import Sidebar from '@/components/Sidebar'
+import HeaderBar from '@/components/HeaderBar'
 
 export default {
   name: 'Live_Teacher',
@@ -90,7 +93,8 @@ export default {
     SlideDisplay,
     Video,
     vueEmoji,
-    Sidebar
+    Sidebar,
+    HeaderBar
   },
   data () {
     return {
@@ -229,11 +233,7 @@ export default {
   .main{
   }
   .el-header {
-    background-color: #0996d1;
-    color: #333;
-    height: 60px;
-    border: #afb1aa 1px solid;
-    border-bottom: 0;
+    padding: 0;
   }
 
   .el-footer {
@@ -271,10 +271,12 @@ export default {
   .box-card{
     width: 400px;
   }
+
   #container-text{
     height:320px;
     border-top: #afb1aa 1px solid;
   }
+
    .iconfont {
     cursor: pointer;
     color: #f7793a;
