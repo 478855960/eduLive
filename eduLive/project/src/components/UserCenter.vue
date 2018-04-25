@@ -226,9 +226,6 @@ export default {
   .el-header {
     padding: 0;
   }
-  .el-container {
-    text-align: center;
-  }
 
   .el-form-item {
     width: 40%;
@@ -270,5 +267,6 @@ export default {
    }
   .el-main {
     margin-left: -7%;
+    text-align: center;
   }
 </style>

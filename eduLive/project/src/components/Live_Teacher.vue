@@ -6,7 +6,6 @@
     <el-container class="main">
       <Sidebar></Sidebar>
       <el-container>
-        <div id="test"></div>
         <el-container class="ec_left">
           <el-main>
             <el-tabs v-model="activeTab" type="border-card" @tab-click="switchTab">
