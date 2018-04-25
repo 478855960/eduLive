@@ -16,6 +16,7 @@ import Initiate from '@/components/Initiate'
 import VideoRoom from '@/components/VideoRoom'
 import HomePage from '@/components/HomePage'
 import StudentList from '@/components/StudentList'
+import Search from '@/components/Search'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -96,6 +97,11 @@ export default new Router({
       path: '/studentList',
       name: 'StudentList',
       component: StudentList
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     }
   ]
 })
