@@ -45,6 +45,9 @@ export default {
     color: #333;
     border: #afb1aa 1px solid;
     border-right: 0;
+    height: 699px;
+    top: 60px;
+    position: fixed;
   }
   .el-menu{
     width: 198px;

@@ -1,10 +1,12 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header class="header">
       <HeaderBar></HeaderBar>
     </el-header>
     <el-container>
-      <sidebar></sidebar>
+      <div class="sidebar">
+        <Sidebar></Sidebar>
+      </div>
       <el-container>
         <el-container class="ec_left">
           <div v-show="tabIndex==0">
@@ -370,6 +372,9 @@ export default {
 </script>
 
 <style scoped>
+  .sidebar{
+    width: 202px;
+  }
   .el-header {
     padding: 0;
   }
@@ -384,13 +389,13 @@ export default {
 
   .ec_left{
     width: 60%;
-    height: 600px;
+    height: 699px;
     border: #afb1aa 1px solid;
   }
 
   .ec_right{
     width: 40%;
-    height: 600px;
+    height: 699px;
     border: #afb1aa 1px solid;
   }
 
