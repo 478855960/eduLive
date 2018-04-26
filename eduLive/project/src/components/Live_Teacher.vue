@@ -78,7 +78,7 @@
 
 <script>
 /* eslint-disable no-caller */
-import StudentList from '@/components/StudentList'
+import StudentList from '@/components/Studentlist'
 import CodeEditor from '@/components/CodeEditor'
 import SlideDisplay from '@/components/SlideDisplay'
 import Whiteboard from '@/components/whiteboard'

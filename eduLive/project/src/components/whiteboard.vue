@@ -44,6 +44,7 @@
       <canvas id='contextBack' ref='ctxback'/>
       <canvas @click="initTextPre"  @mousedown="dealMouseDown" @mouseup="dealMouseUp" @mousemove="dealMouseMove" id='context' ref='ctx' />
     </div>
+      <input  v-model="modelText" ref="textinput" class="textinput" >
 </el-container>
 </el-container>
 </template>
@@ -81,7 +82,8 @@ export default {
         oldY: 0,
         curX: 0,
         curY: 0
-      }
+      },
+      modelText: ''
     }
   },
   mounted () {
@@ -92,7 +94,7 @@ export default {
     canvasBack.width = 900
     canvasBack.height = 350
 
-    document.onkeydown = this.textDraw
+    // window.onkeydown = this.textDraw
     this.context = this.$refs.ctx.getContext('2d')
     this.contextBack = this.$refs.ctxback.getContext('2d')
     this.basePosX = this.$refs.ctx.offsetLeft
@@ -107,11 +109,19 @@ export default {
       this.$store.commit('setWhiteBoardWebsocket', this.wsWhiteboardObj)
     })
   },
+  watch: {
+    modelText: function () {
+      this.textDraw()
+      this.wsWhiteboardObj.send(JSON.stringify({
+        type: 'text',
+        color: this.pathColor,
+        curX: this.curPosX,
+        curY: this.curPosY,
+        sentText: this.modelText
+      }))
+    }
+  },
   methods: {
-    change: function (code) {
-      alert(code)
-      this.codeMsg = code
-    },
     dispatcher (value) {
       let part = value.split('-')
       this.saveLastText(this.contextBack, this.savedText, this.textPosX, this.textPosY)
@@ -184,7 +194,6 @@ export default {
             }
           ))
         } else if (this.functionPointer === 'text') {
-
         } else {
           if (this.functionPointer === 'rectangle') {
             this.clear(this.context)
@@ -295,7 +304,7 @@ export default {
     textDraw (event) {
       if (this.functionPointer === 'text' && this.setTexted) {
         this.clear(this.context)
-        this.savedText = this.savedText + String.fromCharCode(event.keyCode)
+        this.savedText = this.modelText
         this.context.font = '20px Georgia'
         this.context.fillText(this.savedText, this.textPosX, this.textPosY)
       }
@@ -303,16 +312,29 @@ export default {
     initTextPre (event) {
       this.setTexted = true
       this.contextBack.font = '20px Georgia'
+      this.modelText = ''
       this.saveLastText(this.contextBack, this.savedText, this.textPosX, this.textPosY)
       this.textPosX = event.offsetX
       this.textPosY = event.offsetY
       this.savedText = ''
+      this.$refs.textinput.focus()
     },
     saveLastText (context, value, x, y) {
       context.fillText(value, x, y)
+      console.log('savetext' + value)
+      this.wsWhiteboardObj.send(JSON.stringify({
+        type: 'savetext',
+        color: this.pathColor,
+        curX: x,
+        curY: y,
+        sentText: value
+      }))
     },
     clear (contex) {
       contex.clearRect(0, 0, this.$refs.ctx.width, this.$refs.ctx.height)
+    },
+    prepareText () {
+      return ''
     }
   }
 }
@@ -328,5 +350,9 @@ export default {
   }
   canvas{
     position: absolute;
+  }
+  .textinput{
+    width: 0;
+    height: 0;
   }
 </style>
