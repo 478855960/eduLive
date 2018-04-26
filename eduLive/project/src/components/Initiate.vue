@@ -7,7 +7,7 @@
       <Sidebar></Sidebar>
       <el-main>
         <el-row>
-          <el-col span="16">
+          <el-col :span="16">
             <h1>发起直播</h1>
           </el-col>
         </el-row>

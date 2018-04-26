@@ -8,7 +8,7 @@
         <Sidebar></Sidebar>
       </div>
       <el-main>
-        <el-carousel :interval="0" type="card" indicator-position="none">
+        <el-carousel :interval="3000" type="card" indicator-position="none">
           <el-carousel-item v-for="(item, index) in carouselImg" :key="index">
             <img id="carouselImg" v-bind:src="item"/>
           </el-carousel-item>
@@ -19,8 +19,19 @@
               <div id="all-area">
                 <img :src="item.imgPath" class="image">
               </div>
-              <span ref="teacherID">{{item.roomName}} {{item.teacherId}}</span>
+              <span>{{item.roomName}} {{item.teacherId}}</span>
               <el-button type="text" class="button" @click="routerToLiveRoom(item.teacherId)">观看直播</el-button>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" id="cardRow">
+          <el-col :span="8" v-for="videoItem in videoList" :key="videoItem.teacherId">
+            <el-card :body-style="{ padding: '14px' }" id="card">
+              <div id="video-area">
+                <img :src="videoItem.imgPath" class="image">
+              </div>
+              <span>{{videoItem.viedoName}} {{videoItem.teacherId}}</span>
+              <el-button type="text" class="button">观看录播视频</el-button>
             </el-card>
           </el-col>
         </el-row>
@@ -43,6 +54,7 @@ export default {
     return {
       currentDate: new Date(),
       liveRoomList: [],
+      videoList: [],
       queryInfo: {
         otherInfo: ''
       },
@@ -54,7 +66,7 @@ export default {
         '/static/carousel/class2.jpg',
         '/static/carousel/class3.jpg',
         '/static/carousel/class4.jpg',
-        '../../static/carousel/class5.jpg'
+        '/static/carousel/class5.jpg'
       ],
       itemPath: '../assets/logo.png'
     }
@@ -75,6 +87,14 @@ export default {
         }
         _this.liveRoomList = JSON.parse(response.data)
       })
+    this.$ajax
+      .post(this.rootUrl + '/video//getAllVideoInfo.action', null)
+      .then(response => {
+        if (response.data === 'failed') {
+          this.$message.error('获取录播列表失败！')
+        }
+        _this.videoList = JSON.parse(response.data)
+      })
   },
   methods: {
     handleSelect (key, keyPath) {
@@ -91,7 +111,6 @@ export default {
             this.$message.error('您已被拉黑，无法进入该直播间！')
           } else {
             sessionStorage.setItem('teacherID', teacherid)
-            alert(sessionStorage.getItem('teacherID'))
             this.$router.push({path: '/Live_Student'})
           }
         })
@@ -189,6 +208,9 @@ export default {
     height: 100%;
   }
   #all-area {
+    height: 210px;
+  }
+  #video-area {
     height: 210px;
   }
   .el-carousel {
