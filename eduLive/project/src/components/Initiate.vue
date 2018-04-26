@@ -1,45 +1,64 @@
 <template>
   <el-container>
-    <el-header></el-header>
-    <el-main>
-      <h1>发起直播</h1>
-      <el-form ref="titleForm" :model="titleForm" :rules="titleRules">
-        <el-form-item label="直播主题" prop="roomName">
-          <el-input v-model="titleForm.roomName" placeholder="请输入直播主题"></el-input>
-        </el-form-item>
-        <el-form-item label="是否录播" prop="isRecording">
-          <el-radio-group v-model="titleForm.isRecording">
-            <el-radio label="1">是</el-radio>
-            <el-radio label="0">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-form>
-      <el-form>
-        <el-form-item label="上传封面">
-          <el-col :span="8">
-            <input type="file" @change="getCover($event)"/>
+    <el-header>
+      <HeaderBar></HeaderBar>
+    </el-header>
+    <el-container class="main">
+      <Sidebar></Sidebar>
+      <el-main>
+        <el-row>
+          <el-col span="16">
+            <h1>发起直播</h1>
           </el-col>
-        </el-form-item>
-        <div v-show="coverUping==1">正在上传中</div>
-      </el-form>
-      <el-form>
-        <el-form-item label="上传教学资源">
-          <el-col :span="8">
-            <input type="file" @change="getFile($event)"/>
-          </el-col>
-        </el-form-item>
-        <div v-show="fileUping==1">正在上传中</div>
-      </el-form>
-      <el-button type="primary" @click="confirm" id="confirm-button">确定</el-button>
-    </el-main>
+        </el-row>
+        <el-form ref="titleForm" :model="titleForm" :rules="titleRules">
+          <el-form-item label="" prop="roomName">
+            <el-input v-model="titleForm.roomName" placeholder="请输入直播主题"></el-input>
+          </el-form-item>
+          <el-form-item label="" prop="isRecording">
+            <el-radio-group v-model="titleForm.isRecording">
+              <el-radio-button label="1" border>进行录播</el-radio-button>
+              <el-radio-button label="0" border>不进行录播</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+        <el-form>
+          <el-form-item label="">
+            <el-col :span="6">
+              <el-button @click="doCoverInput()" type="primary" plain>上传封面文件</el-button>
+              <input ref="coverInput" id="cover-input" type="file" @change="getCover($event)"/>
+            </el-col>
+            <el-col :span="16" class="name-col">
+              <el-input id="cover-name-input" :disabled="true" v-bind:placeholder="coverName"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-form>
+        <el-form>
+          <el-form-item label="">
+            <el-col :span="6">
+              <el-button @click="doFileInput()" type="primary" plain>上传教学资源</el-button>
+              <input ref="fileInput" id="file-input" type="file" @change="getFile($event)"/>
+            </el-col>
+            <el-col :span="16" class="name-col">
+              <el-input id="file-name-input" :disabled="true" v-bind:placeholder="fileName"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" @click="confirm" id="confirm-button">确定</el-button>
+      </el-main>
+    </el-container>
   </el-container>
 </template>
 
 <script>
-import ElUpload from 'element-ui/packages/upload/src/index'
+import Sidebar from '@/components/Sidebar'
+import HeaderBar from '@/components/HeaderBar'
 
 export default {
-  components: {ElUpload},
+  components: {
+    Sidebar,
+    HeaderBar
+  },
   name: 'Initiate',
   data () {
     return {
@@ -47,6 +66,8 @@ export default {
       coverUping: 0,
       file: '',
       cover: '',
+      coverName: '请选择jpg或png格式的图片',
+      fileName: '请选择ppt或pptx格式的文件',
       coverUrl: '/liveroom/cover.action',
       fileUrl: '/liveroom/upload.action',
       initiateUrl: '/liveroom/initiate.action',
@@ -69,6 +90,12 @@ export default {
     }
   },
   methods: {
+    doCoverInput () {
+      this.$refs.coverInput.click()
+    },
+    doFileInput () {
+      this.$refs.fileInput.click()
+    },
     submitFile () {
       let _this = this
       let zipFormData = new FormData()
@@ -107,9 +134,11 @@ export default {
     },
     getFile (event) {
       this.file = event.target.files[0]
+      this.fileName = event.target.files[0].name
     },
     getCover (event) {
       this.cover = event.target.files[0]
+      this.coverName = event.target.files[0].name
     },
     confirm () {
       this.$refs['titleForm'].validate((valid) => {
@@ -143,8 +172,44 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .el-container {
+  .name-col {
+    float: left;
+  }
+  .el-button {
+    float: left;
+    margin-left: -2.5%;
+  }
+  #cover-input {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    position: absolute;
+    right: 1000%;
+  }
+  #file-input {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    position: absolute;
+    right: 1000%;
+  }
+  .el-input {
+    width: 70%;
+    float: left;
+  }
+  .el-radio-group {
+    float: left;
+    width: 90%;
+    padding-left: 0;
+  }
+  .el-radio-button {
+    float: left;
+  }
+  .el-main {
+    margin-bottom: 5%;
+    margin-left: 2.5%;
     text-align: center;
+  }
+  .el-header {
+    padding: 0;
   }
 
   .el-form-item {
@@ -156,24 +221,14 @@ export default {
     padding: 1%;
   }
 
-  .el-button {
-    background-color: #37C6C0;
-    color: #ffffff;
-    margin-left: 80px;
-    width: 30%;
-    text-align: center;
-  }
-
   hr {
     width: 55%;
   }
 
-  .el-button {
-    margin-right: 80px;
-    width: 100%;
-  }
-
   #confirm-button {
+    float: none;
+    margin-left: -10%;
+    text-align: center;
     width: 15%;
   }
 </style>
