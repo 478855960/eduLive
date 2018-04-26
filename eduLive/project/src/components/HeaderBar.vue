@@ -9,6 +9,13 @@
 <script>
 export default {
   name: 'sidebar',
+  data () {
+    return {
+      queryInfo: {
+        otherInfo: ''
+      }
+    }
+  },
   methods: {
     handleOpen (key, keyPath) {
     },
@@ -21,6 +28,14 @@ export default {
         .post(this.rootUrl + '/liveroom/queryLiveRoomInfo.action', this.queryInfo)
         .then(response => {
           alert(JSON.parse(response.data))
+          sessionStorage.setItem('liveRoomList', JSON.parse(response.data))
+          if (this.$router.path !== '/search') {
+            sessionStorage.setItem('searchMsg', this.queryInfo.otherInfo)
+            this.$router.push({path: '/search'})
+          } else {
+            window.location.reload()
+            document.getElementById('selectLiveRoomInfo').value = sessionStorage.getItem('searchMsg')
+          }
         })
     }
   }
