@@ -24,10 +24,7 @@
           <el-main class="ec_right-main">
             <el-button type="primary" @click="joinLive()">加入</el-button>
             <el-button type="primary">离开</el-button>
-            <el-form :model="liveRoomNumForm" :ref="liveRoomNumForm">
-              <el-input v-model="liveRoomNumForm.liveRoomNum" placeholder="输入直播间编号"></el-input>
-              <el-button type="primary" @click="download()">下载教学资源</el-button>
-            </el-form>
+            <el-button type="primary" @click="download()">下载教学资源</el-button>
           </el-main>
           <el-main id="video">
             该主播好像还没开播哦···
@@ -169,6 +166,7 @@ export default {
   methods: {
     download () {
       let _this = this
+      _this.liveRoomNumForm.liveRoomNum = sessionStorage.getItem('teacherID')
       this.$ajax.post(this.rootUrl + _this.downloadUrl, _this.liveRoomNumForm)
         .then((response) => {
           if (response.data === 'failure' || response.data === '') {

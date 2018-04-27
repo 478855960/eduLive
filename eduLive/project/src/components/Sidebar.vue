@@ -1,27 +1,26 @@
 <template>
   <el-aside class="aside" width="200px">
     <el-menu
-      default-active="2"
       class="el-menu-vertical"
       @open="handleOpen"
       @close="handleClose"
       background-color="#2d3a4b"
       text-color="#fff">
-      <el-menu-item index="1">
+      <el-menu-item index="1" @click="routerToHomePage()">
         <i class="el-icon-location"></i>
-        <span slot="title" @click="routerToHomePage()">首页</span>
+        <span slot="title">首页</span>
       </el-menu-item>
-      <el-menu-item index="2">
+      <el-menu-item index="2" @click="routerToUserCenter()">
         <i class="el-icon-menu"></i>
-        <span slot="title" @click="routerToUserCenter()">个人中心</span>
-      </el-menu-item>
-      <el-menu-item index="3" @click="routerToLogin()">
-        <i class="el-icon-document"></i>
-        <span slot="title">注销</span>
+        <span slot="title">个人中心</span>
       </el-menu-item>
       <el-menu-item index="4" v-show="user==0" @click="routerToInitiate()">
         <i class="el-icon-document"></i>
         <span slot="title">发起直播</span>
+      </el-menu-item>
+      <el-menu-item index="3" @click="routerToLogin()">
+        <i class="el-icon-document"></i>
+        <span slot="title">注销</span>
       </el-menu-item>
     </el-menu>
   </el-aside>
@@ -34,7 +33,8 @@ export default {
     return {
       user: [
         ''
-      ]
+      ],
+      active: '1'
     }
   },
   methods: {
@@ -42,21 +42,24 @@ export default {
     },
     handleClose (key, keyPath) {
     },
-    routerToHomePage: function() {
+    routerToHomePage: function () {
+      this.active = '1'
       this.$router.push({path: '/HomePage'})
     },
-    routerToUserCenter: function() {
+    routerToUserCenter: function () {
+      this.active = '2'
       this.$router.push({path: '/UserCenter'})
     },
-    routerToLogin: function() {
+    routerToLogin: function () {
       this.$ajax.post(this.rootUrl + '/user/userSignOut.action', null)
-            .then((response) => {
-              this.$message.success('注销成功！')
-              //  跳转到登录页
-              this.$router.push({path: '/Login'})
-            })
+        .then((response) => {
+          this.$message.success('注销成功！')
+          //  跳转到登录页
+          this.$router.push({path: '/Login'})
+        })
     },
-    routerToInitiate: function() {
+    routerToInitiate: function () {
+      this.active = '3'
       this.$router.push({path: '/Initiate'})
     }
   },

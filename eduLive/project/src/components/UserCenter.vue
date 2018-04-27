@@ -9,7 +9,7 @@
       </div>
       <el-main>
         <el-row>
-          <el-col span="16">
+          <el-col :span="16">
             <h1>修改昵称</h1>
           </el-col>
         </el-row>
@@ -26,7 +26,7 @@
           </el-form-item>
         </el-form>
         <el-row>
-          <el-col span="16">
+          <el-col :span="16">
             <h1>修改密码</h1>
           </el-col>
         </el-row>

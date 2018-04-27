@@ -81,6 +81,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let _this = this
+          console.log(this.rootUrl)
           this.$ajax.post(this.rootUrl + _this.url, _this.loginForm)
             .then((response) => {
               if (response.data !== 'failure') {
