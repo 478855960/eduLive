@@ -44,8 +44,8 @@
           </el-form-item>
           <el-form-item label="" required>
             <el-col :span="17">
-              <el-form-item id="code-item" prop="code">
-                <el-input v-model="usernameForm.code" placeholder="输入验证码" prefix-icon="el-icon-message"></el-input>
+              <el-form-item id="code-item" prop="verificationCode">
+                <el-input v-model="newPasswordForm.verificationCode" placeholder="输入验证码" prefix-icon="el-icon-message"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -100,10 +100,10 @@ export default {
         })
     }
     let validateCode = (rule, value, callback) => {
-      this.$ajax.post(this.rootUrl + '/user/checkPassword.action', this.passwordForm)
+      this.$ajax.post(this.rootUrl + '/user/isVerificationCodeTrue.action', this.newPasswordForm)
         .then((response) => {
-          if (response.data === 0) {
-            callback(new Error('旧密码错误'))
+          if (response.data !== 1) {
+            callback(new Error('验证码错误'))
           } else {
             callback()
           }
@@ -126,9 +126,10 @@ export default {
         password: ''
       },
       newPasswordForm: {
+        phoneNum: '',
         password: '',
         confirm: '',
-        code: ''
+        verificationCode: ''
       },
       passwordRules: {
         password: [
@@ -145,12 +146,16 @@ export default {
           { required: true, message: '请确认新密码', trigger: 'blur' },
           { validator: validateConfirm, trigger: 'blur' }
         ],
-        code: [
+        verificationCode: [
           { required: true, message: '请输入短信验证码', trigger: 'blur' },
           { validator: validateCode, trigger: 'blur' }
         ]
       }
     }
+  },
+  mounted () {
+    let sessionUserPhoneNum = sessionStorage.getItem('userPhoneNum')
+    this.newPasswordForm.phoneNum = sessionUserPhoneNum
   },
   methods: {
     modifyPassword (formName1, formname2) {
@@ -183,11 +188,11 @@ export default {
     },
     getCode (value, event) {
       let _this = this
-      this.$ajax.post(this.rootUrl + '/user/modifySendMessage.action', _this.newPasswordForm)
+      this.$ajax.post(this.rootUrl + '/user/sendMessage.action', _this.newPasswordForm)
         .then((response) => {
-          if (response.data === 0) {
+          if (response.data === 1) {
             this.$message.success('短信发送成功')
-          } else if (response.data === 1) {
+          } else if (response.data === 0) {
             this.$message.error('请重新登录')
             this.$router.push({path: '/Login'})
           } else {

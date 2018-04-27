@@ -13,7 +13,7 @@
             <img id="carouselImg" v-bind:src="item"/>
           </el-carousel-item>
         </el-carousel>
-        <el-row :gutter="20" id="cardRow">
+        <el-row :gutter="20">
           <el-col :span="8" v-for="item in liveRoomList" :key="item.teacherId">
             <el-card :body-style="{ padding: '14px' }" id="card">
               <div id="all-area">
@@ -24,7 +24,7 @@
             </el-card>
           </el-col>
         </el-row>
-        <el-row :gutter="20" id="cardRow">
+        <el-row :gutter="20" id="video-row">
           <el-col :span="8" v-for="videoItem in videoList" :key="videoItem.teacherId">
             <el-card :body-style="{ padding: '14px' }" id="card">
               <div id="video-area">
@@ -86,6 +86,7 @@ export default {
           this.$message.error('获取直播列表失败！')
         }
         _this.liveRoomList = JSON.parse(response.data)
+        console.log('live: ' + this.rootUrl)
       })
     this.$ajax
       .post(this.rootUrl + '/video//getAllVideoInfo.action', null)
@@ -94,6 +95,8 @@ export default {
           this.$message.error('获取录播列表失败！')
         }
         _this.videoList = JSON.parse(response.data)
+        console.log('video: ' + this.rootUrl)
+        console.log(_this.videoList[0])
       })
   },
   methods: {
@@ -120,6 +123,10 @@ export default {
 </script>
 
 <style scoped>
+  #video-row {
+    margin-top: 2%;
+    margin-bottom: 5%;
+  }
   .headerbar{
     height: 60px;
   }

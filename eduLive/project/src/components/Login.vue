@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form autoComplete="on" ref="loginForm" :rules="loginRules" :model="loginForm" label-position="left" label-width="0px"
+    <el-form status-icon autoComplete="on" ref="loginForm" :rules="loginRules" :model="loginForm" label-position="left" label-width="0px"
       class="card-box login-form">
       <h3 class="title">欢迎来到硕学教育平台</h3>
       <el-form-item prop="phoneNum">
@@ -86,7 +86,8 @@ export default {
             .then((response) => {
               if (response.data !== 'failure') {
                 this.$message.success('登录成功')
-                sessionStorage.setItem('loginUser',JSON.parse(response.data).isStudent)
+                sessionStorage.setItem('loginUser', JSON.parse(response.data).isStudent)
+                sessionStorage.setItem('userPhoneNum', JSON.parse(response.data).phoneNum)
                 sessionStorage.setItem('accessToken', 'Login Successfully')
                 this.$router.push({path: '/HomePage'})
               } else if (response.data === 'failure') {
