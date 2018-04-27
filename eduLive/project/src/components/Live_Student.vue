@@ -10,7 +10,8 @@
       <el-container>
         <el-container class="ec_left">
           <div v-show="tabIndex==0">
-            <canvas id='stuContent' ref='stuContent'/>
+            <canvas id='stuContent' ref='stuContent' />
+            <canvas id='tempcanvas' ref='tempcanvas' />
           </div>
           <div v-show="tabIndex==1">
             <img v-bind:src="pptPage" class="image"/>
@@ -118,6 +119,7 @@ export default {
         fontSize: '12px'
       },
       canvasCtx: null,
+      canvasTemp: null,
       url: '/user/getCurUser.action',
       sessioUser: null,
       ws: null,
@@ -148,7 +150,7 @@ export default {
       appkey: 'BC-2c1b84e7528c4d37a2aec64c26343efe'
     })
     this.listen()
-    document.onkeydown = this.enter
+    document.onkeyup = this.enter
   },
   computed: {
     options: function () {
@@ -209,9 +211,13 @@ export default {
     },
     initCanvas () {
       let canvas = this.$refs.stuContent
+      let tempCanvas = this.$refs.tempcanvas
       canvas.width = 720
       canvas.height = 350
+      tempCanvas.width = 720
+      tempCanvas.height = 350
       this.canvasCtx = this.$refs.stuContent.getContext('2d')
+      this.canvasTemp = this.$refs.stuContent.getContext('2d')
     },
     initWebsocket () {
       let _this = this
@@ -238,10 +244,10 @@ export default {
           // alert(msg.data)
           if (msg.data === 'inBlacklist') {
             _this.toHomePage()
-            return;
-          } else if (msg.data === 'banned' || msg.data === 'cancelBanned'){
+            return
+          } else if (msg.data === 'banned' || msg.data === 'cancelBanned') {
             _this.changeInput(msg)
-            return;
+            return
           }
           let message = JSON.parse(msg.data)
           if (message.type === 'ppt') {
@@ -335,6 +341,7 @@ export default {
       this.codeMsg = msg.data
     },
     whiteboardDraw (msg) {
+      console.log(msg.data)
       let drawData = JSON.parse(msg.data)
       if (drawData.type === 'pen') {
         this.canvasCtx.strokeStyle = drawData.color
@@ -344,8 +351,6 @@ export default {
         this.canvasCtx.stroke()
         this.canvasCtx.closePath()
       } else if (drawData.type === 'eraser') {
-        // this.context.fillStyle = 'aquamarine'
-        // this.canvasCtx.fillRect(this.curPosX, this.curPosY, 50, 50)
         this.canvasCtx.clearRect(drawData.curX, drawData.curY, 50, 50)
       } else if (drawData.type === 'circle') {
         this.canvasCtx.strokeStyle = 'black'
@@ -365,6 +370,10 @@ export default {
         this.canvasCtx.stroke()
       } else if (drawData.type === 'clear') {
         this.canvasCtx.clearRect(0, 0, this.$refs.stuContent.width, this.$refs.stuContent.height)
+      } else if (drawData.type === 'text') {
+      } else if (drawData.type === 'savetext') {
+        this.canvasCtx.font = '20px Georgia'
+        this.canvasCtx.fillText(drawData.sentText, drawData.curX, drawData.curY)
       }
     }
   }
@@ -436,5 +445,8 @@ export default {
   }
   #container-text{
     height: 60px;
+  }
+  canvas{
+    position: absolute;
   }
 </style>
