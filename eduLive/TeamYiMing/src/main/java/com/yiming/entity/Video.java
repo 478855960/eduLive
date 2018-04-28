@@ -25,6 +25,9 @@ public class Video {
         this.srcPath = srcPath;
         this.imgPath = imgPath;
     }
+    public Video() {
+        super();
+    }
 
     public String getVideoNum() {
         return videoNum;

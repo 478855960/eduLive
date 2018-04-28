@@ -142,6 +142,7 @@ public class UserController {
     @ResponseBody
     public int sendMessage(@RequestBody User user) throws ClientProtocolException, IOException {
         SendVerificationCode sendCode = new SendVerificationCode(user.getPhoneNum());
+        System.out.println(user.getPhoneNum());
         String code = sendCode.sendVerificationCode();
         System.out.println("code is: " + code);
         if (code.length() != 6) {
@@ -158,7 +159,7 @@ public class UserController {
     @RequestMapping(value = "/isVerificationCodeTrue.action", method = RequestMethod.POST)
     @ResponseBody
     public int isVerificationCodeTrue(@RequestBody User user) {
-        System.out.println("sdadadadadadada");
+        System.out.println(user.getPhoneNum());
         System.out.println("code si: " + user.getVerificationCode());
         String verificationCode = (String) session.getAttribute("VerificationCode");
         if (user.getVerificationCode().equals(verificationCode)) {
@@ -166,20 +167,6 @@ public class UserController {
         } else {
             return 0;
         }
-    }
-
-    /**
-     * @throws IOException
-     * @throws ClientProtocolException
-     *
-     */
-    @RequestMapping(value = "/modifySendMessage.action", method = RequestMethod.POST)
-    @ResponseBody
-    public int modifySendMessage(@RequestBody User user) throws ClientProtocolException, IOException {
-        SendVerificationCode sendCode = new SendVerificationCode(user.getPhoneNum());
-        String code = sendCode.sendVerificationCode();
-        System.out.println("code is: " + code);
-        return 0;
     }
 
     /**

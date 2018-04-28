@@ -54,7 +54,7 @@ public class VideoController {
      * @desc 获取所有正在直播的直播间信息
      * @return JSON对象数组的字符串
      */
-    @RequestMapping(value = "/getAllVideoRoomInfo.action", method = RequestMethod.POST)
+    @RequestMapping(value = "/getAllVideoInfo.action", method = RequestMethod.POST)
     @ResponseBody
     public String showLiveList() {
         String result;
